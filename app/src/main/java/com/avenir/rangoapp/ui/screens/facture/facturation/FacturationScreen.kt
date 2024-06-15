@@ -1,0 +1,92 @@
+package com.avenir.rangoapp.ui.screens.facture.facturation
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.avenir.RangoApp.R
+import com.avenir.rangoapp.core.SmallSpace
+import com.avenir.rangoapp.ui.components.FactureCardItem
+
+
+@Composable
+fun FacturationScreen(
+    onClientClicked:()->Unit,
+    onNewFactureClicked:()->Unit,
+) {
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                contentColor = Color.Black,
+                containerColor = Color.Cyan,
+                onClick = { onNewFactureClicked() }) {
+                Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription = "")
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(text = "Create Facture")
+            }
+        }
+    ) {
+        LazyColumn(modifier = Modifier.padding(it)) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "Facturation",
+                        fontSize = 24.sp,
+                    )
+                    ElevatedButton(
+                        colors = ButtonDefaults.elevatedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiary,
+                            contentColor = MaterialTheme.colorScheme.onTertiary,
+                        ),
+                        onClick = { onClientClicked() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_friends),
+                            contentDescription = "",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Clients")
+                    }
+                }
+                SmallSpace()
+                HorizontalDivider()
+            }
+            item {
+                SmallSpace()
+            }
+            items(3) {
+                FactureCardItem()
+            }
+        }
+    }
+}
