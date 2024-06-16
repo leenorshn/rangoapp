@@ -40,7 +40,6 @@ fun HomeScreen(
     state: HomeState?,
     onProfileClicked: () -> Unit,
     onFactureClicked: () -> Unit,
-    onClientClicked: () -> Unit,
     onStoreClicked: () -> Unit,
     onCaisseClicked:()->Unit,
     onSettingClicked: () -> Unit,
@@ -48,7 +47,7 @@ fun HomeScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title = { Text("Shop-Man") },
+            TopAppBar(title = { Text("RangoApp") },
 
                 actions = {
                     Box(
