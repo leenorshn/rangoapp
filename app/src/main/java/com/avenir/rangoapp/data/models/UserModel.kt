@@ -3,5 +3,7 @@ package com.avenir.rangoapp.data.models
 data class UserModel(
     val id:String,
     val name:String,
-    val phone:String
+    val phone:String,
+    val role:String,
+    val isBlocked:Boolean
 )

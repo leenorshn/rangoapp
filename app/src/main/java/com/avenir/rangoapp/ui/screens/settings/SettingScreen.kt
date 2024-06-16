@@ -10,14 +10,24 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.avenir.RangoApp.R
+import com.avenir.rangoapp.core.LargeSpace
+import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.data.models.UserModel
 import com.avenir.rangoapp.ui.components.SettingMenuItem
 import com.avenir.rangoapp.ui.components.UserProfileItem
+import com.avenir.rangoapp.ui.screens.settings.users.listOfUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingScreen(modifier: Modifier = Modifier) {
+fun SettingScreen(
+    onShopClicked:()->Unit,
+    onUsersClicked:()->Unit,
+    onCurrencyClicked:()->Unit,
+    onHelpClicked:()->Unit,
+    onPaymentClicked:()->Unit
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -26,37 +36,50 @@ fun SettingScreen(modifier: Modifier = Modifier) {
             })
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(it)) {
+        LazyColumn(modifier = Modifier
+            .padding(it)
+            .padding(horizontal = 16.dp)) {
             item {
                 UserProfileItem(
-                    userModel = UserModel(
-                        id = "",
-                        name = "Victor Sh",
-                        phone = "+243 978 154 329"
-                    )
+                    userModel = listOfUser[0]
                 )
             }
             item {
+                LargeSpace()
                 SettingMenuItem(
                     name = "Shop setting",
                     icon = painterResource(id = R.drawable.mallette_24),
-                    onMenuClicked = {})
+                    onMenuClicked = {
+                        onShopClicked()
+                    })
+                SmallSpace()
                 SettingMenuItem(
-                    name = "Utilisateurs",
+                    name = "Gerer les utilisateurs",
                     icon = painterResource(id = R.drawable.utilisateurs_24),
-                    onMenuClicked = {})
+                    onMenuClicked = {
+                        onUsersClicked()
+                    })
+                SmallSpace()
                 SettingMenuItem(
                     name = "Gerer le Taux",
                     icon = painterResource(id = R.drawable.dollar_24),
-                    onMenuClicked = {})
+                    onMenuClicked = {
+                        onCurrencyClicked()
+                    })
+                SmallSpace()
                 SettingMenuItem(
                     name = "Payment",
                     icon = painterResource(id = R.drawable.statistiques_24),
-                    onMenuClicked = {})
+                    onMenuClicked = {
+                        onPaymentClicked()
+                    })
+                SmallSpace()
                 SettingMenuItem(
                     name = "Aide",
                     icon = painterResource(id = R.drawable.ic_left_arrow),
-                    onMenuClicked = {})
+                    onMenuClicked = {
+                        onHelpClicked()
+                    })
             }
         }
     }

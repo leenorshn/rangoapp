@@ -159,7 +159,23 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(DestinationRoute.SETTING_ROUTE){
-                        SettingScreen()
+                        SettingScreen(
+                            onShopClicked = {
+                                navController.navigate(DestinationRoute.SETTING_SHOP_ROUTE)
+                            },
+                            onUsersClicked = {
+                                 navController.navigate(DestinationRoute.SETTING_USER_MANAGER_ROUTE)
+                            },
+                            onCurrencyClicked = {
+                                navController.navigate(DestinationRoute.SETTING_CURRENCY_ROUTE)
+                            },
+                            onPaymentClicked = {
+                                navController.navigate(DestinationRoute.SETTING_PAYMENT_ROUTE)
+                            },
+                            onHelpClicked = {
+                                navController.navigate(DestinationRoute.SETTING_HELP_ROUTE)
+                            }
+                        )
                     }
                 }
 

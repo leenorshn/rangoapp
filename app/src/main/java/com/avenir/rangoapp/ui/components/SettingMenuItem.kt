@@ -2,6 +2,7 @@ package com.avenir.rangoapp.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
@@ -22,10 +23,10 @@ import com.avenir.rangoapp.ui.theme.SuccessColor
 fun SettingMenuItem(onMenuClicked:()->Unit,name:String,icon:Painter) {
     OutlinedCard(onClick = { onMenuClicked() }, modifier = Modifier.padding(top=8.dp)) {
         ListItem(headlineContent = {
-            Text(text = name, fontSize = 24.sp)
+            Text(text = name, fontSize = 16.sp)
         },
             leadingContent = {
-                Icon(icon,"menu")
+                Icon(icon,"menu", modifier = Modifier.size(18.dp))
             }, trailingContent = {
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight,"")
             })

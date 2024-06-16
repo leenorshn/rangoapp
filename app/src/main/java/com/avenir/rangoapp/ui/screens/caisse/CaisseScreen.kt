@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
@@ -198,7 +199,7 @@ fun CaisseScreen(
                         },
                         color = SuccessColor,
                         icon = painterResource(
-                            id = R.drawable.dollar_24
+                            id = R.drawable.fleche_bas
                         ),
                         title = "Enter"
                     )
@@ -210,7 +211,7 @@ fun CaisseScreen(
                         },
                         color = FailureColor,
                         icon = painterResource(
-                            id = R.drawable.dollar_24
+                            id = R.drawable.fleche_haut
                         ),
                         title = "Sortie"
                     )
@@ -257,21 +258,24 @@ fun CaisseScreen(
                 }
             }
 
-            items(8){
+            items(listOfTrans){ trans->
                 Card(onClick = { /*TODO*/ },
                     colors = CardDefaults.cardColors(
                         containerColor = CardColor,
                     )) {
                     ListItem(
                         supportingContent = {
-                             Text(text = "Entrée")
+                             Text(text = trans.operation)
                         },
                         headlineContent = {
-                                               Text(text = "Operation")
+                                               Text(text = trans.libel)
                     }, leadingContent = {
-                           Text(text = "$ 1000")
+                           Text(text = "$ ${trans.amount}")
                     }, trailingContent = {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowForward,"")
+                       val icon= if (trans.operation=="entre") painterResource(id = R.drawable.fleche_bas)
+                            else painterResource(id = R.drawable.fleche_haut)
+                        val tint=if (trans.operation=="entre") SuccessColor else FailureColor
+                        Icon(icon,"",tint=tint)
                     })
                     HorizontalDivider()
                 }
