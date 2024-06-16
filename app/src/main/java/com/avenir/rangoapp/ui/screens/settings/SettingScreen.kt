@@ -46,6 +46,7 @@ fun SettingScreen(
             }
             item {
                 LargeSpace()
+                LargeSpace()
                 SettingMenuItem(
                     name = "Shop setting",
                     icon = painterResource(id = R.drawable.mallette_24),
@@ -61,7 +62,7 @@ fun SettingScreen(
                     })
                 SmallSpace()
                 SettingMenuItem(
-                    name = "Gerer le Taux",
+                    name = "Taux d'echange",
                     icon = painterResource(id = R.drawable.dollar_24),
                     onMenuClicked = {
                         onCurrencyClicked()
@@ -70,6 +71,13 @@ fun SettingScreen(
                 SettingMenuItem(
                     name = "Payment",
                     icon = painterResource(id = R.drawable.statistiques_24),
+                    onMenuClicked = {
+                        onPaymentClicked()
+                    })
+                SmallSpace()
+                SettingMenuItem(
+                    name = "Stocage cloud",
+                    icon = painterResource(id = R.drawable.time),
                     onMenuClicked = {
                         onPaymentClicked()
                     })

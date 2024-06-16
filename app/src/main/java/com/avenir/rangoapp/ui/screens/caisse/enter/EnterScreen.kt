@@ -127,7 +127,9 @@ fun EnterScreen(
                 colors = TextFieldDefaults.colors(
                     focusedLabelColor = GrayColor,
                 ),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(64.dp).clip(
+                    RoundedCornerShape(16)
+                ),
                 value = clientName, onValueChange = {value->
                     clientName=value
                 },
@@ -147,7 +149,9 @@ fun EnterScreen(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                 ),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(64.dp).clip(
+                    RoundedCornerShape(16)
+                ),
                 value = clientName, onValueChange = {value->
                     clientName=value
                 },
@@ -169,7 +173,7 @@ fun EnterScreen(
                     .fillMaxWidth()
                     .height(64.dp)
                     .clip(
-                        RoundedCornerShape(10)
+                        RoundedCornerShape(16)
                     ),
                 value = clientName, onValueChange = {value->
                     clientName= value

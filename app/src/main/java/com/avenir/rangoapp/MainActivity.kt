@@ -23,6 +23,8 @@ import com.avenir.rangoapp.ui.screens.facture.facturation.newfacture.NewFactureS
 import com.avenir.rangoapp.ui.screens.home.HomeScreen
 import com.avenir.rangoapp.ui.screens.home.HomeState
 import com.avenir.rangoapp.ui.screens.settings.SettingScreen
+import com.avenir.rangoapp.ui.screens.settings.users.UsersScreen
+import com.avenir.rangoapp.ui.screens.settings.users.newuser.NewUserScreen
 import com.avenir.rangoapp.ui.screens.store.StoreScreen
 import com.avenir.rangoapp.ui.screens.store.product.ProductScreen
 import com.avenir.rangoapp.ui.screens.store.product.newproduct.NewProductScreen
@@ -175,6 +177,19 @@ class MainActivity : ComponentActivity() {
                             onHelpClicked = {
                                 navController.navigate(DestinationRoute.SETTING_HELP_ROUTE)
                             }
+                        )
+                    }
+
+                    composable(DestinationRoute.SETTING_USER_MANAGER_ROUTE){
+                        UsersScreen(
+                            onNewUserClicked = {
+                                navController.navigate(DestinationRoute.SETTING_USER_NEW_USER_ROUTE)
+                            }
+                        )
+                    }
+                    composable(DestinationRoute.SETTING_USER_NEW_USER_ROUTE){
+                        NewUserScreen (
+                            onSaveClicked = {}
                         )
                     }
                 }
