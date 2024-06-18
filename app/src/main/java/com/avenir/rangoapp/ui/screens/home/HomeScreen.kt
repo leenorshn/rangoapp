@@ -105,7 +105,7 @@ fun HomeScreen(
                 onCaisseClicked()
             })
             24.dp.Space()
-            HomeMenuItem(icon = painterResource(id = R.drawable.reglages_24), title = "Setting", onTapMenu = {
+            HomeMenuItem(icon = painterResource(id = R.drawable.reglages_24), title = "Settings", onTapMenu = {
                 onSettingClicked()
             })
 

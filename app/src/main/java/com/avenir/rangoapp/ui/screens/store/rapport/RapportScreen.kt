@@ -1,37 +1,33 @@
-package com.avenir.rangoapp.ui.screens.store.product
+package com.avenir.rangoapp.ui.screens.store.rapport
 
-import androidx.compose.foundation.border
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.avenir.RangoApp.R
-import com.avenir.rangoapp.ui.components.ProductItem
+import com.avenir.rangoapp.ui.components.RapportStoreItem
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductScreen(
-    onNewProductClicked: () -> Unit,
+fun RapportStoreScreen(
     onProviderClicked: () -> Unit
 ) {
     Scaffold(
@@ -57,7 +53,7 @@ fun ProductScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    onNewProductClicked()
+
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary,
                 contentColor = MaterialTheme.colorScheme.onTertiary,
@@ -79,8 +75,8 @@ fun ProductScreen(
             item {
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            items(10) {
-                ProductItem(index=it)
+            items(rapportList) { rapport ->
+                RapportStoreItem(rapport=rapport)
             }
             item { 
                 Spacer(modifier = Modifier.size(120.dp))

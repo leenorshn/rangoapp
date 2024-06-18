@@ -37,6 +37,11 @@ fun NewUserScreen(
     onSaveClicked: () -> Unit
 ) {
     var clientName = TextFieldValue(text = "")
+//    var selectedIndex by rememberSaveable {
+//        mutableStateOf(0)
+//    }
+//
+//    var buttonModifier = Modifier.fillMaxWidth().height(64.dp).clip(RoundedCornerShape(16))
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Nouveau Agent") })
@@ -96,6 +101,7 @@ fun NewUserScreen(
                 },
 
                 )
+
             20.dp.Space()
             TextField(
                 colors = TextFieldDefaults.colors(

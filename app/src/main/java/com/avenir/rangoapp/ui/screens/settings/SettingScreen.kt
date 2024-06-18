@@ -1,7 +1,12 @@
 package com.avenir.rangoapp.ui.screens.settings
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -14,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.avenir.RangoApp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
-import com.avenir.rangoapp.data.models.UserModel
+import com.avenir.rangoapp.core.Space
 import com.avenir.rangoapp.ui.components.SettingMenuItem
 import com.avenir.rangoapp.ui.components.UserProfileItem
 import com.avenir.rangoapp.ui.screens.settings.users.listOfUser
@@ -47,47 +52,65 @@ fun SettingScreen(
             item {
                 LargeSpace()
                 LargeSpace()
-                SettingMenuItem(
-                    name = "Shop setting",
-                    icon = painterResource(id = R.drawable.mallette_24),
-                    onMenuClicked = {
-                        onShopClicked()
-                    })
+               Row (modifier = Modifier.fillMaxWidth(),
+                   horizontalArrangement = Arrangement.SpaceBetween){
+                   SettingMenuItem(
+                       modifier = Modifier.weight(1f),
+                       name = "Shop settings",
+                       icon = painterResource(id = R.drawable.des_d6_24),
+                       onMenuClicked = {
+                           onShopClicked()
+                       })
+                   Spacer(modifier = Modifier.width(10.dp))
+                   SettingMenuItem(
+                       modifier = Modifier.weight(1f),
+                       name = "Taux d'echange",
+                       icon = painterResource(id = R.drawable.fleches_repetition_24),
+                       onMenuClicked = {
+                           onCurrencyClicked()
+                       })
+
+               }
                 SmallSpace()
-                SettingMenuItem(
-                    name = "Gerer les utilisateurs",
-                    icon = painterResource(id = R.drawable.utilisateurs_24),
-                    onMenuClicked = {
-                        onUsersClicked()
-                    })
+               Row {
+                   SettingMenuItem(
+                       modifier = Modifier.weight(1f),
+                       name = "Utilisateurs",
+                       icon = painterResource(id = R.drawable.utilisateurs_24),
+                       onMenuClicked = {
+                           onUsersClicked()
+                       })
+                   Spacer(modifier = Modifier.width(10.dp))
+                   SettingMenuItem(
+                       modifier = Modifier.weight(1f),
+                       name = "Payment",
+                       icon = painterResource(id = R.drawable.usd_cercle_24),
+                       onMenuClicked = {
+                           onPaymentClicked()
+                       })
+               }
                 SmallSpace()
-                SettingMenuItem(
-                    name = "Taux d'echange",
-                    icon = painterResource(id = R.drawable.dollar_24),
-                    onMenuClicked = {
-                        onCurrencyClicked()
-                    })
-                SmallSpace()
-                SettingMenuItem(
-                    name = "Payment",
-                    icon = painterResource(id = R.drawable.statistiques_24),
-                    onMenuClicked = {
-                        onPaymentClicked()
-                    })
-                SmallSpace()
-                SettingMenuItem(
-                    name = "Stocage cloud",
-                    icon = painterResource(id = R.drawable.time),
-                    onMenuClicked = {
-                        onPaymentClicked()
-                    })
-                SmallSpace()
-                SettingMenuItem(
-                    name = "Aide",
-                    icon = painterResource(id = R.drawable.ic_left_arrow),
-                    onMenuClicked = {
-                        onHelpClicked()
-                    })
+                Row {
+                    SettingMenuItem(
+                        modifier = Modifier.weight(1f),
+                        name = "Stocage cloud",
+                        icon = painterResource(id = R.drawable.cloud),
+                        onMenuClicked = {
+                            onPaymentClicked()
+                        })
+                    Spacer(modifier = Modifier.width(10.dp))
+                    SettingMenuItem(
+                        modifier = Modifier.weight(1f),
+                        name = "Aide",
+                        icon = painterResource(id = R.drawable.aide),
+                        onMenuClicked = {
+                            onHelpClicked()
+                        })
+                }
+            }
+
+            item {
+                140.dp.Space()
             }
         }
     }

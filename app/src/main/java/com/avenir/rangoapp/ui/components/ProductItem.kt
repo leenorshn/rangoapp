@@ -1,13 +1,9 @@
 package com.avenir.rangoapp.ui.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -15,16 +11,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.avenir.RangoApp.R
-import com.avenir.rangoapp.ui.theme.FailureColor
+import com.avenir.rangoapp.data.models.ProductModel
+import com.avenir.rangoapp.ui.theme.GrayColor
 
 @Composable
-fun ProductItem(index:Int) {
+fun ProductItem(product: ProductModel) {
     Column {
         ListItem(
             headlineContent = {
-                Text(text = "Product $index")
+                Text(text = product.name, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.W500,)
             },
             leadingContent = {
                 Icon(
@@ -34,20 +36,33 @@ fun ProductItem(index:Int) {
             },
             trailingContent = {
                 Icon(
-                    Icons.Outlined.Delete,
+                    painterResource(id = R.drawable.crayon_24),
                     contentDescription =null,
-                    tint = FailureColor,
+                    tint = GrayColor,
+                    modifier = Modifier.size(16.dp)
                 )
             },
             supportingContent = {
-                Text(text = "$ 20")
+                Column {
+                   var text= buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Color.Cyan, fontWeight = FontWeight.SemiBold)) {
+                            append("${product.priceVente} $ ")
+                        }
+
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.W300, color = Color.Cyan, fontSize = 12.sp)) {
+                            append("Prix de vente")
+                        }
+
+                    }
+
+                    Text(text = text)
+                    Text(text = "$ ${product.priceAchat} Prix d'achat   ",color= Color.Gray, fontSize = 12.sp)
+                }
             },
-            modifier = Modifier
-                .border(
-                    1.dp, Color.Gray, shape = RoundedCornerShape(10)
-                )
-                .padding(16.dp)
+
         )
         Spacer(modifier = Modifier.size(10.dp))
+        HorizontalDivider()
     }
 }

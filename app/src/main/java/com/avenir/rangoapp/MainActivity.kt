@@ -26,9 +26,9 @@ import com.avenir.rangoapp.ui.screens.settings.SettingScreen
 import com.avenir.rangoapp.ui.screens.settings.users.UsersScreen
 import com.avenir.rangoapp.ui.screens.settings.users.newuser.NewUserScreen
 import com.avenir.rangoapp.ui.screens.store.StoreScreen
-import com.avenir.rangoapp.ui.screens.store.product.ProductScreen
-import com.avenir.rangoapp.ui.screens.store.product.newproduct.NewProductScreen
-import com.avenir.rangoapp.ui.screens.store.product.provider.ProviderScreen
+import com.avenir.rangoapp.ui.screens.store.newproduct.NewProductScreen
+import com.avenir.rangoapp.ui.screens.store.provider.ProviderScreen
+import com.avenir.rangoapp.ui.screens.store.rapport.RapportStoreScreen
 import com.avenir.rangoapp.ui.theme.RangoAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -91,18 +91,16 @@ class MainActivity : ComponentActivity() {
                     composable(DestinationRoute.STORE_ROUTE){
                         StoreScreen(
                             onAddNewProductClicked = {
-                                navController.navigate(DestinationRoute.ADD_PRODUCT_IN_STORE_ROUTE)
+                                navController.navigate(DestinationRoute.NEW_PRODUCT_ROUTE)
+                            },
+                            onRapportStoreClicked = {
+                                navController.navigate(DestinationRoute.RAPPORT_STORE_ROUTE)
                             }
                         )
                     }
-                    composable(DestinationRoute.ADD_PRODUCT_IN_STORE_ROUTE){
-                        ProductScreen(
-                            onNewProductClicked = {
-                               navController.navigate(DestinationRoute.NEW_PRODUCT_ROUTE)
-                            },
-                            onProviderClicked = {
-                                navController.navigate(DestinationRoute.PROVIDER_ROUTE)
-                            }
+                    composable(DestinationRoute.RAPPORT_STORE_ROUTE){
+                        RapportStoreScreen(
+                            onProviderClicked = {}
                         )
                     }
                     composable(DestinationRoute.NEW_PRODUCT_ROUTE){
