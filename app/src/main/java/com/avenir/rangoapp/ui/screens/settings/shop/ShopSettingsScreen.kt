@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -19,27 +20,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.avenir.rangoapp.core.LargeSpace
+import com.avenir.rangoapp.data.models.CompanyModel
+import com.avenir.rangoapp.data.models.CompanyModelExample
+import com.avenir.rangoapp.ui.components.CustomButton
 import com.avenir.rangoapp.ui.components.ToggleTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopSettingsScreen(
-
+    company:CompanyModel= CompanyModelExample
 ) {
 
 
 
     var shopName by remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(company.name))
     }
     var shopAddress by remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(company.address))
     }
     var shopDomain by remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(company.domain))
     }
     var shopDescription by remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(company.description))
     }
 
     Scaffold(topBar = {
@@ -53,6 +57,7 @@ fun ShopSettingsScreen(
                 .fillMaxHeight()
         ) {
             item {
+                HorizontalDivider()
                 Spacer(modifier = Modifier.height(32.dp))
                 ToggleTextField(
                     name = shopName,
@@ -60,10 +65,10 @@ fun ShopSettingsScreen(
                     onChange = { shopName = it },
                 )
                 LargeSpace()
-                ToggleTextField(
-                    name = shopAddress,
+                CustomButton(
+                    name = company.address,
                     label = "Shop Address",
-                    onChange = { shopAddress = it },
+                    onClick = {  },
                 )
                 LargeSpace()
                 ToggleTextField(
@@ -72,10 +77,10 @@ fun ShopSettingsScreen(
                     onChange = { shopDomain = it },
                 )
                 LargeSpace()
-                ToggleTextField(
-                    name = shopDescription,
+                CustomButton(
+                    name = company.description,
                     label = "Shop Description",
-                    onChange = { shopDescription = it },
+                    onClick = {  },
                 )
             }
         }

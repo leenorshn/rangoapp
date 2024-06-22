@@ -23,14 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.avenir.RangoApp.R
 
 @Composable
 fun ToggleTextField(
     name: TextFieldValue,
-    label:String,
+    label: String,
     onChange: (TextFieldValue) -> Unit
 ) {
 
@@ -58,7 +60,7 @@ fun ToggleTextField(
                     ),
                     modifier = Modifier.padding(end = 8.dp),
                     onClick = {
-                        currentEdit=false
+                        currentEdit = false
                     }) {
                     Icon(Icons.Filled.Done, "")
                 }
@@ -70,18 +72,18 @@ fun ToggleTextField(
                 .border(
                     1.dp,
                     color = Color.Gray,
-                    RoundedCornerShape(20)
+                    RoundedCornerShape(16)
                 )
-                .height(80.dp),
+                .padding(vertical = 16.dp, horizontal = 8.dp),
             supportingContent = {
-                Text(text = label)
+                Text(text = label,color = Color.Cyan, fontSize = 13.sp)
             },
             headlineContent = {
-                val value = name.text.ifEmpty { "My shop ${name.text}" }
-                Text(text = value)
+                val value = name.text.ifEmpty { "My shop $label" }
+                Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
             }, trailingContent = {
                 IconButton(onClick = {
-                    currentEdit=true
+                    currentEdit = true
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.crayon_24),
@@ -90,4 +92,34 @@ fun ToggleTextField(
                 }
             })
     }
+}
+
+@Composable
+fun CustomButton(
+    label: String,
+    name:String,
+    onClick:()->Unit
+) {
+    ListItem(
+        modifier = Modifier
+            .border(
+                1.dp,
+                color = Color.Gray,
+                RoundedCornerShape(16)
+            )
+            .padding(vertical = 16.dp, horizontal = 8.dp),
+        supportingContent = {
+            Text(text = label,color = Color.Cyan, fontSize = 13.sp)
+        },
+        headlineContent = {
+            val value = name.ifEmpty { "My shop $label" }
+            Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+        }, trailingContent = {
+            IconButton(onClick =onClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.crayon_24),
+                    contentDescription = ""
+                )
+            }
+        })
 }
