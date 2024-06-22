@@ -73,8 +73,11 @@ fun ToggleTextField(
                     RoundedCornerShape(20)
                 )
                 .height(80.dp),
+            supportingContent = {
+                Text(text = label)
+            },
             headlineContent = {
-                val value = name.text.ifEmpty { label }
+                val value = name.text.ifEmpty { "My shop ${name.text}" }
                 Text(text = value)
             }, trailingContent = {
                 IconButton(onClick = {
