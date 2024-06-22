@@ -83,7 +83,7 @@ Ce projet est sous licence MIT-privee. Voir le fichier [LICENSE](LICENSE) pour p
 
 ## Auteurs
 <img src="https://github.com/leenorshn.png" alt="victor" height="64" width="64" style="border-radius:50%;">
-- ** Victor Shukuru [@leenorshn] ** - *Développeur principal* - [Votre Profil GitHub](https://github.com/leenorshn)
+- **Victor Shukuru @leenorshn** - *Développeur principal* - [Votre Profil GitHub](https://github.com/leenorshn)
 
 ## Remerciements
 - Merci à tous les contributeurs et utilisateurs de cette application.
