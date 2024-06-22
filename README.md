@@ -82,7 +82,8 @@ Les contributions sont les bienvenues ! Pour signaler un problème ou proposer u
 Ce projet est sous licence MIT-privee. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ## Auteurs
-- **Votre Nom** - *Développeur principal* - [Votre Profil GitHub](https://github.com/leenorshn)
+<img src="https://github.com/leenorshn.png" alt="victor" height="64" width="64" style="border-radius:50%;">
+- ** Victor Shukuru [@leenorshn] ** - *Développeur principal* - [Votre Profil GitHub](https://github.com/leenorshn)
 
 ## Remerciements
 - Merci à tous les contributeurs et utilisateurs de cette application.
