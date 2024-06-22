@@ -7,12 +7,14 @@
 ## Description
 Cette application mobile permet aux utilisateurs de gérer efficacement leurs stocks, de suivre les ventes et de générer des factures. Elle est conçue pour les petites et moyennes entreprises afin de faciliter la gestion quotidienne des opérations commerciales.
 
+<p align="center">
+  <img src="images/3.png" alt="Logo 1" width="1080"/>
+  <img src="images/1.png" alt="Logo 2" width="1080"/>
+ <img src="images/2.png" alt="Logo 2" width="1080"/>
+ <img src="images/5.png" alt="Logo 2" width="1080"/>
+</p>
 
 
-!["image 3"](images/3.png)
-!["image 2"](images/2.png)
-!["image 1"](images/1.png)
-!["image 5"](images/5.png)
 
 ## Fonctionnalités
 - **Gestion de Stock** : Suivi des niveaux de stock, ajout de nouveaux produits, mise à jour des quantités.
