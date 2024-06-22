@@ -8,10 +8,10 @@
 Cette application mobile permet aux utilisateurs de gérer efficacement leurs stocks, de suivre les ventes et de générer des factures. Elle est conçue pour les petites et moyennes entreprises afin de faciliter la gestion quotidienne des opérations commerciales.
 
 <p style="display:flex;">
-  <img src="images/3.png" alt="Logo 1" width="1080"/>
-  <img src="images/1.png" alt="Logo 2" width="1080"/>
- <img src="images/2.png" alt="Logo 2" width="1080"/>
- <img src="images/5.png" alt="Logo 2" width="1080"/>
+  <img src="images/3.png" alt="Logo 1" width="240"/>
+  <img src="images/1.png" alt="Logo 2" width="240"/>
+ <img src="images/2.png" alt="Logo 2" width="240"/>
+ <img src="images/5.png" alt="Logo 2" width="240"/>
 </p>
 
 
