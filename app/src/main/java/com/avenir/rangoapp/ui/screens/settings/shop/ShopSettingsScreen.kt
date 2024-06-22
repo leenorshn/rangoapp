@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.avenir.RangoApp.R
+import com.avenir.rangoapp.ui.components.ToggleTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +46,15 @@ fun ShopSettingsScreen(
     var shopName by remember {
         mutableStateOf(TextFieldValue(""))
     }
+    var shopAddress by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+    var shopStateId by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+    var shopLogo by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
 
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = "Shop settings") })
@@ -57,57 +67,11 @@ fun ShopSettingsScreen(
                 .fillMaxHeight()
         ) {
             item {
-                if (isShopNameEdit) {
-                    TextField(
-                        value = shopName,
-                        onValueChange = {
-                            shopName = it
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp)
-                            .clip(
-                                RoundedCornerShape(16)
-                            ),
-                        trailingIcon = {
-                            IconButton(
-                                colors = IconButtonColors(
-                                    containerColor = Color.Yellow,
-                                    contentColor = MaterialTheme.colorScheme.primary,
-                                    disabledContainerColor = Color.Gray,
-                                    disabledContentColor = Color.White
-                                ),
-                                modifier = Modifier.padding(end = 8.dp),
-                                onClick = {
-                                isShopNameEdit = false
-                            }) {
-                                Icon(Icons.Filled.Done, "")
-                            }
-                        }
-                    )
-                } else {
-                    ListItem(
-                        modifier = Modifier
-                            .border(
-                                1.dp,
-                                color = Color.Gray,
-                                RoundedCornerShape(20)
-                            )
-                            .height(80.dp),
-                        headlineContent = {
-                            val name = shopName.text.ifEmpty { "Shop name" }
-                            Text(text = name)
-                        }, trailingContent = {
-                            IconButton(onClick = {
-                                isShopNameEdit = true
-                            }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.crayon_24),
-                                    contentDescription = ""
-                                )
-                            }
-                        })
-                }
+                ToggleTextField(
+                    name = shopName,
+                    label = "Shop name",
+                    onChange = { shopName = it },
+                )
             }
         }
     }
