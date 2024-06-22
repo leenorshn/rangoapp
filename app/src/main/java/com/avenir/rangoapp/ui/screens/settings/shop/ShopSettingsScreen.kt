@@ -36,15 +36,11 @@ fun ShopSettingsScreen(
     var shopName by remember {
         mutableStateOf(TextFieldValue(company.name))
     }
-    var shopAddress by remember {
-        mutableStateOf(TextFieldValue(company.address))
-    }
+
     var shopDomain by remember {
         mutableStateOf(TextFieldValue(company.domain))
     }
-    var shopDescription by remember {
-        mutableStateOf(TextFieldValue(company.description))
-    }
+
 
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = "Shop settings") })
