@@ -177,9 +177,7 @@ class MainActivity : ComponentActivity() {
                     composable(DestinationRoute.CAISSE_SEE_ALL_ROUTE) {
                         TransactionScreen()
                     }
-                    composable(DestinationRoute.CAISSE_ACCOUNT_ROUTE) {
-                        AccountCaisseScreen()
-                    }
+
 
                     composable(DestinationRoute.SETTING_ROUTE) {
                         SettingScreen(
