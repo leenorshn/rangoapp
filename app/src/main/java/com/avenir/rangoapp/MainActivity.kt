@@ -61,6 +61,8 @@ class MainActivity : ComponentActivity() {
                             onLogin = {
                                 viewModel.loginUser()
                                 //navController.navigate(DestinationRoute.MAIN_NAV_ROUTE)
+                            }, onBackClick = {
+                                navController.navigate(DestinationRoute.REGISTER_ROUTE)
                             })
                     }
 
