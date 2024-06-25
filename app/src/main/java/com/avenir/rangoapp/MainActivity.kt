@@ -165,9 +165,7 @@ class MainActivity : ComponentActivity() {
                             onSaveClicked = {}
                         )
                     }
-                    composable(DestinationRoute.CAISSE_SEE_ALL_ROUTE) {
-                        TransactionScreen()
-                    }
+
 
 
                     composable(DestinationRoute.SETTING_ROUTE) {
