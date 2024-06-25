@@ -115,21 +115,22 @@ fun LoginScreen(
             LargeSpace()
             if (state.isLoading){
                 CircularProgressIndicator(color = Color.Yellow, modifier = Modifier.size(32.dp))
-            }
-            ElevatedButton(
-                onClick = {
-                    onEvent(LoginEvent.OnLogin)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-                shape = RoundedCornerShape(20),
-                colors = ButtonDefaults.elevatedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onTertiary,
-                    containerColor = MaterialTheme.colorScheme.tertiary,
-                )
-            ) {
-                Text(text = "Connexion")
+            }else {
+                ElevatedButton(
+                    onClick = {
+                        onEvent(LoginEvent.OnLogin)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(64.dp),
+                    shape = RoundedCornerShape(20),
+                    colors = ButtonDefaults.elevatedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onTertiary,
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                    )
+                ) {
+                    Text(text = "Connexion")
+                }
             }
             if (state.error != null) {
                 LargeSpace()

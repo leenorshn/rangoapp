@@ -15,15 +15,12 @@ import androidx.navigation.compose.rememberNavController
 import com.avenir.rangoapp.core.DestinationRoute
 import com.avenir.rangoapp.ui.screens.auth.login.LoginScreen
 import com.avenir.rangoapp.ui.screens.auth.login.LoginViewModel
-import com.avenir.rangoapp.ui.screens.auth.profile.ProfileScreen
-import com.avenir.rangoapp.ui.screens.auth.profile.ProfileViewModel
 import com.avenir.rangoapp.ui.screens.caisse.CaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.account.AccountCaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.enter.EnterScreen
 import com.avenir.rangoapp.ui.screens.caisse.sortie.SortieCaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.transaction.TransactionScreen
 import com.avenir.rangoapp.ui.screens.caisse.transfer.TransferCaisseScreen
-import com.avenir.rangoapp.ui.screens.facture.client.ClientScreen
 import com.avenir.rangoapp.ui.screens.facture.client.newClient.NewClientScreen
 import com.avenir.rangoapp.ui.screens.facture.facturation.FacturationScreen
 import com.avenir.rangoapp.ui.screens.facture.facturation.newfacture.NewFactureScreen
@@ -109,12 +106,7 @@ class MainActivity : ComponentActivity() {
                             },
                         )
                     }
-                    composable(DestinationRoute.PROFILE_ROUTE) {
-                        val profileViewModel: ProfileViewModel = hiltViewModel()
-                        ProfileScreen(
-                            onEvent = profileViewModel::onTriggerEvent,
-                        )
-                    }
+
                     composable(DestinationRoute.FACTURATION_ROUTE) {
                         FacturationScreen(
                             onClientClicked = {
@@ -125,15 +117,9 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    composable(DestinationRoute.CLIENT_ROUTE) {
-                        ClientScreen(onNewClient = {
-                            navController.navigate(DestinationRoute.NEW_CLIENT_ROUTE)
-                        })
-                    }
 
-                    composable(DestinationRoute.NEW_CLIENT_ROUTE) {
-                        NewClientScreen(onSaveClicked = {})
-                    }
+
+
 
                     composable(DestinationRoute.NEW_FACTURE_ROUTE) {
                         NewFactureScreen(

@@ -23,7 +23,7 @@ class UserDataSource @Inject constructor(
             emit(BaseResponse.Loading)
            try {
                val session= account.createEmailPasswordSession(
-                   email,
+                   "$email@rango.com",
                    password,
                )
                emit(BaseResponse.Success(session))
