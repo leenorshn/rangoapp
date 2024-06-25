@@ -137,25 +137,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(DestinationRoute.CAISSE_ROUTE) {
-                        CaisseScreen(
-                            onEnterClicked = {
-                                navController.navigate(DestinationRoute.CAISSE_ENTER_ROUTE)
-                            },
-                            onSortieClicked = {
-                                navController.navigate(DestinationRoute.CAISSE_SORTIE_ROUTE)
-                            },
-                            onTransferClicked = {
-                                navController.navigate(DestinationRoute.CAISSE_TRANSFER_ROUTE)
-                            },
-                            onAccountClicked = {
-                                navController.navigate(DestinationRoute.CAISSE_ACCOUNT_ROUTE)
-                            },
-                            onSeeAllClicked = {
-                                navController.navigate(DestinationRoute.CAISSE_SEE_ALL_ROUTE)
-                            }
-                        )
-                    }
+
 
 
 
