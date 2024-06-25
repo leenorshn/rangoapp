@@ -13,28 +13,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.avenir.rangoapp.core.DestinationRoute
-import com.avenir.rangoapp.ui.screens.auth.login.LoginScreen
-import com.avenir.rangoapp.ui.screens.auth.login.LoginViewModel
-import com.avenir.rangoapp.ui.screens.caisse.CaisseScreen
-import com.avenir.rangoapp.ui.screens.caisse.account.AccountCaisseScreen
-import com.avenir.rangoapp.ui.screens.caisse.enter.EnterScreen
-import com.avenir.rangoapp.ui.screens.caisse.sortie.SortieCaisseScreen
-import com.avenir.rangoapp.ui.screens.caisse.transaction.TransactionScreen
-import com.avenir.rangoapp.ui.screens.caisse.transfer.TransferCaisseScreen
-import com.avenir.rangoapp.ui.screens.facture.facturation.newfacture.NewFactureScreen
 import com.avenir.rangoapp.ui.screens.home.HomeScreen
 import com.avenir.rangoapp.ui.screens.home.HomeState
-import com.avenir.rangoapp.ui.screens.settings.SettingScreen
 import com.avenir.rangoapp.ui.screens.settings.about.HelpScreen
 import com.avenir.rangoapp.ui.screens.settings.payment.CurrencyScreen
 import com.avenir.rangoapp.ui.screens.settings.payment.PaymentScreen
 import com.avenir.rangoapp.ui.screens.settings.shop.ShopSettingsScreen
 import com.avenir.rangoapp.ui.screens.settings.users.UsersScreen
 import com.avenir.rangoapp.ui.screens.settings.users.newuser.NewUserScreen
-import com.avenir.rangoapp.ui.screens.store.StoreScreen
-import com.avenir.rangoapp.ui.screens.store.newproduct.NewProductScreen
-import com.avenir.rangoapp.ui.screens.store.provider.ProviderScreen
-import com.avenir.rangoapp.ui.screens.store.rapport.RapportStoreScreen
 import com.avenir.rangoapp.ui.theme.RangoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -117,25 +103,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.SETTING_ROUTE) {
-                        SettingScreen(
-                            onShopClicked = {
-                                navController.navigate(DestinationRoute.SETTING_SHOP_ROUTE)
-                            },
-                            onUsersClicked = {
-                                navController.navigate(DestinationRoute.SETTING_USER_MANAGER_ROUTE)
-                            },
-                            onCurrencyClicked = {
-                                navController.navigate(DestinationRoute.SETTING_CURRENCY_ROUTE)
-                            },
-                            onPaymentClicked = {
-                                navController.navigate(DestinationRoute.SETTING_PAYMENT_ROUTE)
-                            },
-                            onHelpClicked = {
-                                navController.navigate(DestinationRoute.SETTING_HELP_ROUTE)
-                            }
-                        )
-                    }
+
                     composable(DestinationRoute.SETTING_PAYMENT_ROUTE) {
                         PaymentScreen()
                     }
@@ -149,13 +117,7 @@ class MainActivity : ComponentActivity() {
                         ShopSettingsScreen()
                     }
 
-                    composable(DestinationRoute.SETTING_USER_MANAGER_ROUTE) {
-                        UsersScreen(
-                            onNewUserClicked = {
-                                navController.navigate(DestinationRoute.SETTING_USER_NEW_USER_ROUTE)
-                            }
-                        )
-                    }
+
                     composable(DestinationRoute.SETTING_USER_NEW_USER_ROUTE) {
                         NewUserScreen(
                             onSaveClicked = {}
