@@ -118,11 +118,7 @@ class MainActivity : ComponentActivity() {
                     }
 
 
-                    composable(DestinationRoute.SETTING_USER_NEW_USER_ROUTE) {
-                        NewUserScreen(
-                            onSaveClicked = {}
-                        )
-                    }
+
                 }
 
                 // }
