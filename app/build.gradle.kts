@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.avenir.rangoApp"
+    namespace = "com.avenir.rangoapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.avenir.rangoApp"
+        applicationId = "com.avenir.rangoapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
