@@ -157,11 +157,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(DestinationRoute.CAISSE_ENTER_ROUTE) {
-                        EnterScreen(
-                            onSaveClicked = {}
-                        )
-                    }
+
 
                     composable(DestinationRoute.CAISSE_SORTIE_ROUTE) {
                         SortieCaisseScreen(
