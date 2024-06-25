@@ -104,11 +104,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.RAPPORT_STORE_ROUTE) {
-                        RapportStoreScreen(
-                            onProviderClicked = {}
-                        )
-                    }
+
                     composable(DestinationRoute.NEW_PRODUCT_ROUTE) {
                         NewProductScreen(
                             onSaveClicked = {}
