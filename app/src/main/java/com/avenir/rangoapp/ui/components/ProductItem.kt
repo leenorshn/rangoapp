@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.avenir.RangoApp.R
+import com.avenir.rangoapp.R
 import com.avenir.rangoapp.data.models.ProductModel
 import com.avenir.rangoapp.ui.theme.GrayColor
 
