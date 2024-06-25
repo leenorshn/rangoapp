@@ -19,10 +19,27 @@ class LoginViewModel @Inject constructor(
         private set
 
 
+    fun onEvent(event: LoginEvent){
+        when(event){
+            LoginEvent.OnLogin -> {
+                loginUser()
+            }
+            is LoginEvent.OnPasswordChange -> {
+                state=state.copy(password = (event.password))
+            }
+            is LoginEvent.OnPhoneChange -> {
+                state=state.copy(phone = (event.name))
+            }
+        }
+    }
 
-     fun loginUser(){
+    private fun loginUser(){
          viewModelScope.launch {
-             repository.login(state.phone.text,state.password.text)
+             repository.login(state.phone,state.password).collect{it->
+                 when(it){
+
+                 }
+             }
          }
      }
 

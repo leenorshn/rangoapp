@@ -8,3 +8,6 @@ val CardColor = Color(0xFF2F0F5F)
 val FailureColor = Color(0xFFF44336)
 val GrayColor = Color(0xFFB7B6B9)
 val SuccessColor = Color(0xFF21CE99)
+
+
+

@@ -51,17 +51,20 @@ class MainActivity : ComponentActivity() {
                // Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 val navController= rememberNavController()
 
+                val viewModel:MainViewModel = hiltViewModel()
+              val state =  viewModel.state
 
-                NavHost(navController = navController, startDestination = DestinationRoute.LOGIN_ROUTE) {
+                val startDestination = if (state.isLoggedIn) DestinationRoute.MAIN_NAV_ROUTE else DestinationRoute.LOGIN_ROUTE
+
+
+                NavHost(navController = navController, startDestination = startDestination) {
 
                     composable(DestinationRoute.LOGIN_ROUTE) {
                         val viewModel:LoginViewModel = hiltViewModel()
                         LoginScreen(
                             state = viewModel.state,
-                            onLogin = {
-                                viewModel.loginUser()
-                                //navController.navigate(DestinationRoute.MAIN_NAV_ROUTE)
-                            }, onBackClick = {
+                            onEvent = viewModel::onEvent,
+                            onBackClick = {
                                 navController.navigate(DestinationRoute.REGISTER_ROUTE)
                             })
                     }

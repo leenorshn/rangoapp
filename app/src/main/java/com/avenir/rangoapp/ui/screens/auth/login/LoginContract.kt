@@ -1,12 +1,11 @@
 package com.avenir.rangoapp.ui.screens.auth.login
 
-import androidx.compose.ui.text.input.TextFieldValue
 import io.appwrite.models.User
 
 
 data class LoginState(
-    var phone:TextFieldValue=TextFieldValue(""),
-    var password:TextFieldValue=TextFieldValue(""),
+    var phone:String="",
+    var password:String="",
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val user: User<Map<String, Any>>? = null
@@ -14,5 +13,7 @@ data class LoginState(
 
 sealed class LoginEvent {
     data object OnLogin : LoginEvent()
+    data class OnPhoneChange(val name: String):LoginEvent()
+    data class OnPasswordChange(val password: String):LoginEvent()
 
 }

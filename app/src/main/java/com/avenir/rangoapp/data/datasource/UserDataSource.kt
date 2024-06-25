@@ -36,4 +36,14 @@ class UserDataSource @Inject constructor(
     suspend fun onLogout() {
         account.deleteSession("current")
     }
+
+    suspend fun isUserLoggedIn(): Boolean {
+        // Remplacez ceci par votre logique de vérification de session
+        return try {
+            account.getSession("current")
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

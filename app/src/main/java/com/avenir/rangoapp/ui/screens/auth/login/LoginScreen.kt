@@ -35,7 +35,7 @@ import com.avenir.rangoapp.core.SmallSpace
 @Composable
 fun LoginScreen(
     state: LoginState,
-    onLogin: () -> Unit,
+    onEvent: (LoginEvent) -> Unit,
     onBackClick:()->Unit,
 ) {
 
@@ -64,7 +64,7 @@ fun LoginScreen(
             TextField(
                 value = state.phone,
                 onValueChange = {
-                    state.phone = it
+                    onEvent(LoginEvent.OnPhoneChange(it))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,7 +84,7 @@ fun LoginScreen(
             )
             SmallSpace()
             TextField(value = state.password, onValueChange = {
-                state.password = it
+                onEvent(LoginEvent.OnPasswordChange(it))
             },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -107,7 +107,7 @@ fun LoginScreen(
             LargeSpace()
             ElevatedButton(
                 onClick = {
-                    onLogin()
+                    onEvent(LoginEvent.OnLogin)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -122,7 +122,9 @@ fun LoginScreen(
             }
             Spacer(modifier = Modifier.height(32.dp))
             TextButton(
-                onClick = { /*TODO*/ }, colors = ButtonDefaults.textButtonColors(
+                onClick = {
+                    onBackClick()
+                }, colors = ButtonDefaults.textButtonColors(
                     contentColor = Color.Cyan,
                     containerColor = Color.Transparent
                 )
