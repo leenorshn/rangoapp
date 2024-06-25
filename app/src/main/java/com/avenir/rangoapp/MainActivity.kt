@@ -68,15 +68,7 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = startDestination) {
 
-                    composable(DestinationRoute.LOGIN_ROUTE) {
-                        val viewModel: LoginViewModel = hiltViewModel()
-                        LoginScreen(
-                            state = viewModel.state,
-                            onEvent = viewModel::onEvent,
-                            onBackClick = {
-                                navController.navigate(DestinationRoute.REGISTER_ROUTE)
-                            })
-                    }
+
 
                     composable(DestinationRoute.LOADING_SCREEN_ROUTE) {
                         LoadingScreen()
