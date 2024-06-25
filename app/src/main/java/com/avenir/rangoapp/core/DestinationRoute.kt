@@ -6,6 +6,7 @@ package com.avenir.rangoapp.core
  */
 object DestinationRoute {
 
+    const val LOGIN_ROUTE="LOGIN_ROUTE"
     const val RAPPORT_STORE_ROUTE="RAPPORT_STORE_ROUTE"
     const val SETTING_USER_NEW_USER_ROUTE="SETTING_USER_NEW_USER_ROUTE"
     const val SETTING_HELP_ROUTE = "SETTING_HELP_ROUTE"

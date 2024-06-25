@@ -6,10 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.avenir.rangoapp.core.DestinationRoute
+import com.avenir.rangoapp.ui.screens.auth.login.LoginScreen
+import com.avenir.rangoapp.ui.screens.auth.login.LoginViewModel
 import com.avenir.rangoapp.ui.screens.caisse.CaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.account.AccountCaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.enter.EnterScreen
@@ -34,7 +37,10 @@ import com.avenir.rangoapp.ui.screens.store.newproduct.NewProductScreen
 import com.avenir.rangoapp.ui.screens.store.provider.ProviderScreen
 import com.avenir.rangoapp.ui.screens.store.rapport.RapportStoreScreen
 import com.avenir.rangoapp.ui.theme.RangoAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +50,20 @@ class MainActivity : ComponentActivity() {
             RangoAppTheme {
                // Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 val navController= rememberNavController()
-                NavHost(navController = navController, startDestination = DestinationRoute.MAIN_NAV_ROUTE) {
+
+
+                NavHost(navController = navController, startDestination = DestinationRoute.LOGIN_ROUTE) {
+
+                    composable(DestinationRoute.LOGIN_ROUTE) {
+                        val viewModel:LoginViewModel = hiltViewModel()
+                        LoginScreen(
+                            state = viewModel.state,
+                            onLogin = {
+                                viewModel.loginUser()
+                                //navController.navigate(DestinationRoute.MAIN_NAV_ROUTE)
+                            })
+                    }
+
                     composable(DestinationRoute.MAIN_NAV_ROUTE){
                         HomeScreen(
                             state = HomeState(user = null),
