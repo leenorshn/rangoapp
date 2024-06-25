@@ -106,9 +106,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.SETTING_HELP_ROUTE) {
-                        HelpScreen()
-                    }
+
 
 
 
