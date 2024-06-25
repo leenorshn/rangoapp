@@ -103,16 +103,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.STORE_ROUTE) {
-                        StoreScreen(
-                            onAddNewProductClicked = {
-                                navController.navigate(DestinationRoute.NEW_PRODUCT_ROUTE)
-                            },
-                            onRapportStoreClicked = {
-                                navController.navigate(DestinationRoute.RAPPORT_STORE_ROUTE)
-                            }
-                        )
-                    }
+
                     composable(DestinationRoute.RAPPORT_STORE_ROUTE) {
                         RapportStoreScreen(
                             onProviderClicked = {}
