@@ -7,7 +7,7 @@ import com.avenir.rangoapp.core.DestinationRoute
 
 
 fun NavGraphBuilder.homeNavigation(navController: NavController) {
-    composable(DestinationRoute.MAIN_NAV_ROUTE) {
+    composable(DestinationRoute.HOME_ROUTE) {
         HomeScreen(
             state = HomeState(user = null),
             onFactureClicked = {

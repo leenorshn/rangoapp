@@ -13,6 +13,7 @@ import androidx.navigation.compose.navigation
 import com.avenir.rangoapp.core.DestinationRoute
 import com.avenir.rangoapp.ui.loading.loadingScreenNavigation
 import com.avenir.rangoapp.ui.screens.auth.login.loginNavigation
+import com.avenir.rangoapp.ui.screens.auth.profile.profileNavGraph
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
 import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
 import com.avenir.rangoapp.ui.screens.caisse.caisseNavigation
@@ -60,7 +61,7 @@ fun AppNavHost(
     } else if (state.isLoading) {
         DestinationRoute.LOADING_SCREEN_ROUTE
     } else {
-        DestinationRoute.WELCOME_ROUTE
+        DestinationRoute.AUTH_ROUTE
     }
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
 
@@ -101,18 +102,24 @@ fun AppNavHost(
             cloudStorageNavigation(navController)
             helpNavigation()
 
+            //profile
+            profileNavGraph(navController)
+
 
 
 
         }
         navigation(
-            DestinationRoute.WELCOME_ROUTE, DestinationRoute.AUTH_ROUTE
+             startDestination=DestinationRoute.WELCOME_ROUTE,
+            route=DestinationRoute.AUTH_ROUTE,
         ){
             welcomeNavigation(navController)
             loginNavigation(navController)
-            loadingScreenNavigation()
+
 
         }
+
+        loadingScreenNavigation()
 
     }
 
