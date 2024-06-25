@@ -6,7 +6,8 @@ package com.avenir.rangoapp.core
  */
 object DestinationRoute {
 
-   const val CLOUD_STORAGE_ROUTE="CLOUD_STORAGE_ROUTE"
+    const val HOME_ROUTE= "HOME_ROUTE"
+    const val CLOUD_STORAGE_ROUTE="CLOUD_STORAGE_ROUTE"
     const val NEW_PROVIDER_ROUTE="NEW_PROVIDER_ROUTE"
     const val PROFILE_ROUTE="PROFILE_ROUTE"
     const val REGISTER_ROUTE= "REGISTER_ROUTE"
@@ -42,7 +43,7 @@ object DestinationRoute {
     const val LOADING_SCREEN_ROUTE = "LOADING_SCREEN_ROUTE"
     const val MAIN_NAV_ROUTE = "main_route"
     const val AUTH_ROUTE = "auth_route"
-    const val CREATOR_PROFILE_ROUTE = "creator_profile_route"
+    const val WELCOME_ROUTE = "welcome_route"
     const val UPLOAD_ROUTE = "upload_route/uri={uri}"
 
 

@@ -9,9 +9,35 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
-import com.avenir.rangoapp.ui.loading.LoadingScreen
+import androidx.navigation.compose.navigation
+import com.avenir.rangoapp.core.DestinationRoute
+import com.avenir.rangoapp.ui.loading.loadingScreenNavigation
+import com.avenir.rangoapp.ui.screens.auth.login.loginNavigation
+import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
+import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
+import com.avenir.rangoapp.ui.screens.caisse.caisseNavigation
+import com.avenir.rangoapp.ui.screens.caisse.enter.enterCaisseNavigation
+import com.avenir.rangoapp.ui.screens.caisse.sortie.sortieCaisseNavigation
+import com.avenir.rangoapp.ui.screens.caisse.transaction.transactionNavigation
+import com.avenir.rangoapp.ui.screens.caisse.transfer.transferNavigation
+import com.avenir.rangoapp.ui.screens.facture.client.clientNavigation
+import com.avenir.rangoapp.ui.screens.facture.client.newClient.newClientNavigation
+import com.avenir.rangoapp.ui.screens.facture.facturation.factureNavigation
+import com.avenir.rangoapp.ui.screens.facture.facturation.newfacture.newFactureNavigation
+import com.avenir.rangoapp.ui.screens.home.homeNavigation
+import com.avenir.rangoapp.ui.screens.settings.about.helpNavigation
+import com.avenir.rangoapp.ui.screens.settings.cloud_storage.cloudStorageNavigation
+import com.avenir.rangoapp.ui.screens.settings.payment.currencySettingsNavigation
+import com.avenir.rangoapp.ui.screens.settings.payment.paymentSettingsNavigation
+import com.avenir.rangoapp.ui.screens.settings.settingsNavigation
+import com.avenir.rangoapp.ui.screens.settings.shop.shopSettingsNavigation
+import com.avenir.rangoapp.ui.screens.settings.users.newuser.newUserNavigation
+import com.avenir.rangoapp.ui.screens.settings.users.userSettingNavigation
+import com.avenir.rangoapp.ui.screens.store.newproduct.newProductStoreNavigation
+import com.avenir.rangoapp.ui.screens.store.provider.newprovider.newProviderNavigation
+import com.avenir.rangoapp.ui.screens.store.provider.providerStoreNavigation
+import com.avenir.rangoapp.ui.screens.store.rapport.rapportStoreNavigation
+import com.avenir.rangoapp.ui.screens.store.storeNavigation
 
 
 /**
@@ -23,69 +49,75 @@ import com.avenir.rangoapp.ui.loading.LoadingScreen
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-   // startDestination: String = DestinationRoute.AUTH_ROUTE,
-    mainViewModel: MainViewModel= hiltViewModel()
+
+    viewModel: MainViewModel= hiltViewModel()
 ) {
-    val authState by mainViewModel.uiState.collectAsState()
-   // val context = LocalContext.current
+    val state by viewModel.state.collectAsState()
 
 
-
-    val initialRoute = if(authState.loading) {
-        "loading"
-   } else if (authState.error!=null){
-        DestinationRoute.AUTH_ROUTE
-    } else if (authState.success){
+    val startDestination = if (state.isLoggedIn) {
         DestinationRoute.MAIN_NAV_ROUTE
-    } else  {
-        DestinationRoute.AUTH_ROUTE
+    } else if (state.isLoading) {
+        DestinationRoute.LOADING_SCREEN_ROUTE
+    } else {
+        DestinationRoute.WELCOME_ROUTE
     }
-    NavHost(
-        navController = navController,
-        startDestination = initialRoute,
-        modifier = modifier
-    ) {
-        //mainViewModel.onTriggerEvent(MainEvent.OnReloadUser(context))
+    NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
+
+
+        navigation(startDestination = DestinationRoute.HOME_ROUTE,
+            route = DestinationRoute.MAIN_NAV_ROUTE){
+            //home
+            homeNavigation(navController)
+            caisseNavigation(navController)
+            storeNavigation(navController)
+            factureNavigation(navController)
+            settingsNavigation(navController)
+
+            //caisse
+            accountCaisseNavigation(navController)
+            enterCaisseNavigation(navController)
+            sortieCaisseNavigation(navController)
+            transferNavigation(navController)
+            transactionNavigation(navController)
+
+            //store
+            rapportStoreNavigation()
+            providerStoreNavigation(navController)
+            newProviderNavigation(navController)
+            newProductStoreNavigation(navController)
+
+            //facture
+            newFactureNavigation(navController)
+            clientNavigation(navController)
+            newClientNavigation(navController)
+
+            //settings
+            userSettingNavigation(navController)
+            newUserNavigation(navController)
+            shopSettingsNavigation(navController)
+            currencySettingsNavigation(navController)
+            paymentSettingsNavigation(navController)
+            cloudStorageNavigation(navController)
+            helpNavigation()
+
+
+
+
+        }
         navigation(
-            startDestination = DestinationRoute.HOME_SCREEN_ROUTE,
-            route = DestinationRoute.MAIN_NAV_ROUTE
-        ) {
-            homeNavGraph(navController)
-            cameraMediaNavGraph(navController)
-            creatorProfileNavGraph(navController)
-            watchCompetitionNavGraph(navController)
-            marketNavGraph(navController)
-            joinCompetitionNavGraph(navController)
-            uploadNavGraph(navController)
-            voteCompetitionNavGraph(navController)
-            videoNavGraph(navController)
-            publicationNavGraph(navController)
-            myProfileNavGraph(navController)
-            firstProfileNavGraph(navController)
-            commentListingNavGraph(navController)
-            rechargeNavGraph(navController)
-            notificationNavGraph(navController)
-            videoDetailNavGraph(navController)
-            myVideosNavGraph(navController)
-            myBusinessNavGraph(navController)
-            monetisationNavGraph(navController)
+            DestinationRoute.WELCOME_ROUTE, DestinationRoute.AUTH_ROUTE
+        ){
+            welcomeNavigation(navController)
+            loginNavigation(navController)
+            loadingScreenNavigation()
 
-        }
-        navigation(DestinationRoute.AUTHENTICATION_ROUTE, DestinationRoute.AUTH_ROUTE) {
-            //welcome,phone,code,Profile
-            authNavGraph(navController)
-            phoneNavGraph(navController)
-            optNavGraph(navController)
-            profileSettingNavGraph(navController)
-        }
-
-        navigation(startDestination = DestinationRoute.LOADING_SCREEN, "loading") {
-            composable(route = DestinationRoute.LOADING_SCREEN) {
-                LoadingScreen(message = "loading")
-            }
         }
 
     }
+
+
+
 }
 
 //pwd-aws=Waka@23$00_min
