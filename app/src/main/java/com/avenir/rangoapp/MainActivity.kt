@@ -110,11 +110,7 @@ class MainActivity : ComponentActivity() {
                             onSaveClicked = {}
                         )
                     }
-                    composable(DestinationRoute.PROVIDER_ROUTE) {
-                        ProviderScreen(
-                            onNewProviderClicked = {}
-                        )
-                    }
+
 
 
 
