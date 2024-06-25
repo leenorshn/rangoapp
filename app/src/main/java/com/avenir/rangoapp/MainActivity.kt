@@ -160,11 +160,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.CAISSE_TRANSFER_ROUTE) {
-                        TransferCaisseScreen(
-                            onSaveClicked = {}
-                        )
-                    }
+
 
 
 
