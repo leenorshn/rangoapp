@@ -105,11 +105,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.NEW_PRODUCT_ROUTE) {
-                        NewProductScreen(
-                            onSaveClicked = {}
-                        )
-                    }
+
 
 
 
