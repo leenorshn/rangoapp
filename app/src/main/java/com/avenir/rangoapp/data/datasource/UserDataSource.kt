@@ -2,10 +2,13 @@ package com.avenir.rangoapp.data.datasource
 
 
 
+import com.avenir.rangoapp.core.BaseResponse
 import io.appwrite.ID
 import io.appwrite.models.Session
 import io.appwrite.models.User
 import io.appwrite.services.Account
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserDataSource @Inject constructor(
@@ -14,36 +17,55 @@ class UserDataSource @Inject constructor(
     suspend fun onLogin(
         email: String,
         password: String,
-    ): Session {
-        return account.createEmailPasswordSession(
-            email,
-            password,
-        )
+    ): Flow<BaseResponse<Session>> {
+        return flow {
+            emit(BaseResponse.Loading)
+           try {
+               val session= account.createEmailPasswordSession(
+                   email,
+                   password,
+               )
+               emit(BaseResponse.Success(session))
+           }catch(ex:Exception){
+               emit(BaseResponse.Error(ex.message.toString()))
+           }
+        }
     }
 
     suspend fun onRegister(
         email: String,
         password: String,
-    ): User<Map<String, Any>> {
+    ): Flow<BaseResponse<User<Map<String, Any>>>> {
 
-        return account.create(
-            userId = ID.unique(),
-            email,
-            password,
-        )
+        return flow {
+            emit(BaseResponse.Loading)
+          try {
+              val acc= account.create(
+                  userId = ID.unique(),
+                  email,
+                  password,
+              )
+              emit(BaseResponse.Success(acc))
+          }catch (ex:Exception){
+              emit(BaseResponse.Error(ex.message.toString()))
+          }
+        }
     }
 
     suspend fun onLogout() {
         account.deleteSession("current")
     }
 
-    suspend fun isUserLoggedIn(): Boolean {
+    suspend fun isUserLoggedIn(): Flow<BaseResponse<Boolean>> {
         // Remplacez ceci par votre logique de vérification de session
-        return try {
-            account.getSession("current")
-            true
-        } catch (e: Exception) {
-            false
+        return flow {
+            emit(BaseResponse.Loading)
+            try {
+                account.getSession("current")
+                emit(BaseResponse.Success(true))
+            } catch (e: Exception) {
+                emit(BaseResponse.Success(false))
+            }
         }
     }
 }
