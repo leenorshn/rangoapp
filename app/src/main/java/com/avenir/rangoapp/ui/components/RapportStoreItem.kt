@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.avenir.RangoApp.R
+import com.avenir.rangoapp.R
 import com.avenir.rangoapp.data.models.RapportStoreModel
 import com.avenir.rangoapp.ui.theme.FailureColor
 import com.avenir.rangoapp.ui.theme.SuccessColor
