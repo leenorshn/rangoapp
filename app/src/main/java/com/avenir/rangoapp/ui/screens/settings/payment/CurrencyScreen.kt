@@ -41,7 +41,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.avenir.RangoApp.R
+import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.Space
 import kotlinx.coroutines.launch

@@ -32,7 +32,7 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.Space
 import com.avenir.rangoapp.ui.components.HomeMenuItem
 import com.avenir.rangoapp.ui.theme.GrayColor
-import com.avenir.RangoApp.R
+import com.avenir.rangoapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

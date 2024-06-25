@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.avenir.RangoApp.R
+import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.FactureCardItem
 
