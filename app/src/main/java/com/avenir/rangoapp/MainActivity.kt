@@ -13,14 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.avenir.rangoapp.core.DestinationRoute
-import com.avenir.rangoapp.ui.screens.home.HomeScreen
-import com.avenir.rangoapp.ui.screens.home.HomeState
-import com.avenir.rangoapp.ui.screens.settings.about.HelpScreen
-import com.avenir.rangoapp.ui.screens.settings.payment.CurrencyScreen
-import com.avenir.rangoapp.ui.screens.settings.payment.PaymentScreen
-import com.avenir.rangoapp.ui.screens.settings.shop.ShopSettingsScreen
-import com.avenir.rangoapp.ui.screens.settings.users.UsersScreen
-import com.avenir.rangoapp.ui.screens.settings.users.newuser.NewUserScreen
+import com.avenir.rangoapp.ui.loading.LoadingScreen
 import com.avenir.rangoapp.ui.theme.RangoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -60,28 +53,7 @@ class MainActivity : ComponentActivity() {
                         LoadingScreen()
                     }
 
-                    composable(DestinationRoute.MAIN_NAV_ROUTE) {
-                        HomeScreen(
-                            state = HomeState(user = null),
-                            onFactureClicked = {
-                                navController.navigate(DestinationRoute.FACTURATION_ROUTE) {
 
-                                }
-                            },
-                            onProfileClicked = {
-                                navController.navigate(DestinationRoute.PROFILE_ROUTE)
-                            },
-                            onSettingClicked = {
-                                navController.navigate(DestinationRoute.SETTING_ROUTE)
-                            },
-                            onStoreClicked = {
-                                navController.navigate(DestinationRoute.STORE_ROUTE)
-                            },
-                            onCaisseClicked = {
-                                navController.navigate(DestinationRoute.CAISSE_ROUTE)
-                            },
-                        )
-                    }
 
 
 
