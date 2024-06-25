@@ -1,14 +1,14 @@
 package com.avenir.rangoapp.ui.screens.auth.login
 
-import io.appwrite.models.User
+import io.appwrite.models.Session
 
 
 data class LoginState(
     var phone:String="",
     var password:String="",
     val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val user: User<Map<String, Any>>? = null
+    val error: String? = null,
+    val user: Session? = null
 )
 
 sealed class LoginEvent {

@@ -13,6 +13,8 @@ import androidx.navigation.compose.rememberNavController
 import com.avenir.rangoapp.core.DestinationRoute
 import com.avenir.rangoapp.ui.screens.auth.login.LoginScreen
 import com.avenir.rangoapp.ui.screens.auth.login.LoginViewModel
+import com.avenir.rangoapp.ui.screens.auth.profile.ProfileScreen
+import com.avenir.rangoapp.ui.screens.auth.profile.ProfileViewModel
 import com.avenir.rangoapp.ui.screens.caisse.CaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.account.AccountCaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.enter.EnterScreen
@@ -78,7 +80,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onProfileClicked = {
-                                navController.navigate(DestinationRoute.SETTING_ROUTE)
+                                navController.navigate(DestinationRoute.PROFILE_ROUTE)
                             },
                             onSettingClicked = {
                                 navController.navigate(DestinationRoute.SETTING_ROUTE)
@@ -89,6 +91,12 @@ class MainActivity : ComponentActivity() {
                             onCaisseClicked = {
                                 navController.navigate(DestinationRoute.CAISSE_ROUTE)
                             },
+                        )
+                    }
+                    composable(DestinationRoute.PROFILE_ROUTE){
+                        val profileViewModel: ProfileViewModel = hiltViewModel()
+                        ProfileScreen(
+                            onEvent = profileViewModel::onTriggerEvent,
                         )
                     }
                     composable(DestinationRoute.FACTURATION_ROUTE){

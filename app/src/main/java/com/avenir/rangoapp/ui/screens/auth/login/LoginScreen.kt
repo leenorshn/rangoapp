@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -105,6 +107,9 @@ fun LoginScreen(
             LargeSpace()
             LargeSpace()
             LargeSpace()
+            if (state.isLoading){
+                CircularProgressIndicator(color = Color.Yellow, modifier = Modifier.size(32.dp))
+            }
             ElevatedButton(
                 onClick = {
                     onEvent(LoginEvent.OnLogin)
@@ -119,6 +124,10 @@ fun LoginScreen(
                 )
             ) {
                 Text(text = "Connexion")
+            }
+            if (state.error != null) {
+                LargeSpace()
+                Text(text = state.error)
             }
             Spacer(modifier = Modifier.height(32.dp))
             TextButton(

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.domaine.AuthRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -36,8 +37,18 @@ class LoginViewModel @Inject constructor(
     private fun loginUser(){
          viewModelScope.launch {
              repository.login(state.phone,state.password).collect{it->
-                 when(it){
+                 state = when(it){
+                     is BaseResponse.Error -> {
+                         state.copy(error = it.error, isLoading = false, user = null)
+                     }
 
+                     BaseResponse.Loading -> {
+                         state.copy(isLoading = true, error = null, user = null)
+                     }
+
+                     is BaseResponse.Success -> {
+                         state.copy(user = it.data, isLoading = false, error = null)
+                     }
                  }
              }
          }
