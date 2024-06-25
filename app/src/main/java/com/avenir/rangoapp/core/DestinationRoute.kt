@@ -37,7 +37,7 @@ object DestinationRoute {
 
     //    const val PROFILE_SCREEN_AVATAR="PROFILE_SCREEN_AVATAR"
 //    const val FOLLOWER_ROUTE="follower_route"
-    const val LOADING_SCREEN = "loading_screen"
+    const val LOADING_SCREEN_ROUTE = "LOADING_SCREEN_ROUTE"
     const val MAIN_NAV_ROUTE = "main_route"
     const val AUTH_ROUTE = "auth_route"
     const val CREATOR_PROFILE_ROUTE = "creator_profile_route"

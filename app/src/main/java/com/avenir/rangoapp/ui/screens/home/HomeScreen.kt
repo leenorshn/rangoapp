@@ -28,11 +28,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.Space
 import com.avenir.rangoapp.ui.components.HomeMenuItem
 import com.avenir.rangoapp.ui.theme.GrayColor
-import com.avenir.rangoapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -129,7 +129,7 @@ fun WelcomeBox(modifier: Modifier = Modifier, name: String) {
     Column {
         16.dp.Space()
         Row {
-            Text("Welcome , ", fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
+            Text("Bienvenu , ", fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
             Text(
                 text = "  $name !",
                 color = Color.Cyan,

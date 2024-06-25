@@ -1,13 +1,12 @@
 package com.avenir.rangoapp
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +23,9 @@ class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    var state by mutableStateOf(MainState())
-        private set
+    val _state = MutableStateFlow(MainState())
+    val state = _state.asStateFlow()
+
 
     init {
         checkUserState()
@@ -35,16 +35,16 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.isUserLoggedIn()
                 .collect { it ->
-                    state = when (it) {
+                      when (it) {
                         is BaseResponse.Error -> {
-                            state.copy(isLoggedIn = false, error = it.error, isLoading = false)
+                            _state.value =  _state.value.copy(isLoggedIn = false, error = it.error, isLoading = false)
                         }
 
                         BaseResponse.Loading -> {
-                            state.copy(isLoading = true, isLoggedIn = true, error = null)
+                            _state.value=   _state.value.copy(isLoading = true, isLoggedIn = false, error = null)
                         }
                         is BaseResponse.Success -> {
-                            state.copy(isLoggedIn = true, error = null, isLoading = false)
+                            _state.value=  _state.value.copy(isLoggedIn = true, error = null, isLoading = false)
                         }
                     }
                 }
@@ -52,3 +52,5 @@ class MainViewModel @Inject constructor(
     }
 
 }
+
+

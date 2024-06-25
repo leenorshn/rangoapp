@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,19 +52,29 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RangoAppTheme {
-               // Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                val navController= rememberNavController()
+                // Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val navController = rememberNavController()
 
-                val viewModel:MainViewModel = hiltViewModel()
-              val state =  viewModel.state
+                val viewModel: MainViewModel = hiltViewModel()
+                val state by viewModel.state.collectAsState()
 
-                val startDestination = if (state.isLoggedIn) DestinationRoute.MAIN_NAV_ROUTE else DestinationRoute.LOGIN_ROUTE
+
+
+
+
+                val startDestination = if (state.isLoggedIn) {
+                    DestinationRoute.MAIN_NAV_ROUTE
+                } else if (state.isLoading) {
+                    DestinationRoute.LOADING_SCREEN_ROUTE
+                } else {
+                    DestinationRoute.LOGIN_ROUTE
+                }
 
 
                 NavHost(navController = navController, startDestination = startDestination) {
 
                     composable(DestinationRoute.LOGIN_ROUTE) {
-                        val viewModel:LoginViewModel = hiltViewModel()
+                        val viewModel: LoginViewModel = hiltViewModel()
                         LoginScreen(
                             state = viewModel.state,
                             onEvent = viewModel::onEvent,
@@ -71,11 +83,15 @@ class MainActivity : ComponentActivity() {
                             })
                     }
 
-                    composable(DestinationRoute.MAIN_NAV_ROUTE){
+                    composable(DestinationRoute.LOADING_SCREEN_ROUTE) {
+                        LoadingScreen()
+                    }
+
+                    composable(DestinationRoute.MAIN_NAV_ROUTE) {
                         HomeScreen(
                             state = HomeState(user = null),
                             onFactureClicked = {
-                                navController.navigate(DestinationRoute.FACTURATION_ROUTE){
+                                navController.navigate(DestinationRoute.FACTURATION_ROUTE) {
 
                                 }
                             },
@@ -93,13 +109,13 @@ class MainActivity : ComponentActivity() {
                             },
                         )
                     }
-                    composable(DestinationRoute.PROFILE_ROUTE){
+                    composable(DestinationRoute.PROFILE_ROUTE) {
                         val profileViewModel: ProfileViewModel = hiltViewModel()
                         ProfileScreen(
                             onEvent = profileViewModel::onTriggerEvent,
                         )
                     }
-                    composable(DestinationRoute.FACTURATION_ROUTE){
+                    composable(DestinationRoute.FACTURATION_ROUTE) {
                         FacturationScreen(
                             onClientClicked = {
                                 navController.navigate(DestinationRoute.CLIENT_ROUTE)
@@ -109,22 +125,22 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    composable(DestinationRoute.CLIENT_ROUTE){
+                    composable(DestinationRoute.CLIENT_ROUTE) {
                         ClientScreen(onNewClient = {
                             navController.navigate(DestinationRoute.NEW_CLIENT_ROUTE)
                         })
                     }
 
-                    composable(DestinationRoute.NEW_CLIENT_ROUTE){
+                    composable(DestinationRoute.NEW_CLIENT_ROUTE) {
                         NewClientScreen(onSaveClicked = {})
                     }
 
-                    composable(DestinationRoute.NEW_FACTURE_ROUTE){
+                    composable(DestinationRoute.NEW_FACTURE_ROUTE) {
                         NewFactureScreen(
 
                         )
                     }
-                    composable(DestinationRoute.STORE_ROUTE){
+                    composable(DestinationRoute.STORE_ROUTE) {
                         StoreScreen(
                             onAddNewProductClicked = {
                                 navController.navigate(DestinationRoute.NEW_PRODUCT_ROUTE)
@@ -134,23 +150,23 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    composable(DestinationRoute.RAPPORT_STORE_ROUTE){
+                    composable(DestinationRoute.RAPPORT_STORE_ROUTE) {
                         RapportStoreScreen(
                             onProviderClicked = {}
                         )
                     }
-                    composable(DestinationRoute.NEW_PRODUCT_ROUTE){
+                    composable(DestinationRoute.NEW_PRODUCT_ROUTE) {
                         NewProductScreen(
                             onSaveClicked = {}
                         )
                     }
-                    composable(DestinationRoute.PROVIDER_ROUTE){
+                    composable(DestinationRoute.PROVIDER_ROUTE) {
                         ProviderScreen(
                             onNewProviderClicked = {}
                         )
                     }
 
-                    composable(DestinationRoute.CAISSE_ROUTE){
+                    composable(DestinationRoute.CAISSE_ROUTE) {
                         CaisseScreen(
                             onEnterClicked = {
                                 navController.navigate(DestinationRoute.CAISSE_ENTER_ROUTE)
@@ -170,37 +186,37 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(DestinationRoute.CAISSE_ENTER_ROUTE){
+                    composable(DestinationRoute.CAISSE_ENTER_ROUTE) {
                         EnterScreen(
                             onSaveClicked = {}
                         )
                     }
 
-                    composable(DestinationRoute.CAISSE_SORTIE_ROUTE){
+                    composable(DestinationRoute.CAISSE_SORTIE_ROUTE) {
                         SortieCaisseScreen(
                             onSaveClicked = {}
                         )
                     }
 
-                    composable(DestinationRoute.CAISSE_TRANSFER_ROUTE){
-                        TransferCaisseScreen (
+                    composable(DestinationRoute.CAISSE_TRANSFER_ROUTE) {
+                        TransferCaisseScreen(
                             onSaveClicked = {}
                         )
                     }
-                    composable(DestinationRoute.CAISSE_SEE_ALL_ROUTE){
+                    composable(DestinationRoute.CAISSE_SEE_ALL_ROUTE) {
                         TransactionScreen()
                     }
-                    composable(DestinationRoute.CAISSE_ACCOUNT_ROUTE){
+                    composable(DestinationRoute.CAISSE_ACCOUNT_ROUTE) {
                         AccountCaisseScreen()
                     }
 
-                    composable(DestinationRoute.SETTING_ROUTE){
+                    composable(DestinationRoute.SETTING_ROUTE) {
                         SettingScreen(
                             onShopClicked = {
                                 navController.navigate(DestinationRoute.SETTING_SHOP_ROUTE)
                             },
                             onUsersClicked = {
-                                 navController.navigate(DestinationRoute.SETTING_USER_MANAGER_ROUTE)
+                                navController.navigate(DestinationRoute.SETTING_USER_MANAGER_ROUTE)
                             },
                             onCurrencyClicked = {
                                 navController.navigate(DestinationRoute.SETTING_CURRENCY_ROUTE)
@@ -213,34 +229,34 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    composable(DestinationRoute.SETTING_PAYMENT_ROUTE){
+                    composable(DestinationRoute.SETTING_PAYMENT_ROUTE) {
                         PaymentScreen()
                     }
-                    composable(DestinationRoute.SETTING_CURRENCY_ROUTE){
+                    composable(DestinationRoute.SETTING_CURRENCY_ROUTE) {
                         CurrencyScreen()
                     }
-                    composable(DestinationRoute.SETTING_HELP_ROUTE){
+                    composable(DestinationRoute.SETTING_HELP_ROUTE) {
                         HelpScreen()
                     }
-                    composable(DestinationRoute.SETTING_SHOP_ROUTE){
+                    composable(DestinationRoute.SETTING_SHOP_ROUTE) {
                         ShopSettingsScreen()
                     }
 
-                    composable(DestinationRoute.SETTING_USER_MANAGER_ROUTE){
+                    composable(DestinationRoute.SETTING_USER_MANAGER_ROUTE) {
                         UsersScreen(
                             onNewUserClicked = {
                                 navController.navigate(DestinationRoute.SETTING_USER_NEW_USER_ROUTE)
                             }
                         )
                     }
-                    composable(DestinationRoute.SETTING_USER_NEW_USER_ROUTE){
-                        NewUserScreen (
+                    composable(DestinationRoute.SETTING_USER_NEW_USER_ROUTE) {
+                        NewUserScreen(
                             onSaveClicked = {}
                         )
                     }
                 }
 
-               // }
+                // }
             }
         }
     }

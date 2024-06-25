@@ -21,14 +21,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.avenir.rangoapp.R
+import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.data.models.UserModel
 
 @Composable
 fun UserProfileItem(userModel: UserModel) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Column (
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-        ){
+        ) {
+
+            LargeSpace()
             Box(
                 modifier = Modifier
                     .height(80.dp)

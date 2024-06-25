@@ -2,6 +2,7 @@ package com.avenir.rangoapp.data.datasource
 
 
 
+import android.util.Log
 import com.avenir.rangoapp.core.BaseResponse
 import io.appwrite.ID
 import io.appwrite.models.Session
@@ -61,10 +62,12 @@ class UserDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                account.getSession("current")
+               var session= account.getSession("current")
+                Log.d("UserDataSource", "isUserLoggedIn: ${session.toString()}")
                 emit(BaseResponse.Success(true))
             } catch (e: Exception) {
-                emit(BaseResponse.Success(false))
+                Log.e("UserDataSource", "isUserLoggedIn: ${e.message}")
+                emit(BaseResponse.Error("Error ${e.message}"))
             }
         }
     }
