@@ -21,8 +21,6 @@ import com.avenir.rangoapp.ui.screens.caisse.enter.EnterScreen
 import com.avenir.rangoapp.ui.screens.caisse.sortie.SortieCaisseScreen
 import com.avenir.rangoapp.ui.screens.caisse.transaction.TransactionScreen
 import com.avenir.rangoapp.ui.screens.caisse.transfer.TransferCaisseScreen
-import com.avenir.rangoapp.ui.screens.facture.client.newClient.NewClientScreen
-import com.avenir.rangoapp.ui.screens.facture.facturation.FacturationScreen
 import com.avenir.rangoapp.ui.screens.facture.facturation.newfacture.NewFactureScreen
 import com.avenir.rangoapp.ui.screens.home.HomeScreen
 import com.avenir.rangoapp.ui.screens.home.HomeState
@@ -107,25 +105,12 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(DestinationRoute.FACTURATION_ROUTE) {
-                        FacturationScreen(
-                            onClientClicked = {
-                                navController.navigate(DestinationRoute.CLIENT_ROUTE)
-                            },
-                            onNewFactureClicked = {
-                                navController.navigate(DestinationRoute.NEW_FACTURE_ROUTE)
-                            }
-                        )
-                    }
 
 
 
 
-                    composable(DestinationRoute.NEW_FACTURE_ROUTE) {
-                        NewFactureScreen(
 
-                        )
-                    }
+
                     composable(DestinationRoute.STORE_ROUTE) {
                         StoreScreen(
                             onAddNewProductClicked = {
