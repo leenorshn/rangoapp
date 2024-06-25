@@ -104,9 +104,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    composable(DestinationRoute.SETTING_PAYMENT_ROUTE) {
-                        PaymentScreen()
-                    }
+
 
                     composable(DestinationRoute.SETTING_HELP_ROUTE) {
                         HelpScreen()
