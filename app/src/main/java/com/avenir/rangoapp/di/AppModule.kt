@@ -37,7 +37,6 @@ object AppModule {
     @Singleton
     fun provideAccount(client: Client) :Account {
       val  account= Account(client)
-
         return  account
     }
 
