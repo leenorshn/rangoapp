@@ -78,16 +78,16 @@ dependencies{
     implementation(libs.coil.compose)
 
     // Room
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
+//    ksp(libs.androidx.room.compiler)
+//    implementation(libs.androidx.room.runtime)
+//    implementation(libs.androidx.room.ktx)
+//    implementation(libs.androidx.room.paging)
 
     //Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
     //Cloudy for blurring effect
-    implementation(libs.cloudy)
+    //implementation(libs.cloudy)
 
     //Paging
     implementation(libs.androidx.paging.runtime.ktx)
@@ -99,15 +99,18 @@ dependencies{
     implementation(libs.sdk.appwrite.android)
 
     // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.converter.scalars)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation(libs.okhttp)
+//    implementation(libs.retrofit)
+//    implementation(libs.converter.gson)
+//    implementation(libs.converter.scalars)
+//    implementation(libs.retrofit2.kotlinx.serialization.converter)
+//    implementation(libs.okhttp)
 
     //Dagger-Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.datetime)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
