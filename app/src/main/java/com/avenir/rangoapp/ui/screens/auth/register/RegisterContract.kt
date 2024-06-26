@@ -12,6 +12,10 @@ data class RegisterState(
     val idNat:String="",
     val idCommerce:String="",
     val password:String="",
+
+    val  isLoading:Boolean=false,
+    val  error:String?=null,
+    val  isSuccess:Boolean=false
 )
 
 sealed class RegisterEvent{

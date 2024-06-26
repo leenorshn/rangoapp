@@ -19,3 +19,5 @@ fun Document<Map<String, Any>>.toUserModel(): UserModel {
         isBlocked = this.data["isBlocked"] as Boolean
     )
 }
+
+

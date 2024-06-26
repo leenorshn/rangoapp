@@ -3,21 +3,21 @@ package com.avenir.rangoapp.data.datasource
 import android.util.Log
 import com.avenir.rangoapp.data.models.CompanyModel
 import com.avenir.rangoapp.data.models.toCompanyModel
-import io.appwrite.Client
 import io.appwrite.ID
 import io.appwrite.exceptions.AppwriteException
+import io.appwrite.models.Document
 import io.appwrite.services.Databases
 import javax.inject.Inject
 
 class CompanyDataSource @Inject constructor(
-    private val client: Client
+    private val database: Databases
 ) {
 
     suspend fun getCompany():List<CompanyModel>{
-        val databases = Databases(client)
+
 
         try {
-            val documents = databases.listDocuments(
+            val documents = database.listDocuments(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "6679421c0013ffb9cad4",
                 queries = listOf(
@@ -44,15 +44,17 @@ class CompanyDataSource @Inject constructor(
         idCommerce:String,
         logo:String,
         email:String,
-    ){
-        val databases = Databases(client)
+    ):Document<Map<String,Any>>{
+
 
         try {
-            val document = databases.createDocument(
+            val docId=ID.unique()
+            val document = database.createDocument(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "6679421c0013ffb9cad4",
-                documentId = ID.unique(),
+                documentId = docId,
                 data = mapOf(
+                    "id" to docId,
                     "name" to name,
                     "address" to address,
                     "phone" to phone,
@@ -66,8 +68,12 @@ class CompanyDataSource @Inject constructor(
                 ),
             )
             print(document)
+            Log.d("Appwrite", "Document created ${document.id}")
+
+            return document
         } catch (e: Exception) {
             Log.e("Appwrite", "Error: " + e.message)
+            throw e
         }
     }
 }

@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.appwrite.Client
 import io.appwrite.services.Account
+import io.appwrite.services.Databases
 import javax.inject.Singleton
 
 @Module
@@ -37,13 +38,21 @@ object AppModule {
     @Singleton
     fun provideAccount(client: Client) :Account {
       val  account= Account(client)
+
         return  account
     }
 
     @Provides
     @Singleton
-    fun provideUserDataSource(account: Account): AuthDataSource {
-        return AuthDataSource(account)
+    fun provideDatabase(client: Client):Databases{
+        val database=Databases(client)
+        return database
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserDataSource(account: Account,database: Databases): AuthDataSource {
+        return AuthDataSource(account,database)
     }
 
     @Provides

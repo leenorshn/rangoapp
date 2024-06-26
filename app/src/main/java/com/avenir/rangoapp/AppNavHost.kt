@@ -174,9 +174,7 @@ fun AppNavHost(
             composable(DestinationRoute.REGISTER_STEP_FINAL_ROUTE) {
                 StepFinalScreen(
                     state = registerState,
-                onSubmit = {
-                    navController.navigate(DestinationRoute.HOME_ROUTE)
-                },
+
                     onEvent = registerViewModel::onTriggerEvent,
                 onPrevious = {
                     navController.popBackStack()

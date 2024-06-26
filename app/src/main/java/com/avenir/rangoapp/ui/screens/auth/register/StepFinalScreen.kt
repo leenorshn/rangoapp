@@ -33,7 +33,6 @@ import com.avenir.rangoapp.ui.components.TextInputWidget
 fun StepFinalScreen(
     state: RegisterState,
     onEvent: (RegisterEvent) -> Unit,
-    onSubmit: () -> Unit,
     onPrevious: () -> Unit,
 ) {
     Scaffold {
@@ -95,7 +94,7 @@ fun StepFinalScreen(
                     }
                     Spacer(modifier = Modifier.width(40.dp))
                     PrimaryButton(label = "Terminer") {
-                        onSubmit()
+                        onEvent(RegisterEvent.SubmitFinal)
                     }
                 }
             }
