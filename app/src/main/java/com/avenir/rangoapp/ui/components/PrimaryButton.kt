@@ -19,7 +19,7 @@ fun PrimaryButton(
 ) {
     ElevatedButton(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.fillMaxWidth().height(56.dp),
+        modifier = Modifier.fillMaxWidth().height(64.dp),
         colors = ButtonDefaults.elevatedButtonColors(
             containerColor = Color.Yellow,
             contentColor = Color.Black

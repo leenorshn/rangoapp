@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -71,18 +72,27 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                         value = clientName, onValueChange = {
                         clientName = it
                     }, label = "Product name",
-                        leadingIcon = painterResource(id = R.drawable.crayon_24),
-                        )
-                    SmallSpace()
-                    TextInputWidget( modifier = Modifier.fillMaxWidth(),
-                        value = clientName, onValueChange = {
-                        clientName = it
-                    }, label = "Product Mark",
-                        leadingIcon = painterResource(id = R.drawable.crayon_24),
+                        leadingIcon = {
+                            Icon(painter = painterResource(id = R.drawable.crayon_24), contentDescription = "")
+                        },
                         )
                     SmallSpace()
                     TextInputWidget(
-                        leadingIcon = painterResource(id = R.drawable.crayon_24),
+                        modifier = Modifier.fillMaxWidth(),
+                        value = clientName,
+                        onValueChange = {
+                            clientName = it
+                        },
+                        label = "Product Mark",
+                        leadingIcon = {
+                            Icon(painter = painterResource(id = R.drawable.crayon_24), contentDescription = "")
+                        },
+                    )
+                    SmallSpace()
+                    TextInputWidget(
+                        leadingIcon = {
+                            Icon(painter = painterResource(id = R.drawable.crayon_24), contentDescription = "")
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         value = clientName, onValueChange = {
                         clientName = it
@@ -96,7 +106,9 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                             clientName = it
                         }, label = "Prix d'achat",
                             type = "number",
-                            leadingIcon = painterResource(id = R.drawable.usd_cercle_24)
+                            leadingIcon = {
+                                Icon(painter = painterResource(id = R.drawable.usd_cercle_24), contentDescription = "")
+                            },
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         TextInputWidget(
@@ -105,7 +117,9 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                             clientName = it
                         }, label = "Prix de vente",
                             type = "number",
-                            leadingIcon = painterResource(id = R.drawable.usd_cercle_24))
+                            leadingIcon = {
+                                Icon(painter = painterResource(id = R.drawable.usd_cercle_24), contentDescription = "")
+                            })
                     }
                     SmallSpace()
 
@@ -115,7 +129,9 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                         value = clientName, onValueChange = {
                         clientName = it
                     }, label = "Charge",type = "number",
-                        leadingIcon = painterResource(id = R.drawable.usd_cercle_24))
+                        leadingIcon = {
+                            Icon(painter = painterResource(id = R.drawable.usd_cercle_24), contentDescription = "")
+                        })
                     Spacer(modifier = Modifier.weight(1f))
                     ElevatedButton(
                         onClick = onSaveClicked,

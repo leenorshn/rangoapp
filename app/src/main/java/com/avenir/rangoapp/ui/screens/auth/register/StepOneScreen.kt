@@ -1,14 +1,27 @@
 package com.avenir.rangoapp.ui.screens.auth.register
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.avenir.rangoapp.R
+import com.avenir.rangoapp.core.LargeSpace
+import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
 
@@ -23,12 +36,16 @@ fun StepOneScreen(
 
     Scaffold {
         LazyColumn(
-            modifier= Modifier.padding(it)
-        ){
+            modifier = Modifier
+                .padding(it)
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+        ) {
             item {
                 Text(text = "Register 1")
             }
             item {
+                LargeSpace()
                 TextInputWidget(
                     value = state.name,
                     onValueChange = {
@@ -36,9 +53,10 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Votre phone"
-                    
+                    label = "Nom d'entreprise"
+
                 )
+                SmallSpace()
                 TextInputWidget(
                     value = state.type,
                     onValueChange = {
@@ -49,7 +67,7 @@ fun StepOneScreen(
                     label = "Type d'entreprise"
 
                 )
-
+                SmallSpace()
                 TextInputWidget(
                     value = state.city,
                     onValueChange = {
@@ -57,9 +75,10 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Type d'entreprise"
+                    label = "Ville "
 
                 )
+                SmallSpace()
                 TextInputWidget(
                     value = state.address,
                     onValueChange = {
@@ -67,18 +86,37 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Adresse/numero"
+                    label = "Adresse /numero"
 
                 )
-                
+
             }
             item {
+                Column {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.height(140.dp))
                 Row {
-                    ElevatedButton(onClick = onPrevious) {
-                        Text(text = "Precedent")
+                    ElevatedButton(
+                        modifier = Modifier.height(64.dp),
+                        shape = RoundedCornerShape(16),
+                        colors = ButtonDefaults.elevatedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        onClick = { onPrevious() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.fleche_gauche_24),
+                            contentDescription = ""
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Prec.")
                     }
+                    Spacer(modifier = Modifier.width(40.dp))
                     PrimaryButton(label = "Suivant") {
-                        
+                        onNext()
                     }
                 }
             }
