@@ -16,6 +16,10 @@ import com.avenir.rangoapp.ui.loading.loadingScreenNavigation
 import com.avenir.rangoapp.ui.screens.auth.login.loginNavigation
 import com.avenir.rangoapp.ui.screens.auth.profile.profileNavGraph
 import com.avenir.rangoapp.ui.screens.auth.register.RegisterScreen
+import com.avenir.rangoapp.ui.screens.auth.register.StepFinalScreen
+import com.avenir.rangoapp.ui.screens.auth.register.StepOneScreen
+import com.avenir.rangoapp.ui.screens.auth.register.StepThreeScreen
+import com.avenir.rangoapp.ui.screens.auth.register.StepTwoScreen
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
 import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
 import com.avenir.rangoapp.ui.screens.caisse.caisseNavigation
@@ -68,8 +72,10 @@ fun AppNavHost(
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
 
 
-        navigation(startDestination = DestinationRoute.HOME_ROUTE,
-            route = DestinationRoute.MAIN_NAV_ROUTE){
+        navigation(
+            startDestination = DestinationRoute.HOME_ROUTE,
+            route = DestinationRoute.MAIN_NAV_ROUTE
+        ) {
             //home
             homeNavigation(navController)
             caisseNavigation(navController)
@@ -108,13 +114,11 @@ fun AppNavHost(
             profileNavGraph(navController)
 
 
-
-
         }
         navigation(
-             startDestination=DestinationRoute.WELCOME_ROUTE,
-            route=DestinationRoute.AUTH_ROUTE,
-        ){
+            startDestination = DestinationRoute.WELCOME_ROUTE,
+            route = DestinationRoute.AUTH_ROUTE,
+        ) {
             welcomeNavigation(navController)
             loginNavigation(navController)
 
@@ -126,15 +130,26 @@ fun AppNavHost(
                     })
 
             }
-            composable(DestinationRoute.REGISTER_STEP_ONE_ROUTE) {  }
+            composable(DestinationRoute.REGISTER_STEP_ONE_ROUTE) {
+                StepOneScreen()
+            }
+
+            composable(DestinationRoute.REGISTER_STEP_TWO_ROUTE) {
+                StepTwoScreen()
+            }
+            composable(DestinationRoute.REGISTER_STEP_THREE_ROUTE) {
+                StepThreeScreen()
+            }
+            composable(DestinationRoute.REGISTER_STEP_FINAL_ROUTE) {
+                StepFinalScreen()
+            }
+
+
+            loadingScreenNavigation()
+
         }
 
-
-        loadingScreenNavigation()
-
     }
-
-
 
 }
 
