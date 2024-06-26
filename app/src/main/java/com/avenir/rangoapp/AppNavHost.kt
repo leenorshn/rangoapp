@@ -16,6 +16,7 @@ import com.avenir.rangoapp.ui.loading.loadingScreenNavigation
 import com.avenir.rangoapp.ui.screens.auth.login.loginNavigation
 import com.avenir.rangoapp.ui.screens.auth.profile.profileNavGraph
 import com.avenir.rangoapp.ui.screens.auth.register.RegisterScreen
+import com.avenir.rangoapp.ui.screens.auth.register.RegisterViewModel
 import com.avenir.rangoapp.ui.screens.auth.register.StepFinalScreen
 import com.avenir.rangoapp.ui.screens.auth.register.StepOneScreen
 import com.avenir.rangoapp.ui.screens.auth.register.StepThreeScreen
@@ -56,12 +57,11 @@ import com.avenir.rangoapp.ui.screens.store.storeNavigation
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-
+    registerViewModel: RegisterViewModel= hiltViewModel(),
     viewModel: MainViewModel= hiltViewModel()
 ) {
+    val registerState by registerViewModel.state
     val state by viewModel.state.collectAsState()
-
-
     val startDestination = if (state.isLoggedIn) {
         DestinationRoute.MAIN_NAV_ROUTE
     } else if (state.isLoading) {
@@ -70,7 +70,7 @@ fun AppNavHost(
         DestinationRoute.AUTH_ROUTE
     }
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
-
+        loadingScreenNavigation()
 
         navigation(
             startDestination = DestinationRoute.HOME_ROUTE,
@@ -122,30 +122,66 @@ fun AppNavHost(
             welcomeNavigation(navController)
             loginNavigation(navController)
 
+
             composable(DestinationRoute.REGISTER_ROUTE) {
                 RegisterScreen(
-                    onSubmit = {},
+                    state= registerState,
+                    onNext = {
+                        navController.navigate(DestinationRoute.REGISTER_STEP_ONE_ROUTE)
+                    },
                     onLogin = {
                         navController.navigate(DestinationRoute.LOGIN_ROUTE)
                     })
 
             }
             composable(DestinationRoute.REGISTER_STEP_ONE_ROUTE) {
-                StepOneScreen()
+                StepOneScreen(
+                    state = registerState,
+                    onNext = {
+                        navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
+                    },
+                    onPrevious = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
             composable(DestinationRoute.REGISTER_STEP_TWO_ROUTE) {
-                StepTwoScreen()
+                StepTwoScreen(
+                    state = registerState,
+                    onNext = {
+                        navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
+                    },
+                    onPrevious = {
+                        navController.popBackStack()
+                    }
+                )
             }
             composable(DestinationRoute.REGISTER_STEP_THREE_ROUTE) {
-                StepThreeScreen()
+                StepThreeScreen(
+                    state = registerState,
+                    onNext = {
+                        navController.navigate(DestinationRoute.REGISTER_STEP_FINAL_ROUTE)
+                    },
+                    onPrevious = {
+                        navController.popBackStack()
+                    }
+                )
             }
             composable(DestinationRoute.REGISTER_STEP_FINAL_ROUTE) {
-                StepFinalScreen()
+                StepFinalScreen(
+                    state = registerState,
+                onSubmit = {
+                    navController.navigate(DestinationRoute.HOME_ROUTE)
+                },
+                onPrevious = {
+                    navController.popBackStack()
+                }
+                )
             }
 
 
-            loadingScreenNavigation()
+
 
         }
 

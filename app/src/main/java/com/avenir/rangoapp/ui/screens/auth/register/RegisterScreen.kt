@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 fun RegisterScreen(
     state: RegisterState,
     onNext: () -> Unit,
-    onPrevious: () -> Unit,
     onLogin: () -> Unit,
 ) {
     Scaffold {

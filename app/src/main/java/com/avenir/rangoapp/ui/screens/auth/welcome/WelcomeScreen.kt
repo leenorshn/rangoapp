@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -76,26 +75,24 @@ fun WelcomeScreen(
             Text(text = text)
             SmallSpace()
             Text(
-                text = "Gerer, controler, organiser votre business grace a Rango, commencer par creer un compte",
+                text = "Gerer, controler, organiser votre business grace a Rango, commencer par créer un compte",
                 color = Color.Gray, fontSize = 18.sp, fontWeight = FontWeight.W300,
                 textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(80.dp))
 
             OutlinedCard(
-
                 onClick = onRegisterClicked) {
-                ListItem(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
-                    leadingContent = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ajouter_24),
-                            contentDescription = ""
-                        )
-                    },
-                    headlineContent = {
-                    Text(text = "Creer compte")
-                })
+                Row (modifier = Modifier.fillMaxWidth().padding(vertical = 28.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,){
+                    Icon(
+                        painter = painterResource(id = R.drawable.ajouter_24),
+                        contentDescription = ""
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = "Créer un compte", fontWeight = FontWeight.SemiBold,)
+                }
             }
             LargeSpace()
             OutlinedCard(
