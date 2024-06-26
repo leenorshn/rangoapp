@@ -12,7 +12,7 @@ data class UserModel(
 
 fun Document<Map<String, Any>>.toUserModel(): UserModel {
     return UserModel(
-        uid = this.id,
+        uid = this.data["uid"] as String,
         name = this.data["name"] as String,
         phone = this.data["phone"] as String,
         role = this.data["role"] as String,

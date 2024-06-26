@@ -27,7 +27,7 @@ class UserDataSource @Inject constructor(
                 collectionId = "6679421c0013ffb9cad4",
                 documentId = ID.unique(),
                 data = mapOf(
-
+                    "uid" to ID.unique(),
                     "name" to name,
                     "email" to email,
                     "role" to role,
