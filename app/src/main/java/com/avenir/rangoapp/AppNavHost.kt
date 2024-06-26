@@ -140,6 +140,7 @@ fun AppNavHost(
                     onNext = {
                         navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
                     },
+                    onEvent = registerViewModel::onTriggerEvent,
                     onPrevious = {
                         navController.popBackStack()
                     }

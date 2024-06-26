@@ -17,9 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
@@ -30,7 +33,9 @@ import com.avenir.rangoapp.ui.components.TextInputWidget
 @Composable
 fun NewProductScreen(onSaveClicked: () -> Unit) {
 
-    var clientName = TextFieldValue(text = "")
+    var clientName by remember {
+        mutableStateOf("")
+    }
     Scaffold(
         topBar = {
             TopAppBar(title = {
