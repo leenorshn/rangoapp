@@ -9,11 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.avenir.rangoapp.core.DestinationRoute
 import com.avenir.rangoapp.ui.loading.loadingScreenNavigation
 import com.avenir.rangoapp.ui.screens.auth.login.loginNavigation
 import com.avenir.rangoapp.ui.screens.auth.profile.profileNavGraph
+import com.avenir.rangoapp.ui.screens.auth.register.RegisterScreen
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
 import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
 import com.avenir.rangoapp.ui.screens.caisse.caisseNavigation
@@ -116,8 +118,17 @@ fun AppNavHost(
             welcomeNavigation(navController)
             loginNavigation(navController)
 
+            composable(DestinationRoute.REGISTER_ROUTE) {
+                RegisterScreen(
+                    onSubmit = {},
+                    onLogin = {
+                        navController.navigate(DestinationRoute.LOGIN_ROUTE)
+                    })
 
+            }
+            composable(DestinationRoute.REGISTER_STEP_ONE_ROUTE) {  }
         }
+
 
         loadingScreenNavigation()
 
