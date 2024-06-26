@@ -44,6 +44,10 @@ class RegisterViewModel @Inject constructor(): BaseViewModel<RegisterState,Regis
             is RegisterEvent.TypeChanged -> {
                 state.value=state.value.copy(type = event.type)
             }
+
+            is RegisterEvent.PasswordChanged -> {
+                state.value=state.value.copy(password = event.password)
+            }
         }
     }
 

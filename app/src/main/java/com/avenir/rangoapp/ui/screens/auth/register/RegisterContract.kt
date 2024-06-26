@@ -11,6 +11,7 @@ data class RegisterState(
     val rccm:String="",
     val idNat:String="",
     val idCommerce:String="",
+    val password:String="",
 )
 
 sealed class RegisterEvent{
@@ -20,6 +21,7 @@ sealed class RegisterEvent{
     data class PhoneChanged(val phone:String):RegisterEvent()
     data class EmailChanged(val email:String):RegisterEvent()
     data class CityChanged(val city:String):RegisterEvent()
+    data class PasswordChanged(val password:String):RegisterEvent()
     data class LogoChanged(val logo:String):RegisterEvent()
     data class RccmChanged(val rccm:String):RegisterEvent()
     data class IdNatChanged(val idNat:String):RegisterEvent()

@@ -153,6 +153,7 @@ fun AppNavHost(
                     onNext = {
                         navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
                     },
+                    onEvent = registerViewModel::onTriggerEvent,
                     onPrevious = {
                         navController.popBackStack()
                     }
@@ -164,6 +165,7 @@ fun AppNavHost(
                     onNext = {
                         navController.navigate(DestinationRoute.REGISTER_STEP_FINAL_ROUTE)
                     },
+                    onEvent = registerViewModel::onTriggerEvent,
                     onPrevious = {
                         navController.popBackStack()
                     }
@@ -175,6 +177,7 @@ fun AppNavHost(
                 onSubmit = {
                     navController.navigate(DestinationRoute.HOME_ROUTE)
                 },
+                    onEvent = registerViewModel::onTriggerEvent,
                 onPrevious = {
                     navController.popBackStack()
                 }
