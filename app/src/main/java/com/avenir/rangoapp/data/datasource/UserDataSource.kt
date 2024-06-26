@@ -1,74 +1,64 @@
 package com.avenir.rangoapp.data.datasource
 
-
-
-import android.util.Log
-import com.avenir.rangoapp.core.BaseResponse
+import com.avenir.rangoapp.data.models.UserModel
+import com.avenir.rangoapp.data.models.toUserModel
+import io.appwrite.Client
 import io.appwrite.ID
-import io.appwrite.models.Session
-import io.appwrite.models.User
-import io.appwrite.services.Account
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import io.appwrite.Query
+import io.appwrite.exceptions.AppwriteException
+import io.appwrite.services.Databases
 import javax.inject.Inject
 
 class UserDataSource @Inject constructor(
-    private val account: Account,
+    private val client: Client
 ) {
-    suspend fun onLogin(
+
+    suspend fun createUser(
+        name: String,
         email: String,
-        password: String,
-    ): Flow<BaseResponse<Session>> {
-        return flow {
-            emit(BaseResponse.Loading)
-           try {
-               val session= account.createEmailPasswordSession(
-                   "$email@rango.com",
-                   password,
-               )
-               emit(BaseResponse.Success(session))
-           }catch(ex:Exception){
-               emit(BaseResponse.Error(ex.message.toString()))
-           }
+        companyId: String,
+        role: String,
+    ) {
+        val databases = Databases(client)
+
+        try {
+            val document = databases.createDocument(
+                databaseId = "667940d2003bfd8657a8",
+                collectionId = "6679421c0013ffb9cad4",
+                documentId = ID.unique(),
+                data = mapOf(
+
+                    "name" to name,
+                    "email" to email,
+                    "role" to role,
+                    "isBlocked" to false,
+                    "company" to companyId
+                )
+            )
+        } catch (ex: AppwriteException) {
+            print(ex.message)
         }
     }
 
-    suspend fun onRegister(
-        email: String,
-        password: String,
-    ): Flow<BaseResponse<User<Map<String, Any>>>> {
+    suspend fun getUsers(companyId: String) :List<UserModel>{
+        try {
+            val databases = Databases(client)
 
-        return flow {
-            emit(BaseResponse.Loading)
-          try {
-              val acc= account.create(
-                  userId = ID.unique(),
-                  email,
-                  password,
-              )
-              emit(BaseResponse.Success(acc))
-          }catch (ex:Exception){
-              emit(BaseResponse.Error(ex.message.toString()))
-          }
-        }
-    }
+            val documents = databases.listDocuments(
+                databaseId = "667940d2003bfd8657a8",
+                collectionId = "6679421c0013ffb9cad4",
+                queries = listOf(
+                    Query.equal("company", companyId),
+                    Query.notEqual("isBlocked", true),
+                ),
+            )
 
-    suspend fun onLogout() {
-        account.deleteSession("current")
-    }
-
-    suspend fun isUserLoggedIn(): Flow<BaseResponse<Boolean>> {
-        // Remplacez ceci par votre logique de vérification de session
-        return flow {
-            emit(BaseResponse.Loading)
-            try {
-               var session= account.getSession("current")
-                Log.d("UserDataSource", "isUserLoggedIn: ${session.toString()}")
-                emit(BaseResponse.Success(true))
-            } catch (e: Exception) {
-                Log.e("UserDataSource", "isUserLoggedIn: ${e.message}")
-                emit(BaseResponse.Error("Error ${e.message}"))
+            return documents.documents.map {
+                it.toUserModel()
             }
+        } catch (ex: AppwriteException) {
+            print(ex.message)
+            return emptyList()
         }
     }
 }

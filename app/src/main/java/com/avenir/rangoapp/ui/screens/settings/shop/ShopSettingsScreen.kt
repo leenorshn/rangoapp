@@ -60,9 +60,9 @@ fun ShopSettingsScreen(
         mutableStateOf(TextFieldValue(company.address))
     }
 
-    var shopDomain by remember {
-        mutableStateOf(TextFieldValue(company.domain))
-    }
+//    var shopDomain by "remember {
+//        mutableStateOf(TextFieldValue(company.domain))
+//    }
 
     var shopDescription by remember {
         if (isAddress) mutableStateOf(TextFieldValue(company.address)) else {
@@ -104,9 +104,9 @@ fun ShopSettingsScreen(
                 )
                 LargeSpace()
                 ToggleTextField(
-                    name = shopDomain,
+                    name = shopName,
                     label = "Shop Domaine",
-                    onChange = { shopDomain = it },
+                    onChange = { shopName = it },
                 )
                 LargeSpace()
                 CustomButton(
