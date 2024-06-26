@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun RegisterScreen(
-    onSubmit: () -> Unit,
+    state: RegisterState,
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
     onLogin: () -> Unit,
 ) {
     Scaffold {
