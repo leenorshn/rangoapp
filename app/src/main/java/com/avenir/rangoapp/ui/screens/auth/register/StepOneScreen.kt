@@ -1,6 +1,5 @@
 package com.avenir.rangoapp.ui.screens.auth.register
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -16,9 +19,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
@@ -39,10 +44,15 @@ fun StepOneScreen(
             modifier = Modifier
                 .padding(it)
                 .padding(horizontal = 24.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
-                Text(text = "Register 1")
+                Spacer(modifier = Modifier.height(24.dp))
+                Text(text = "Etape", fontSize = 12.sp)
+                Text(text = "1/4", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Identification", fontSize = 24.sp)
             }
             item {
                 LargeSpace()
@@ -53,7 +63,13 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Nom d'entreprise"
+                    label = "Nom d'entreprise",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Create,
+                            contentDescription = ""
+                        )
+                    }
 
                 )
                 SmallSpace()
@@ -64,7 +80,13 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Type d'entreprise"
+                    label = "Type d'entreprise",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Create,
+                            contentDescription = ""
+                        )
+                    }
 
                 )
                 SmallSpace()
@@ -75,7 +97,13 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Ville "
+                    label = "Ville ",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Home,
+                            contentDescription = ""
+                        )
+                    }
 
                 )
                 SmallSpace()
@@ -86,18 +114,20 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Adresse /numero"
+                    label = "Adresse /numero",
+                    leadingIcon = {
+                        Icon(
+                           Icons.Outlined.LocationOn,
+                            contentDescription = ""
+                        )
+                    }
 
                 )
 
             }
+
             item {
-                Column {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-            item {
-                Spacer(modifier = Modifier.height(140.dp))
+                Spacer(modifier = Modifier.height(100.dp))
                 Row {
                     ElevatedButton(
                         modifier = Modifier.height(64.dp),
