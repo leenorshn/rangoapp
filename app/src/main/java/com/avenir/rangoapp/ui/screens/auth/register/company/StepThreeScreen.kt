@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.auth.register
+package com.avenir.rangoapp.ui.screens.auth.register.company
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -27,12 +28,13 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
-
+import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterEvent
+import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterState
 
 @Composable
-fun StepTwoScreen(
+fun StepThreeScreen(
     state: RegisterState,
-    onEvent: (RegisterEvent) -> Unit,
+    onEvent:(RegisterEvent)->Unit,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
 ) {
@@ -47,20 +49,37 @@ fun StepTwoScreen(
             item {
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(text = "Etape", fontSize = 12.sp)
-                Text(text = "2/4", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "3/4", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Id Etatique", fontSize = 24.sp)
+                Text(text = "Contacts", fontSize = 24.sp)
             }
             item {
                 LargeSpace()
                 TextInputWidget(
-                    value = state.rccm,
+                    value = state.phone,
                     onValueChange = {
-                        onEvent(RegisterEvent.RccmChanged(it))
+                        onEvent(RegisterEvent.PhoneChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Rccm d'entreprise",
+                    label = "Phone d'entreprise",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Phone,
+                            contentDescription = ""
+                        )
+                    }
+
+                )
+                SmallSpace()
+                TextInputWidget(
+                    value = state.email,
+                    onValueChange = {
+                        onEvent(RegisterEvent.EmailChanged(it))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "Email ",
                     leadingIcon = {
                         Icon(
                             Icons.Outlined.Create,
@@ -70,39 +89,7 @@ fun StepTwoScreen(
 
                 )
                 SmallSpace()
-                TextInputWidget(
-                    value = state.idNat,
-                    onValueChange = {
-                        onEvent(RegisterEvent.IdNatChanged(it))
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "ID-Nat. d'entreprise",
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Create,
-                            contentDescription = ""
-                        )
-                    }
 
-                )
-                SmallSpace()
-                TextInputWidget(
-                    value = state.idCommerce,
-                    onValueChange = {
-                        onEvent(RegisterEvent.IdCommerceChanged(it))
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "Id-Commerce ",
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Create,
-                            contentDescription = ""
-                        )
-                    }
-
-                )
                 SmallSpace()
 
 

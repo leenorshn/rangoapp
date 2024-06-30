@@ -23,6 +23,7 @@ import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
+import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterState
 import com.avenir.rangoapp.ui.theme.GrayColor
 
 @Composable

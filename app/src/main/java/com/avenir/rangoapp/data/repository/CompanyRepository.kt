@@ -2,6 +2,7 @@ package com.avenir.rangoapp.data.repository
 
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.models.CompanyModel
+import io.appwrite.models.Document
 import kotlinx.coroutines.flow.Flow
 
 
@@ -17,7 +18,7 @@ interface CompanyRepository{
         idCommerce:String?,
         logo:String?,
         email:String?,
-    ): Flow<BaseResponse<Boolean>>
-    suspend fun getCompany(): Flow<BaseResponse<CompanyModel>>
+    ): Flow<BaseResponse<Document<Map<String, Any>>>>
+    suspend fun getCompany(documentId: String): Flow<BaseResponse<CompanyModel>>
 
 }

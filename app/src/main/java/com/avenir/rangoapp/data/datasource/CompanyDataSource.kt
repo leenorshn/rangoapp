@@ -13,23 +13,17 @@ class CompanyDataSource @Inject constructor(
     private val database: Databases
 ) {
 
-    suspend fun getCompany():List<CompanyModel>{
-
-
+    suspend fun getCompany(docId:String):CompanyModel{
         try {
-            val documents = database.listDocuments(
+            val document = database.getDocument(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "6679421c0013ffb9cad4",
-                queries = listOf(
-                   // Query.equal("title", "Hamlet")
-                )
+                documentId = docId
             )
-            return documents.documents.map {
-                it.toCompanyModel()
-            }
+            return document.toCompanyModel()
         } catch (e: AppwriteException) {
             Log.e("Appwrite", "Error: " + e.message)
-            return emptyList()
+            throw e
         }
     }
 
