@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,8 +29,6 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
-import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterEvent
-import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterState
 
 @Composable
 fun StepThreeScreen(
@@ -48,24 +47,26 @@ fun StepThreeScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "Etape", fontSize = 12.sp)
-                Text(text = "3/4", style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Contacts", fontSize = 24.sp)
+                Icon(
+                    painter = painterResource(id = R.drawable.logo), contentDescription = "",
+                    modifier = Modifier.size(72.dp),
+                    tint = Color.Yellow,
+                )
+                Text(text = "Avez-vous des documents etatique ?", fontSize = 24.sp)
             }
             item {
                 LargeSpace()
                 TextInputWidget(
-                    value = state.phone,
+                    value = state.rccm,
                     onValueChange = {
-                        onEvent(CompanyEvent.PhoneChanged(it))
+                        onEvent(CompanyEvent.RccmChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Phone d'entreprise",
+                    label = "Rccm d'entreprise",
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Phone,
+                            Icons.Outlined.Create,
                             contentDescription = ""
                         )
                     }
@@ -73,13 +74,30 @@ fun StepThreeScreen(
                 )
                 SmallSpace()
                 TextInputWidget(
-                    value = state.email,
+                    value = state.idNat,
                     onValueChange = {
-                        onEvent(CompanyEvent.EmailChanged(it))
+                        onEvent(CompanyEvent.IdNatChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Email ",
+                    label = "Id-Nat ",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Create,
+                            contentDescription = ""
+                        )
+                    }
+
+                )
+                SmallSpace()
+                TextInputWidget(
+                    value = state.idCommerce,
+                    onValueChange = {
+                        onEvent(CompanyEvent.IdCommerceChanged(it))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "Numero de commerce ",
                     leadingIcon = {
                         Icon(
                             Icons.Outlined.Create,
