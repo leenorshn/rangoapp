@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -28,16 +26,13 @@ import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
-import com.avenir.rangoapp.ui.components.TextInputWidget
-import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterEvent
-import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterState
 import com.avenir.rangoapp.ui.theme.FailureColor
 
 
 @Composable
 fun StepFinalScreen(
-    state: RegisterState,
-    onEvent: (RegisterEvent) -> Unit,
+    state: ViewState,
+    onEvent: (CompanyEvent) -> Unit,
     onPrevious: () -> Unit,
 ) {
     Scaffold {
@@ -57,22 +52,6 @@ fun StepFinalScreen(
             }
             item {
                 LargeSpace()
-                TextInputWidget(
-                    value = state.password,
-                    onValueChange = {
-                        onEvent(RegisterEvent.PasswordChanged(it))
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "Pin de securité",
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Create,
-                            contentDescription = ""
-                        )
-                    }
-
-                )
                 SmallSpace()
 
                 Text(text = "")
@@ -100,7 +79,7 @@ fun StepFinalScreen(
                         }
                         Spacer(modifier = Modifier.width(40.dp))
                         PrimaryButton(label = "Terminer") {
-                            onEvent(RegisterEvent.SubmitFinal)
+                            onEvent(CompanyEvent.OnSubmit)
                         }
                     }
                 }else{

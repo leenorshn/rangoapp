@@ -33,8 +33,8 @@ import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterState
 
 @Composable
 fun StepThreeScreen(
-    state: RegisterState,
-    onEvent:(RegisterEvent)->Unit,
+    state: ViewState,
+    onEvent: (CompanyEvent) -> Unit,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
 ) {
@@ -58,7 +58,7 @@ fun StepThreeScreen(
                 TextInputWidget(
                     value = state.phone,
                     onValueChange = {
-                        onEvent(RegisterEvent.PhoneChanged(it))
+                        onEvent(CompanyEvent.PhoneChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -75,7 +75,7 @@ fun StepThreeScreen(
                 TextInputWidget(
                     value = state.email,
                     onValueChange = {
-                        onEvent(RegisterEvent.EmailChanged(it))
+                        onEvent(CompanyEvent.EmailChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),

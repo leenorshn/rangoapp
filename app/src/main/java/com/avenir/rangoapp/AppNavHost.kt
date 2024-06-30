@@ -17,8 +17,9 @@ import com.avenir.rangoapp.ui.screens.auth.login.loginNavigation
 import com.avenir.rangoapp.ui.screens.auth.profile.profileNavGraph
 import com.avenir.rangoapp.ui.screens.auth.register.RegisterScreen
 import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterViewModel
-import com.avenir.rangoapp.ui.screens.auth.register.company.StepFinalScreen
 import com.avenir.rangoapp.ui.screens.auth.register.account.StepOneScreen
+import com.avenir.rangoapp.ui.screens.auth.register.company.CompanyViewModel
+import com.avenir.rangoapp.ui.screens.auth.register.company.StepFinalScreen
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepThreeScreen
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepTwoScreen
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
@@ -58,10 +59,14 @@ fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     registerViewModel: RegisterViewModel = hiltViewModel(),
+    companyViewModel: CompanyViewModel = hiltViewModel(),
     viewModel: MainViewModel= hiltViewModel()
 ) {
     val registerState by registerViewModel.state
     val state by viewModel.state.collectAsState()
+
+    val companyState by companyViewModel.state
+
     val startDestination = if (state.isLoggedIn) {
         DestinationRoute.MAIN_NAV_ROUTE
     } else if (state.isLoading) {
@@ -137,23 +142,17 @@ fun AppNavHost(
             composable(DestinationRoute.REGISTER_STEP_ONE_ROUTE) {
                 StepOneScreen(
                     state = registerState,
-                    onNext = {
-                        navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
-                    },
                     onEvent = registerViewModel::onTriggerEvent,
-                    onPrevious = {
-                        navController.popBackStack()
-                    }
                 )
             }
 
             composable(DestinationRoute.REGISTER_STEP_TWO_ROUTE) {
                 StepTwoScreen(
-                    state = registerState,
+                    state = companyState,
                     onNext = {
                         navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
                     },
-                    onEvent = registerViewModel::onTriggerEvent,
+                    onEvent = companyViewModel::onTriggerEvent,
                     onPrevious = {
                         navController.popBackStack()
                     }
@@ -161,11 +160,11 @@ fun AppNavHost(
             }
             composable(DestinationRoute.REGISTER_STEP_THREE_ROUTE) {
                 StepThreeScreen(
-                    state = registerState,
+                    state = companyState,
                     onNext = {
                         navController.navigate(DestinationRoute.REGISTER_STEP_FINAL_ROUTE)
                     },
-                    onEvent = registerViewModel::onTriggerEvent,
+                    onEvent = companyViewModel::onTriggerEvent,
                     onPrevious = {
                         navController.popBackStack()
                     }
@@ -173,9 +172,9 @@ fun AppNavHost(
             }
             composable(DestinationRoute.REGISTER_STEP_FINAL_ROUTE) {
                 StepFinalScreen(
-                    state = registerState,
+                    state = companyState,
 
-                    onEvent = registerViewModel::onTriggerEvent,
+                    onEvent = companyViewModel::onTriggerEvent,
                 onPrevious = {
                     navController.popBackStack()
                 }

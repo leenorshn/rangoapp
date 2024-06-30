@@ -27,14 +27,12 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
-import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterEvent
-import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterState
 
 
 @Composable
 fun StepTwoScreen(
-    state: RegisterState,
-    onEvent: (RegisterEvent) -> Unit,
+    state: ViewState,
+    onEvent: (CompanyEvent) -> Unit,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
 ) {
@@ -58,7 +56,7 @@ fun StepTwoScreen(
                 TextInputWidget(
                     value = state.rccm,
                     onValueChange = {
-                        onEvent(RegisterEvent.RccmChanged(it))
+                        onEvent(CompanyEvent.RccmChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -75,7 +73,7 @@ fun StepTwoScreen(
                 TextInputWidget(
                     value = state.idNat,
                     onValueChange = {
-                        onEvent(RegisterEvent.IdNatChanged(it))
+                        onEvent(CompanyEvent.IdNatChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -92,7 +90,7 @@ fun StepTwoScreen(
                 TextInputWidget(
                     value = state.idCommerce,
                     onValueChange = {
-                        onEvent(RegisterEvent.IdCommerceChanged(it))
+                        onEvent(CompanyEvent.IdCommerceChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
