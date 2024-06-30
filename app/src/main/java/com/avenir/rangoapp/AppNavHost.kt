@@ -22,6 +22,7 @@ import com.avenir.rangoapp.ui.screens.auth.register.company.CompanyViewModel
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepFinalScreen
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepThreeScreen
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepTwoScreen
+import com.avenir.rangoapp.ui.screens.auth.register.type.typeNavigation
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
 import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
 import com.avenir.rangoapp.ui.screens.caisse.caisseNavigation
@@ -127,12 +128,12 @@ fun AppNavHost(
             welcomeNavigation(navController)
             loginNavigation(navController)
 
-
+            typeNavigation(navController)
             composable(DestinationRoute.REGISTER_ROUTE) {
                 RegisterScreen(
                     state= registerState,
                     onNext = {// REGISTER_STEP_ONE_ROUTE
-                        navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
+                        navController.navigate(DestinationRoute.REGISTER_STEP_ONE_ROUTE)
                     },
                     onLogin = {
                         navController.navigate(DestinationRoute.LOGIN_ROUTE)
@@ -144,7 +145,7 @@ fun AppNavHost(
                     state = registerState,
                     onEvent = registerViewModel::onTriggerEvent,
                     navigateToCompanyCreation = {
-                        navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
+                        navController.navigate(DestinationRoute.TYPE_ROUTE)
                     }
                 )
             }
@@ -178,7 +179,10 @@ fun AppNavHost(
                     onEvent = companyViewModel::onTriggerEvent,
                 onPrevious = {
                     navController.popBackStack()
-                }
+                },
+                    navigateToHome = {
+                        navController.navigate(DestinationRoute.HOME_ROUTE)
+                    }
                 )
             }
 

@@ -8,7 +8,6 @@ import com.avenir.rangoapp.core.DestinationRoute
 fun NavGraphBuilder.welcomeNavigation(navController: NavController) {
     composable(DestinationRoute.WELCOME_ROUTE) {
         WelcomeScreen(
-            onGuestClicked = {},
             onLoginClicked = {
                 navController.navigate(DestinationRoute.LOGIN_ROUTE)
             },

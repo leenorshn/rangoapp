@@ -6,6 +6,7 @@ package com.avenir.rangoapp.core
  */
 object DestinationRoute {
 
+    const val TYPE_ROUTE= "TYPE_ROUTE"
     const val REGISTER_STEP_ONE_ROUTE="REGISTER_STEP_ONE_ROUTE"
     const val REGISTER_STEP_TWO_ROUTE="REGISTER_STEP_TWO_ROUTE"
     const val REGISTER_STEP_THREE_ROUTE="REGISTER_STEP_THREE_ROUTE"

@@ -35,7 +35,7 @@ import com.avenir.rangoapp.core.SmallSpace
 fun WelcomeScreen(
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
-    onGuestClicked: () -> Unit,
+
 ) {
     Scaffold {
         Column(
