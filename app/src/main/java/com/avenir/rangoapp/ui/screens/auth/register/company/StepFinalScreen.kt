@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -26,6 +28,7 @@ import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
+import com.avenir.rangoapp.ui.components.TextInputWidget
 import com.avenir.rangoapp.ui.theme.FailureColor
 
 
@@ -45,22 +48,58 @@ fun StepFinalScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "Etape", fontSize = 12.sp)
-                Text(text = "4/4", style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Securité", fontSize = 24.sp)
+
+                Text(text = "Contacts", fontSize = 24.sp)
             }
             item {
                 LargeSpace()
-                SmallSpace()
+                TextInputWidget(
+                    value = state.phone,
+                    onValueChange = {
+                        onEvent(CompanyEvent.RccmChanged(it))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "Phone de l'entreprise",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Create,
+                            contentDescription = ""
+                        )
+                    }
 
-                Text(text = "")
+                )
+
+                LargeSpace()
+                TextInputWidget(
+                    value = state.email,
+                    onValueChange = {
+                        onEvent(CompanyEvent.RccmChanged(it))
+                    },
+                    supportingText = {
+                        Text(
+                            text = "Exemple: mclean@gmail.com",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "Email de l'entreprise",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Create,
+                            contentDescription = ""
+                        )
+                    }
+
+                )
 
             }
 
             item {
                 Spacer(modifier = Modifier.height(100.dp))
-                if (!state.isLoading && state.error==null){
+                if (!state.isLoading){
                     Row {
                         ElevatedButton(
                             modifier = Modifier.height(64.dp),
@@ -78,7 +117,7 @@ fun StepFinalScreen(
                             Text(text = "Prec.")
                         }
                         Spacer(modifier = Modifier.width(40.dp))
-                        PrimaryButton(label = "Terminer") {
+                        PrimaryButton(label = "Terminer", color = Color.Cyan) {
                             onEvent(CompanyEvent.OnSubmit)
                         }
                     }

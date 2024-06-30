@@ -15,13 +15,15 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PrimaryButton(
     label:String,
-    onClick: () -> Unit
+    color: Color=Color.Yellow,
+    onClick: () -> Unit,
+
 ) {
     ElevatedButton(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.fillMaxWidth().height(64.dp),
         colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = Color.Yellow,
+            containerColor = color,
             contentColor = Color.Black
         ),
         onClick = onClick) {
