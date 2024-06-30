@@ -17,7 +17,6 @@ class AuthDataSource @Inject constructor(
     private val database: Databases,
 ) {
     private val userDatabase = UserDataSource(database)
-    private val companyDatabase = CompanyDataSource(database)
     suspend fun onLogin(
         email: String,
         password: String,
@@ -37,50 +36,28 @@ class AuthDataSource @Inject constructor(
     }
 
     suspend fun onRegister(
-        email: String,
+        username: String,
         password: String,
-        name: String,
-        phone: String,
-        role: String,
-        rccm: String,
-        idNat: String,
-        idCommerce: String,
-        logo: String,
-        address: String,
-        description: String,
-        type: String,
     ): Flow<BaseResponse<User<Map<String, Any>>>> {
 
 
         return flow {
             emit(BaseResponse.Loading)
             try {
-                // create company
-             val company=   companyDatabase.createCompany(
-                    name,
-                    address,
-                    phone,
-                    description,
-                    type,
-                    rccm,
-                    idNat,
-                    idCommerce,
-                    logo,
-                    email,
-                );
+
                 //create user
                 val acc = account.create(
                     userId = ID.unique(),
-                    email,
-                    password,
+                    email="$username@rango.com",
+                    password=password,
                 )
                 // create user in db
                 userDatabase.createUser(
                     uid = acc.id,
-                    name=name,
-                    phone=phone,
-                    role=role,
-                    companyId =company.id,
+                    name=username,
+                    phone="",
+                    role="Admin",
+                    companyId ="",
                 )
                 emit(BaseResponse.Success(acc))
             } catch (ex: Exception) {
@@ -97,7 +74,7 @@ class AuthDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                var session = account.getSession("current")
+                val session = account.getSession("current")
                 Log.d("UserDataSource", "isUserLoggedIn: ${session.userId}")
                 emit(BaseResponse.Success(true))
             } catch (e: Exception) {

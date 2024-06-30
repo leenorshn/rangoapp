@@ -15,15 +15,6 @@ class AuthRepositoryImpl @Inject constructor(
         return authDataSource.onLogin(phone, password)
     }
 
-    override suspend fun createUser(
-        name: String,
-        phone: String,
-        password: String
-    ): Flow<BaseResponse<User<Map<String, Any>>>> {
-        TODO("Not yet implemented")
-    }
-
-
     override suspend fun isUserLoggedIn(): Flow<BaseResponse<Boolean>> {
         return authDataSource.isUserLoggedIn()
 
@@ -33,34 +24,13 @@ class AuthRepositoryImpl @Inject constructor(
         return authDataSource.onLogout()
     }
 
-    override suspend fun createAccount(
-        email: String,
+    override suspend fun createUser(
+        username: String,
         password: String,
-        name: String,
-        phone: String,
-        role: String,
-        rccm: String,
-        idNat: String,
-        idCommerce: String,
-        logo: String,
-        address: String,
-        description: String,
-        type: String,
-        city: String
     ): Flow<BaseResponse<User<Map<String, Any>>>> {
         return authDataSource.onRegister(
-            email,
+            username,
             password,
-            name,
-            phone,
-            role,
-            rccm,
-            idNat,
-            idCommerce,
-            logo,
-            address,
-            description,
-            type
         )
     }
 

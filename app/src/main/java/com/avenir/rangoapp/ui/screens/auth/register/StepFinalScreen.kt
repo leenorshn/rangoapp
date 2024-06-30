@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +29,7 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
+import com.avenir.rangoapp.ui.theme.FailureColor
 
 
 @Composable
@@ -76,26 +79,34 @@ fun StepFinalScreen(
 
             item {
                 Spacer(modifier = Modifier.height(100.dp))
-                Row {
-                    ElevatedButton(
-                        modifier = Modifier.height(64.dp),
-                        shape = RoundedCornerShape(16),
-                        colors = ButtonDefaults.elevatedButtonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.primary,
-                        ),
-                        onClick = { onPrevious() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.fleche_gauche_24),
-                            contentDescription = ""
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Prec.")
+                if (!state.isLoading && state.error==null){
+                    Row {
+                        ElevatedButton(
+                            modifier = Modifier.height(64.dp),
+                            shape = RoundedCornerShape(16),
+                            colors = ButtonDefaults.elevatedButtonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary,
+                                contentColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            onClick = { onPrevious() }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.fleche_gauche_24),
+                                contentDescription = ""
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "Prec.")
+                        }
+                        Spacer(modifier = Modifier.width(40.dp))
+                        PrimaryButton(label = "Terminer") {
+                            onEvent(RegisterEvent.SubmitFinal)
+                        }
                     }
-                    Spacer(modifier = Modifier.width(40.dp))
-                    PrimaryButton(label = "Terminer") {
-                        onEvent(RegisterEvent.SubmitFinal)
-                    }
+                }else{
+                    CircularProgressIndicator(color = Color.Yellow)
+                }
+                SmallSpace()
+                if (state.error!=null){
+                    Text(text = state.error,color= FailureColor)
                 }
             }
         }
