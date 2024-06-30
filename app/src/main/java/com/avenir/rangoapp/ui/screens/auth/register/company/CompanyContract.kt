@@ -29,5 +29,6 @@ sealed class CompanyEvent{
     data class IdNatChanged(val idNat:String): CompanyEvent()
     data class IdCommerceChanged(val idCommerce:String): CompanyEvent()
     data class EmailChanged(val email:String):CompanyEvent()
+    data class TypeChanged(val type:String): CompanyEvent()
     data object OnSubmit: CompanyEvent()
 }

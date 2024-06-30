@@ -11,7 +11,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.avenir.rangoapp.ui.theme.GrayColor
 
@@ -20,17 +21,27 @@ fun TextInputWidget(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    type: String = "text",
     label: String,
-    leadingIcon:  @Composable() (() -> Unit)? = null
+    placeholder: @Composable() (() -> Unit)? = null,
+    leadingIcon:  @Composable() (() -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    trailingIcon: @Composable() (() -> Unit)? = null,
+    supportingText: @Composable() (() -> Unit)? = null,
 ) {
-    val keyboardType = if (type == "number") KeyboardType.Number else KeyboardType.Text
     Column {
-        Text(text = label.split(" ").first())
+        Text(text = label)
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
+            visualTransformation = visualTransformation,
+            trailingIcon = trailingIcon,
+            placeholder = placeholder,
+            keyboardOptions = keyboardOptions,
+            //supportingText=supportingText,
+            shape = TextFieldDefaults.shape,
             colors = TextFieldDefaults.colors(
                 focusedLabelColor = GrayColor,
+                focusedIndicatorColor = Color.White,
             ),
             modifier = modifier
 
@@ -38,16 +49,16 @@ fun TextInputWidget(
                 .clip(
                     RoundedCornerShape(16)
                 ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-            ),
+
             value = value,
+            maxLines = 1,
+            singleLine = true,
             onValueChange = onValueChange,
-            label = {
-                Text(label)
-            },
             leadingIcon = leadingIcon,
 
             )
+        if (supportingText != null) {
+            supportingText()
+        }
     }
 }

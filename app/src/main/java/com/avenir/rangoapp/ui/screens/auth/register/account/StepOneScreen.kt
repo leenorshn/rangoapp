@@ -1,23 +1,32 @@
 package com.avenir.rangoapp.ui.screens.auth.register.account
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
@@ -28,9 +37,14 @@ import com.avenir.rangoapp.ui.components.TextInputWidget
 fun StepOneScreen(
     state: RegisterState,
     onEvent: (RegisterEvent) -> Unit,
-
-
+    navigateToCompanyCreation: () -> Unit,
 ) {
+
+    LaunchedEffect(key1 = state.isSuccess) {
+       if (state.isSuccess) {
+           navigateToCompanyCreation()
+       }
+    }
 
     Scaffold {
         LazyColumn(
@@ -42,10 +56,12 @@ fun StepOneScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "Etape", fontSize = 12.sp)
-                Text(text = "1/4", style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Identification", fontSize = 24.sp)
+                Icon(
+                    painter = painterResource(id = R.drawable.logo), contentDescription = "",
+                    modifier = Modifier.size(72.dp),
+                    tint = Color.Yellow,
+                )
+                Text(text = "Création de compte", fontSize = 32.sp, fontWeight = FontWeight.W300)
             }
             item {
                 LargeSpace()
@@ -56,12 +72,27 @@ fun StepOneScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "username",
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone,
+                    ),
+                    placeholder = {
+                        Text(text = "Exemple: +243 978 154 000")
+                    },
+                    label = "Numèro de téléphone",
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Create,
+                            Icons.Outlined.Phone,
                             contentDescription = ""
                         )
+                    },
+                    trailingIcon = {
+                        if (state.username.length in 10..13) Icon(
+                            painter = painterResource(id = R.drawable.verified_icon),
+                            contentDescription = "",
+                            tint = Color.Green)
+                    },
+                    supportingText = {
+                        Text("Exemple: +243 978 154 000", fontSize = 12.sp,color=Color.Gray)
                     }
 
                 )
@@ -73,29 +104,86 @@ fun StepOneScreen(
                     onValueChange = {
                         onEvent(RegisterEvent.PasswordChanged(it))
                     },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.NumberPassword
+                    ),
+                    visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Ville ",
+                    label = "Mot de passe ",
+                    placeholder = {
+                        Text(text = "Mot de passe")
+                    },
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Home,
+                            Icons.Outlined.Lock,
                             contentDescription = ""
                         )
+                    },
+                    trailingIcon = {
+                        if (state.isTwoPasswordValid) Icon(
+                            painter = painterResource(id = R.drawable.verified_icon),
+                            contentDescription = "",
+                            tint = Color.Green)
+                    },
+                    supportingText = {
+                        Text("Minimum 8 caractères", fontSize = 12.sp,color=Color.Gray)
+                    }
+
+                )
+
+                SmallSpace()
+                TextInputWidget(
+                    value = state.confirmPassword,
+                    onValueChange = {
+                        onEvent(RegisterEvent.ConfirmPasswordChanged(it))
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.NumberPassword
+                    ),
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "Confirmer mot de passe ",
+                    placeholder = {
+                        Text(text = "Confirmer mot de passe")
+                    },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Lock,
+                            contentDescription = ""
+                        )
+                    },
+                    trailingIcon = {
+                        if (state.isTwoPasswordValid) Icon(
+                            painter = painterResource(id = R.drawable.verified_icon),
+                            contentDescription = "",
+                            tint = Color.Green)
+                    },
+                    supportingText = {
+                        Text("Minimum 8 caractères", fontSize = 12.sp,color=Color.Gray)
                     }
 
                 )
                 SmallSpace()
-
+                if(!state.isTwoPasswordValid){
+                    Text(text = state.error ?: "", color = MaterialTheme.colorScheme.error)
+                }
 
             }
 
             item {
                 Spacer(modifier = Modifier.height(100.dp))
-                Row {
+                if (state.isLoading) {
+                    CircularProgressIndicator(color = Color.Yellow)
+                    SmallSpace()
+                }else {
+
                     PrimaryButton(label = "Créer compte") {
                         onEvent(RegisterEvent.Submit)
                     }
                 }
+
             }
         }
     }

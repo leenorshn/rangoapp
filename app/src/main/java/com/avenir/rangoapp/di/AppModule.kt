@@ -2,8 +2,11 @@ package com.avenir.rangoapp.di
 
 import android.content.Context
 import com.avenir.rangoapp.data.datasource.AuthDataSource
+import com.avenir.rangoapp.data.datasource.CompanyDataSource
 import com.avenir.rangoapp.data.domaine.AuthRepositoryImpl
+import com.avenir.rangoapp.data.domaine.CompanyRepositoryImpl
 import com.avenir.rangoapp.data.repository.AuthRepository
+import com.avenir.rangoapp.data.repository.CompanyRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +62,18 @@ object AppModule {
     @Singleton
     fun provideUserRepository(authDataSource: AuthDataSource): AuthRepository {
         return AuthRepositoryImpl(authDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCompanyDataSource(database: Databases): CompanyDataSource {
+       return  CompanyDataSource(database)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCompanyRepository(companyDataSource: CompanyDataSource): CompanyRepository {
+        return CompanyRepositoryImpl(companyDataSource)
     }
 
 }

@@ -28,6 +28,11 @@ class RegisterViewModel @Inject constructor(
             is RegisterEvent.PasswordChanged -> {
                 state.value=state.value.copy(password = event.password)
             }
+
+            is RegisterEvent.ConfirmPasswordChanged -> {
+                state.value=state.value.copy(confirmPassword = event.confirmPassword)
+                checkPassword()
+            }
         }
     }
 
@@ -50,6 +55,16 @@ class RegisterViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun checkPassword() {
+        if (state.value.password != state.value.confirmPassword) {
+            state.value = state.value.copy(error = "Les mots de passe ne correspondent pas",
+                isTwoPasswordValid = false)
+        }else{
+            state.value = state.value.copy(isTwoPasswordValid = true)
+        }
+
     }
 
 }

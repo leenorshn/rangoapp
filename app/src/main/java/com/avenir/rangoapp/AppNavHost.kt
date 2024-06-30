@@ -131,8 +131,8 @@ fun AppNavHost(
             composable(DestinationRoute.REGISTER_ROUTE) {
                 RegisterScreen(
                     state= registerState,
-                    onNext = {
-                        navController.navigate(DestinationRoute.REGISTER_STEP_ONE_ROUTE)
+                    onNext = {// REGISTER_STEP_ONE_ROUTE
+                        navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
                     },
                     onLogin = {
                         navController.navigate(DestinationRoute.LOGIN_ROUTE)
@@ -143,6 +143,9 @@ fun AppNavHost(
                 StepOneScreen(
                     state = registerState,
                     onEvent = registerViewModel::onTriggerEvent,
+                    navigateToCompanyCreation = {
+                        navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
+                    }
                 )
             }
 
@@ -153,9 +156,7 @@ fun AppNavHost(
                         navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
                     },
                     onEvent = companyViewModel::onTriggerEvent,
-                    onPrevious = {
-                        navController.popBackStack()
-                    }
+
                 )
             }
             composable(DestinationRoute.REGISTER_STEP_THREE_ROUTE) {

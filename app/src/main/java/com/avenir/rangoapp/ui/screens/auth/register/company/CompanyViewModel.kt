@@ -48,6 +48,10 @@ class CompanyViewModel @Inject constructor(
             is CompanyEvent.RccmChanged -> {
                 state.value=state.value.copy(rccm = event.rccm)
             }
+
+            is CompanyEvent.TypeChanged -> {
+                state.value=state.value.copy(type = event.type)
+            }
         }
     }
 

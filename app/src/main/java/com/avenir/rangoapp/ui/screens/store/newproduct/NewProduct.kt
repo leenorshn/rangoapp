@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.LargeSpace
@@ -43,13 +45,15 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                 Text(text = "Nouveau produit")
             },
                 actions = {
-                    TextButton(onClick = { /*TODO*/ },
+                    TextButton(
+                        onClick = { /*TODO*/ },
 
                         colors = ButtonDefaults.elevatedButtonColors(
                             containerColor = MaterialTheme.colorScheme.onTertiary,
                             contentColor = MaterialTheme.colorScheme.tertiary,
-                        ),) {
-                       Text(text = "Enregistrer") 
+                        ),
+                    ) {
+                        Text(text = "Enregistrer")
                     }
                 })
         }
@@ -69,13 +73,18 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                     LargeSpace()
                     TextInputWidget(
                         modifier = Modifier.fillMaxWidth(),
-                        value = clientName, onValueChange = {
-                        clientName = it
-                    }, label = "Product name",
-                        leadingIcon = {
-                            Icon(painter = painterResource(id = R.drawable.crayon_24), contentDescription = "")
+                        value = clientName,
+                        onValueChange = {
+                            clientName = it
                         },
-                        )
+                        label = "Product name",
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.crayon_24),
+                                contentDescription = ""
+                            )
+                        },
+                    )
                     SmallSpace()
                     TextInputWidget(
                         modifier = Modifier.fillMaxWidth(),
@@ -85,40 +94,59 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                         },
                         label = "Product Mark",
                         leadingIcon = {
-                            Icon(painter = painterResource(id = R.drawable.crayon_24), contentDescription = "")
+                            Icon(
+                                painter = painterResource(id = R.drawable.crayon_24),
+                                contentDescription = ""
+                            )
                         },
                     )
                     SmallSpace()
                     TextInputWidget(
                         leadingIcon = {
-                            Icon(painter = painterResource(id = R.drawable.crayon_24), contentDescription = "")
+                            Icon(
+                                painter = painterResource(id = R.drawable.crayon_24),
+                                contentDescription = ""
+                            )
                         },
                         modifier = Modifier.fillMaxWidth(),
                         value = clientName, onValueChange = {
-                        clientName = it
+                            clientName = it
 
-                    }, label = "Categorie")
+                        }, label = "Categorie"
+                    )
                     SmallSpace()
                     Row {
                         TextInputWidget(
                             modifier = Modifier.weight(1f),
-                            value = clientName, onValueChange = {
-                            clientName = it
-                        }, label = "Prix d'achat",
-                            type = "number",
+                            value = clientName,
+                            onValueChange = {
+                                clientName = it
+                            },
+                            label = "Prix d'achat",
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            ),
                             leadingIcon = {
-                                Icon(painter = painterResource(id = R.drawable.usd_cercle_24), contentDescription = "")
+                                Icon(
+                                    painter = painterResource(id = R.drawable.usd_cercle_24),
+                                    contentDescription = ""
+                                )
                             },
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         TextInputWidget(
                             modifier = Modifier.weight(1f),
                             value = clientName, onValueChange = {
-                            clientName = it
-                        }, label = "Prix de vente",
-                            type = "number",
+                                clientName = it
+                            }, label = "Prix de vente",
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            ),
                             leadingIcon = {
-                                Icon(painter = painterResource(id = R.drawable.usd_cercle_24), contentDescription = "")
+                                Icon(
+                                    painter = painterResource(id = R.drawable.usd_cercle_24),
+                                    contentDescription = ""
+                                )
                             })
                     }
                     SmallSpace()
@@ -127,10 +155,16 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                     TextInputWidget(
                         modifier = Modifier.fillMaxWidth(),
                         value = clientName, onValueChange = {
-                        clientName = it
-                    }, label = "Charge",type = "number",
+                            clientName = it
+                        }, label = "Charge",
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
                         leadingIcon = {
-                            Icon(painter = painterResource(id = R.drawable.usd_cercle_24), contentDescription = "")
+                            Icon(
+                                painter = painterResource(id = R.drawable.usd_cercle_24),
+                                contentDescription = ""
+                            )
                         })
                     Spacer(modifier = Modifier.weight(1f))
                     ElevatedButton(
@@ -147,9 +181,8 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                     }
                 }
             }
-            
-                
-            
+
+
         }
     }
 }
