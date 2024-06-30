@@ -13,6 +13,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +26,7 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
+import com.avenir.rangoapp.ui.theme.FailureColor
 
 
 @Composable
@@ -32,6 +35,10 @@ fun StepTwoScreen(
     onEvent: (CompanyEvent) -> Unit,
     onNext: () -> Unit,
 ) {
+    
+    var error= remember {
+        mutableStateOf("")
+    }
     Scaffold {
         LazyColumn(
             modifier = Modifier
@@ -110,12 +117,17 @@ fun StepTwoScreen(
             }
 
             item {
+                Text(text = error.value,color= FailureColor, fontSize = 12.sp)
                 Spacer(modifier = Modifier.height(140.dp))
 
 
 
                 PrimaryButton(label = "Suivant") {
-                    onNext()
+                    if (state.name.length>2&&state.address.length>6) {
+                        onNext()
+                    }else{
+                        error.value="Veuillez remplir tous les champs"
+                    }
                 }
 
             }

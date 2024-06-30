@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -18,10 +20,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.avenir.rangoapp.R
@@ -37,7 +41,14 @@ fun StepFinalScreen(
     state: ViewState,
     onEvent: (CompanyEvent) -> Unit,
     onPrevious: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
+
+    LaunchedEffect(key1 = state.isSuccess) {
+        if (state.isSuccess) {
+            navigateToHome()
+        }
+    }
     Scaffold {
         LazyColumn(
             modifier = Modifier
@@ -56,17 +67,30 @@ fun StepFinalScreen(
                 TextInputWidget(
                     value = state.phone,
                     onValueChange = {
-                        onEvent(CompanyEvent.RccmChanged(it))
+                        onEvent(CompanyEvent.PhoneChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = "Phone de l'entreprise",
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Create,
+                            Icons.Outlined.Phone,
                             contentDescription = ""
                         )
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone
+                    ),
+                    placeholder = {
+                        Text(text = "Tapez votre phone")
+                    },
+                    supportingText = {
+                        Text(
+                            text = "Pas obligatoire",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
+                    },
 
                 )
 
@@ -74,21 +98,27 @@ fun StepFinalScreen(
                 TextInputWidget(
                     value = state.email,
                     onValueChange = {
-                        onEvent(CompanyEvent.RccmChanged(it))
+                        onEvent(CompanyEvent.EmailChanged(it))
                     },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                    ),
                     supportingText = {
                         Text(
-                            text = "Exemple: mclean@gmail.com",
+                            text = "Pas obligatoire",
                             fontSize = 12.sp,
                             color = Color.Gray
                         )
+                    },
+                    placeholder = {
+                        Text(text = "Tapez votre email")
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = "Email de l'entreprise",
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Create,
+                            Icons.Outlined.Email,
                             contentDescription = ""
                         )
                     }
