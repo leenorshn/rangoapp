@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface RapportStoreRepository {
 
     suspend fun createRapport(productId:String,
-                              productName:String,
+                              quantity:Int,
                               type:String):Flow<BaseResponse<Boolean>>
     suspend fun getRapportStore():Flow<BaseResponse<List<RapportStoreModel>>>
 }

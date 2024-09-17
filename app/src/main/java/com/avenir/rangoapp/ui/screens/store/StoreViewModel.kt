@@ -15,6 +15,10 @@ class StoreViewModel @Inject constructor(
 ):BaseViewModel<StoreState,StoreEvent>() {
     val state= MutableStateFlow(StoreState())
 
+    init {
+        onTriggerEvent(StoreEvent.OnLoadProduct)
+    }
+
     override fun onTriggerEvent(event: StoreEvent) {
         when(event){
             StoreEvent.OnLoadProduct->{

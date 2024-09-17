@@ -16,7 +16,24 @@ class NewProductViewModel @Inject constructor(
     val state = MutableStateFlow(NewProductState())
     override fun onTriggerEvent(event: NewProductEvent) {
         when(event){
-            is NewProductEvent.OnCreateProduct -> createProduct()
+            is NewProductEvent.OnMarlChanged -> {
+                state.value=state.value.copy(mark = (event.mark))
+            }
+            is NewProductEvent.OnNameChanged -> {
+                state.value=state.value.copy(name = (event.name))
+            }
+            is NewProductEvent.OnPriceAchatChanged -> {
+                state.value=state.value.copy(priceAchat = (event.priceAchat))
+            }
+            is NewProductEvent.OnPriceVenteChanged -> {
+                state.value=state.value.copy(priceVente = (event.priceVente))
+            }
+            is NewProductEvent.OnStockChanged -> {
+                state.value=state.value.copy(stock = (event.stock))
+            }
+            NewProductEvent.OnSubmit -> {
+                createProduct()
+            }
         }
     }
 

@@ -29,22 +29,22 @@ fun RapportStoreItem(rapport: RapportStoreModel) {
 
         ListItem(
             headlineContent = {
-                Text(text = rapport.productName, fontSize = 20.sp, fontWeight = FontWeight.W500)
+                Text(text = rapport.product.name, fontSize = 20.sp, fontWeight = FontWeight.W500)
             },
             supportingContent = {
                 Text(text = rapport.date,  fontSize = 12.sp)
             },
             overlineContent = {
-                val color=  if (rapport.type=="Entrer") SuccessColor else FailureColor
+                val color=  if (rapport.type=="IN") SuccessColor else FailureColor
                 Text(text = rapport.type,color=color)
             },
             leadingContent = {
 
             },
             trailingContent = {
-             val painterResource =   if(rapport.type=="Entrer") painterResource(id = R.drawable.fleche_vers_le_bas_24)
+             val painterResource =   if(rapport.type=="IN") painterResource(id = R.drawable.fleche_vers_le_bas_24)
                 else painterResource(id = R.drawable.fleche_vers_le_haut_24)
-              val color=  if (rapport.type=="Entrer") SuccessColor else FailureColor
+              val color=  if (rapport.type=="IN") SuccessColor else FailureColor
                 Row(
                     modifier = Modifier.width(80.dp),
                     horizontalArrangement = Arrangement.Center,

@@ -2,9 +2,13 @@ package com.avenir.rangoapp.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,12 +39,24 @@ fun ProductItem(product: ProductModel) {
                 )
             },
             trailingContent = {
-                Icon(
-                    painterResource(id = R.drawable.crayon_24),
-                    contentDescription =null,
-                    tint = GrayColor,
-                    modifier = Modifier.size(16.dp)
-                )
+                Column {
+                    IconButton(onClick = { /*TODO*/ },
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.White.copy(
+                                alpha = 0.2f
+                            )
+                        )
+                        ) {
+                        Icon(
+                            painterResource(id = R.drawable.crayon_24),
+                            contentDescription =null,
+                            tint = GrayColor,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(text = "${product.stock}", color = Color.Yellow)
+                }
             },
             supportingContent = {
                 Column {

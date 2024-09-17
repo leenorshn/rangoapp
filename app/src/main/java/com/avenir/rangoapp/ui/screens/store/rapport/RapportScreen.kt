@@ -32,44 +32,29 @@ import com.avenir.rangoapp.ui.components.RapportStoreItem
 @Composable
 fun RapportStoreScreen(
     state: RapportStoreState?,
-    onProviderClicked: () -> Unit
+    //onProviderClicked: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                Text(text = "Products")
+                Text(text = "Mouvement de stock")
             },
                 actions = {
-                    ElevatedButton(onClick = { onProviderClicked() },
-                        colors = ButtonDefaults.elevatedButtonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary,
-                            contentColor = MaterialTheme.colorScheme.onTertiary
-                        )
-                        ) {
-                      Icon(painter = painterResource(id = R.drawable.ic_friends),"",
-                          modifier = Modifier.size(16.dp))
-                      Spacer(modifier = Modifier.width(8.dp))
-                      Text(text = "Providers")
-
-                    }
+//                    ElevatedButton(onClick = { onProviderClicked() },
+//                        colors = ButtonDefaults.elevatedButtonColors(
+//                            containerColor = MaterialTheme.colorScheme.tertiary,
+//                            contentColor = MaterialTheme.colorScheme.onTertiary
+//                        )
+//                        ) {
+//                      Icon(painter = painterResource(id = R.drawable.ic_friends),"",
+//                          modifier = Modifier.size(16.dp))
+//                      Spacer(modifier = Modifier.width(8.dp))
+//                      Text(text = "Providers")
+//
+//                    }
                 })
         },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = {
 
-                },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_plus), contentDescription = "",
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "New Product")
-            }
-        }
     ) {
         if (state?.isLoading == true) {
             LinearProgressIndicator(

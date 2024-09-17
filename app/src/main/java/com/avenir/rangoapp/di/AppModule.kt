@@ -4,15 +4,21 @@ import android.content.Context
 import com.avenir.rangoapp.data.datasource.AuthDataSource
 import com.avenir.rangoapp.data.datasource.CompanyDataSource
 import com.avenir.rangoapp.data.datasource.ProductDataSource
+import com.avenir.rangoapp.data.datasource.ProviderDataSource
 import com.avenir.rangoapp.data.datasource.RapportStoreDataSource
+import com.avenir.rangoapp.data.datasource.VenteDataSource
 import com.avenir.rangoapp.data.domaine.AuthRepositoryImpl
 import com.avenir.rangoapp.data.domaine.CompanyRepositoryImpl
 import com.avenir.rangoapp.data.domaine.ProductRepositoryImpl
+import com.avenir.rangoapp.data.domaine.ProviderRepositoryImpl
 import com.avenir.rangoapp.data.domaine.RapportStoreRepositoryImpl
+import com.avenir.rangoapp.data.domaine.VenteRepositoryImpl
 import com.avenir.rangoapp.data.repository.AuthRepository
 import com.avenir.rangoapp.data.repository.CompanyRepository
 import com.avenir.rangoapp.data.repository.ProductRepository
+import com.avenir.rangoapp.data.repository.ProviderRepository
 import com.avenir.rangoapp.data.repository.RapportStoreRepository
+import com.avenir.rangoapp.data.repository.VenteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -68,6 +74,30 @@ object AppModule {
     @Singleton
     fun provideUserRepository(authDataSource: AuthDataSource): AuthRepository {
         return AuthRepositoryImpl(authDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVenteRepository(dataSource: VenteDataSource):VenteRepository{
+        return VenteRepositoryImpl(dataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVenteDataSource(database: Databases,account: Account):VenteDataSource{
+        return VenteDataSource(database = database, account = account)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProviderRepository(dataSource: ProviderDataSource):ProviderRepository{
+        return ProviderRepositoryImpl(dataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProviderDataSource(database: Databases,account: Account):ProviderDataSource{
+        return ProviderDataSource(database = database, account = account)
     }
 
     @Provides

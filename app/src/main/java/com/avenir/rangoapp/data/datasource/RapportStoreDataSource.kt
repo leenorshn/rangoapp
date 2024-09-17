@@ -14,18 +14,18 @@ class RapportStoreDataSource @Inject constructor(
 ) {
     // create report
     suspend fun createRapport(
-        productId:String,
-        productName:String,
+        product:String,
+        quantity:Int,
         type:String,
     ):Boolean{
         val session= account.getSession("current")
         var result= database.createDocument(
-            databaseId = "",
-            collectionId = "",
+            databaseId = "667940d2003bfd8657a8",
+            collectionId = "66e8161c0014391d854c",
             documentId = ID.unique(),
             data = mapOf(
-                "productId" to productId,
-                "productName" to productName,
+                "product" to product,
+                "quantity" to quantity,
                 "type" to type,
                 "company" to session.userId
             )
@@ -36,15 +36,16 @@ class RapportStoreDataSource @Inject constructor(
     suspend fun getRapportStore():List<RapportStoreModel>{
         val session=account.getSession("current")
         val result= database.listDocuments(
-            databaseId = "",
-            collectionId = "",
+            databaseId = "667940d2003bfd8657a8",
+            collectionId = "66e8161c0014391d854c",
             queries = listOf(
                 Query.equal("company",session.userId),
-                Query.orderDesc("createdAt")
+                Query.orderDesc("\$createdAt")
             )
         )
 
         val products=result.documents.map {
+            println(it.data.toString())
             it.toRapportStoreModel()
         }
 

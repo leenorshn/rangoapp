@@ -16,14 +16,18 @@ class ProductDataSource@Inject constructor(
     // create product
     suspend fun createProduct(name:String,mark:String,priceVente:Double,priceAchat:Double,stock:Int):Boolean{
         val  session=account.getSession("current");
+        val productId=ID.unique()
        var res= database.createDocument(
-           "667940d2003bfd8657a8","66e6d4dc002117e2b153", documentId = ID.unique(),data = mapOf(
+           "667940d2003bfd8657a8","66e6d4dc002117e2b153", documentId = productId,data = mapOf(
             "company" to session.userId,
+               "mark" to mark,
             "name" to name,
             "priceVente" to priceVente,
             "priceAchat" to priceAchat,
             "stock" to stock
         ))
+        RapportStoreDataSource(account = account, database = database)
+            .createRapport(product =productId, quantity = stock, type = "IN")
         return true
     }
     // update product

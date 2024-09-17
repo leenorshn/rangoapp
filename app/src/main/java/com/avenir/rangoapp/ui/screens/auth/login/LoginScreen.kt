@@ -60,7 +60,7 @@ fun LoginScreen(
                 tint = Color.Yellow, modifier = Modifier.size(64.dp))
             LargeSpace()
             Text(
-                text = "Rango App",
+                text = "Dooka App",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Yellow,

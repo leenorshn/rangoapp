@@ -14,6 +14,10 @@ class RapportStoreViewModel @Inject constructor(
     private val repository: RapportStoreRepositoryImpl
 ):BaseViewModel<RapportStoreState,RapportStoreEvent>() {
     val state= MutableStateFlow(RapportStoreState())
+    init {
+        onTriggerEvent(RapportStoreEvent.OnRapportLoad)
+    }
+
     override fun onTriggerEvent(event: RapportStoreEvent) {
         when(event){
             RapportStoreEvent.OnRapportLoad -> {

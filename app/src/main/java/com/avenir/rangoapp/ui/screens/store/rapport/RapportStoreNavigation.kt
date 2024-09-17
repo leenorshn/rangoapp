@@ -2,6 +2,9 @@ package com.avenir.rangoapp.ui.screens.store.rapport
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.avenir.rangoapp.core.DestinationRoute
@@ -9,8 +12,11 @@ import com.avenir.rangoapp.core.DestinationRoute
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.rapportStoreNavigation() {
     composable(DestinationRoute.RAPPORT_STORE_ROUTE) {
+        val viewModel:RapportStoreViewModel= hiltViewModel()
+        val state by viewModel.state.collectAsState()
         RapportStoreScreen(
-            onProviderClicked = {}
+            state = state,
+           // onProviderClicked = {}
         )
     }
 }

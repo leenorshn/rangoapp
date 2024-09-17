@@ -14,14 +14,14 @@ class RapportStoreRepositoryImpl @Inject constructor(
 ):RapportStoreRepository {
     override suspend fun createRapport(
         productId: String,
-        productName: String,
+        quantity: Int,
         type: String
     ): Flow<BaseResponse<Boolean>> {
         return flow {
             emit(BaseResponse.Loading)
             val res=dataSource.createRapport(
-                productId=productId,
-                productName=productName,
+                product =productId,
+                quantity =quantity,
                 type=type
             )
 

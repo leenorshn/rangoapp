@@ -1,5 +1,6 @@
 package com.avenir.rangoapp.ui.screens.store.newproduct
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,11 +22,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -34,11 +40,17 @@ import com.avenir.rangoapp.ui.components.TextInputWidget
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewProductScreen(onSaveClicked: () -> Unit) {
-
-    var clientName by remember {
-        mutableStateOf("")
+fun NewProductScreen(
+    state: NewProductState,
+    onEvent: (event:NewProductEvent) -> Unit,
+    navigateToProducts:()->Unit
+    ) {
+    LaunchedEffect(key1 = state.success) {
+        if (state.success==true) {
+            navigateToProducts()
+        }
     }
+
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -46,7 +58,9 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
             },
                 actions = {
                     TextButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onEvent(NewProductEvent.OnSubmit)
+                        },
 
                         colors = ButtonDefaults.elevatedButtonColors(
                             containerColor = MaterialTheme.colorScheme.onTertiary,
@@ -58,6 +72,9 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                 })
         }
     ) {
+        if (state.error!=null){
+            Text(text = "${state.error}", color = Color.Red, modifier = Modifier.fillMaxWidth())
+        }
         LazyColumn(
             modifier = Modifier
                 .padding(top = it.calculateTopPadding())
@@ -67,17 +84,17 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillParentMaxHeight()
+                        //.fillParentMaxHeight()
                         .padding(bottom = 32.dp)
                 ) {
                     LargeSpace()
                     TextInputWidget(
                         modifier = Modifier.fillMaxWidth(),
-                        value = clientName,
+                        value = state.name,
                         onValueChange = {
-                            clientName = it
+                            onEvent(NewProductEvent.OnNameChanged(it))
                         },
-                        label = "Product name",
+                        label = "Nom du produit",
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.crayon_24),
@@ -88,11 +105,11 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                     SmallSpace()
                     TextInputWidget(
                         modifier = Modifier.fillMaxWidth(),
-                        value = clientName,
+                        value = state.mark,
                         onValueChange = {
-                            clientName = it
+                            onEvent(NewProductEvent.OnMarlChanged(it))
                         },
-                        label = "Product Mark",
+                        label = "Mark",
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.crayon_24),
@@ -100,27 +117,15 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                             )
                         },
                     )
-                    SmallSpace()
-                    TextInputWidget(
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.crayon_24),
-                                contentDescription = ""
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        value = clientName, onValueChange = {
-                            clientName = it
 
-                        }, label = "Categorie"
-                    )
+
                     SmallSpace()
-                    Row {
+
                         TextInputWidget(
-                            modifier = Modifier.weight(1f),
-                            value = clientName,
+                            modifier = Modifier.fillMaxWidth(),
+                            value = "${state.priceAchat}",
                             onValueChange = {
-                                clientName = it
+                                onEvent(NewProductEvent.OnPriceAchatChanged(it.toDouble()))
                             },
                             label = "Prix d'achat",
                             keyboardOptions = KeyboardOptions(
@@ -135,9 +140,10 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         TextInputWidget(
-                            modifier = Modifier.weight(1f),
-                            value = clientName, onValueChange = {
-                                clientName = it
+                            modifier = Modifier.fillMaxWidth(),
+                            value = "${state.priceVente}",
+                            onValueChange = {
+                                onEvent(NewProductEvent.OnPriceVenteChanged(it.toDouble()))
                             }, label = "Prix de vente",
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number
@@ -148,15 +154,13 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                                     contentDescription = ""
                                 )
                             })
-                    }
-                    SmallSpace()
-
                     SmallSpace()
                     TextInputWidget(
                         modifier = Modifier.fillMaxWidth(),
-                        value = clientName, onValueChange = {
-                            clientName = it
-                        }, label = "Charge",
+                        value = "${state.stock}",
+                        onValueChange = {
+                            onEvent(NewProductEvent.OnStockChanged(it.toInt()))
+                        }, label = "Quantite",
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
@@ -166,23 +170,40 @@ fun NewProductScreen(onSaveClicked: () -> Unit) {
                                 contentDescription = ""
                             )
                         })
-                    Spacer(modifier = Modifier.weight(1f))
-                    ElevatedButton(
-                        onClick = onSaveClicked,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp),
-                        colors = ButtonDefaults.elevatedButtonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary,
-                            contentColor = MaterialTheme.colorScheme.onTertiary,
-                        )
-                    ) {
-                        Text(text = "Enregistrer")
-                    }
+
+
+                    Spacer(modifier = Modifier.height(56.dp))
+
                 }
             }
 
+            item {
+                if (state.isLoading==true){
+                    Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
 
+                            CircularProgressIndicator(color = Color.Yellow)
+
+                    }
+                }else{
+                ElevatedButton(
+                    onClick = {
+                        onEvent(NewProductEvent.OnSubmit)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10))
+                        .height(64.dp),
+                    colors = ButtonDefaults.elevatedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary,
+                    ),
+                    shape = RoundedCornerShape(16),
+                ) {
+                    Text(text = "Enregistrer")
+                }
+                
+                }
+            }
         }
     }
 }
