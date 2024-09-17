@@ -12,15 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -38,16 +41,20 @@ import com.avenir.rangoapp.ui.theme.GrayColor
 @Composable
 fun HomeScreen(
     state: HomeState?,
+    event: (e:HomeEvent)->Unit,
     onProfileClicked: () -> Unit,
     onFactureClicked: () -> Unit,
     onStoreClicked: () -> Unit,
     onCaisseClicked:()->Unit,
     onSettingClicked: () -> Unit,
 ) {
+    LaunchedEffect(key1 = Unit) {
+        event.invoke(HomeEvent.OnLoadVideo)
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title = { Text("RangoApp") },
+            TopAppBar(title = { Text("Dooka") },
 
                 actions = {
                     Box(
@@ -79,14 +86,25 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
         ) {
-            WelcomeBox(name = if(state?.user?.name.isNullOrEmpty()) {"Guest"} else{ "${state?.user?.name}"})
+            if (state?.isLoading==true){
+                LinearProgressIndicator()
+            }else if (state?.error!=null){
+                Text(text = "Error de chargement", color = Color.Red)
+            }else {
+                //state?.user?.name?.let {
+                    WelcomeBox(
+                        name = state?.user?.name
+                    )
+
+
+            }
             32.dp.Space()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = "Activity")
-                Icon(Icons.Outlined.List, contentDescription = "All menus")
+                Icon(Icons.AutoMirrored.Outlined.List, contentDescription = "All menus")
             }
             24.dp.Space()
             HomeMenuItem(icon = painterResource(id = R.drawable.ic_plus), title = "Facture", onTapMenu = {
@@ -125,17 +143,19 @@ fun HomeScreen(
 
 
 @Composable
-fun WelcomeBox(modifier: Modifier = Modifier, name: String) {
+fun WelcomeBox(modifier: Modifier = Modifier, name: String?) {
     Column {
         16.dp.Space()
         Row {
             Text("Bienvenu , ", fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
-            Text(
-                text = "  $name !",
-                color = Color.Cyan,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+            name?.let {
+                Text(
+                    text = " $it !",
+                    color = Color.Cyan,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
 
         }
         8.dp.Space()

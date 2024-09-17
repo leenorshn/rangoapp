@@ -21,18 +21,7 @@ class CompanyViewModel @Inject constructor(
             is CompanyEvent.AddressChanged -> {
                 state.value=state.value.copy(address = event.address)
             }
-            is CompanyEvent.DescriptionChanged -> {
-                state.value=state.value.copy(description = event.description)
-            }
-            is CompanyEvent.EmailChanged -> {
-                state.value=state.value.copy(email = event.email)
-            }
-            is CompanyEvent.IdCommerceChanged -> {
-                state.value=state.value.copy(idCommerce = event.idCommerce)
-            }
-            is CompanyEvent.IdNatChanged -> {
-                state.value=state.value.copy(idNat = event.idNat)
-            }
+
             is CompanyEvent.LogoChanged -> {
                 state.value=state.value.copy(logo = event.logo)
             }
@@ -45,12 +34,9 @@ class CompanyViewModel @Inject constructor(
             is CompanyEvent.PhoneChanged -> {
                 state.value=state.value.copy(phone = event.phone)
             }
-            is CompanyEvent.RccmChanged -> {
-                state.value=state.value.copy(rccm = event.rccm)
-            }
 
-            is CompanyEvent.TypeChanged -> {
-                state.value=state.value.copy(type = event.type)
+            is CompanyEvent.EmailChanged -> {
+                state.value=state.value.copy(email = event.email)
             }
         }
     }
@@ -61,12 +47,6 @@ class CompanyViewModel @Inject constructor(
                 name = state.value.name,
                 address = state.value.address,
                 phone = state.value.phone,
-                description = state.value.description,
-                type = state.value.type,
-                rccm = state.value.rccm,
-                idNat = state.value.idNat,
-                idCommerce = state.value.idCommerce,
-                logo = state.value.logo,
                 email = state.value.email
             ).collect{
                 when(it){

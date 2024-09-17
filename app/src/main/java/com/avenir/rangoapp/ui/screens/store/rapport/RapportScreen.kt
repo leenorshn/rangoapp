@@ -3,6 +3,7 @@ package com.avenir.rangoapp.ui.screens.store.rapport
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -13,12 +14,14 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.avenir.rangoapp.R
@@ -28,6 +31,7 @@ import com.avenir.rangoapp.ui.components.RapportStoreItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RapportStoreScreen(
+    state: RapportStoreState?,
     onProviderClicked: () -> Unit
 ) {
     Scaffold(
@@ -67,19 +71,29 @@ fun RapportStoreScreen(
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 8.dp)
-        ) {
-            item {
-                Spacer(modifier = Modifier.size(16.dp))
-            }
-            items(rapportList) { rapport ->
-                RapportStoreItem(rapport=rapport)
-            }
-            item { 
-                Spacer(modifier = Modifier.size(120.dp))
+        if (state?.isLoading == true) {
+            LinearProgressIndicator(
+                color = Color.Yellow,
+                modifier = Modifier.fillMaxWidth().padding(it)
+            )
+        }
+        if (state?.error != null) {
+            Text(text = "${state.error}", modifier = Modifier.padding(it).fillMaxWidth())
+        } else{
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .padding(horizontal = 8.dp)
+            ) {
+                item {
+                    Spacer(modifier = Modifier.size(16.dp))
+                }
+                items(state?.rapports.orEmpty()) { rapport ->
+                    RapportStoreItem(rapport = rapport)
+                }
+                item {
+                    Spacer(modifier = Modifier.size(120.dp))
+                }
             }
         }
     }

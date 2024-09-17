@@ -86,7 +86,7 @@ fun StepFinalScreen(
                     },
                     supportingText = {
                         Text(
-                            text = "Pas obligatoire",
+                            text = "Votre numero whatstapp",
                             fontSize = 12.sp,
                             color = Color.Gray
                         )
@@ -94,36 +94,7 @@ fun StepFinalScreen(
 
                 )
 
-                LargeSpace()
-                TextInputWidget(
-                    value = state.email,
-                    onValueChange = {
-                        onEvent(CompanyEvent.EmailChanged(it))
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                    ),
-                    supportingText = {
-                        Text(
-                            text = "Pas obligatoire",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                    },
-                    placeholder = {
-                        Text(text = "Tapez votre email")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "Email de l'entreprise",
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Email,
-                            contentDescription = ""
-                        )
-                    }
 
-                )
 
             }
 

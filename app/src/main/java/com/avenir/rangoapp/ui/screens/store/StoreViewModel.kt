@@ -1,51 +1,52 @@
-package com.avenir.rangoapp.ui.screens.home
+package com.avenir.rangoapp.ui.screens.store
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.core.BaseViewModel
-import com.avenir.rangoapp.data.domaine.AuthRepositoryImpl
+import com.avenir.rangoapp.data.domaine.ProductRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val userRepositoryImpl: AuthRepositoryImpl
-):BaseViewModel<HomeState,HomeEvent>(){
-    val currentUser= MutableStateFlow(HomeState())
-    override fun onTriggerEvent(event: HomeEvent) {
+class StoreViewModel @Inject constructor(
+    private val repository: ProductRepositoryImpl
+):BaseViewModel<StoreState,StoreEvent>() {
+    val state= MutableStateFlow(StoreState())
+
+    override fun onTriggerEvent(event: StoreEvent) {
         when(event){
-            HomeEvent.OnLoadVideo -> {
+            StoreEvent.OnLoadProduct->{
                 viewModelScope.launch {
-                    userRepositoryImpl.getCurrentUser().collect{
+                    repository.getAllProducts().collect{
                         when(it){
                             is BaseResponse.Error -> {
-                                currentUser.value=currentUser.value.copy(
-                                    user = null,
+                                state.value=state.value.copy(
+                                    error = it.error,
                                     isLoading = false,
-                                    error = it.error
+                                    products = listOf()
                                 )
                             }
                             BaseResponse.Loading -> {
-                                currentUser.value=currentUser.value.copy(
-                                    user = null,
+                                state.value=state.value.copy(
+                                    error = null,
                                     isLoading = true,
-                                    error = null
+                                    products = listOf()
                                 )
                             }
                             is BaseResponse.Success -> {
-                                currentUser.value=currentUser.value.copy(
-                                    user = it.data,
+                                state.value=state.value.copy(
+                                    error = null,
                                     isLoading = false,
-                                    error = null
+                                    products = it.data
                                 )
                             }
                         }
                     }
                 }
             }
+
         }
     }
-
 }

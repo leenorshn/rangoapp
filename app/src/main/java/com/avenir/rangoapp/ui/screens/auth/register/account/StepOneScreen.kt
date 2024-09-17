@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.CircularProgressIndicator
@@ -62,6 +63,9 @@ fun StepOneScreen(
                     tint = Color.Yellow,
                 )
                 Text(text = "Création de compte", fontSize = 32.sp, fontWeight = FontWeight.W300)
+                if (state.error!=null){
+                    Text(text = "${state.error}", color = Color.Red)
+                }
             }
             item {
                 LargeSpace()
@@ -73,15 +77,15 @@ fun StepOneScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Phone,
+                        keyboardType = KeyboardType.Email,
                     ),
                     placeholder = {
-                        Text(text = "Exemple: +243 978 154 000")
+                        Text(text = "Entrer votre email")
                     },
-                    label = "Numèro de téléphone",
+                    label = "Votre gmail",
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Phone,
+                            Icons.Outlined.Email,
                             contentDescription = ""
                         )
                     },
@@ -92,7 +96,7 @@ fun StepOneScreen(
                             tint = Color.Green)
                     },
                     supportingText = {
-                        Text("Exemple: +243 978 154 000", fontSize = 12.sp,color=Color.Gray)
+                        Text("Votre address email (gmail)", fontSize = 12.sp,color=Color.Gray)
                     }
 
                 )

@@ -12,7 +12,7 @@ fun NavGraphBuilder.welcomeNavigation(navController: NavController) {
                 navController.navigate(DestinationRoute.LOGIN_ROUTE)
             },
             onRegisterClicked = {
-                navController.navigate(DestinationRoute.REGISTER_ROUTE)
+                navController.navigate(DestinationRoute.REGISTER_STEP_ONE_ROUTE)
             }
 
         )

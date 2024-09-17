@@ -2,6 +2,7 @@ package com.avenir.rangoapp.data.domaine
 
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.datasource.AuthDataSource
+import com.avenir.rangoapp.data.models.UserModel
 import com.avenir.rangoapp.data.repository.AuthRepository
 import io.appwrite.models.Session
 import io.appwrite.models.User
@@ -22,6 +23,10 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         return authDataSource.onLogout()
+    }
+
+    override suspend fun getCurrentUser(): Flow<BaseResponse<UserModel>> {
+        return  authDataSource.getCurrentUser()
     }
 
     override suspend fun createUser(

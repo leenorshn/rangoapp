@@ -16,7 +16,8 @@ class UserDataSource @Inject constructor(
     suspend fun createUser(
         uid: String,
         name: String,
-        phone: String,
+        email: String,
+        phone:String,
         companyId: String,
         role: String,
     ) {
@@ -29,7 +30,7 @@ class UserDataSource @Inject constructor(
                 data = mapOf(
                     "uid" to uid,
                     "name" to name,
-                    "email" to "$phone@rango.com",
+                    "email" to email,
                     "phone" to phone,
                     "role" to role,
                     "isBlocked" to false,

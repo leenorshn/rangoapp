@@ -65,11 +65,11 @@ fun StepTwoScreen(
                         onEvent(CompanyEvent.NameChanged(it))
                     },
                     placeholder = {
-                        Text(text = "Tapez le nom de l'entreprise")
+                        Text(text = "Nom de l'entreprise")
                     },
                     supportingText = {
                         Text(
-                            text = "Exemple: Zaka-Shop",
+                            text = "Exemple: Dooka-Shop",
                             fontSize = 12.sp,
                             color = Color.Gray
                         )
@@ -93,7 +93,7 @@ fun StepTwoScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Addresse de l'entreprise",
+                    label = "Adresse de l'entreprise",
                     leadingIcon = {
                         Icon(
                             Icons.Outlined.LocationOn,
@@ -101,7 +101,7 @@ fun StepTwoScreen(
                         )
                     },
                     placeholder = {
-                        Text(text = "Tapez votre adresse")
+                        Text(text = "Adresse")
                     },
                     supportingText = {
                         Text(

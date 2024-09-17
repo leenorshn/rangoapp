@@ -11,13 +11,7 @@ interface CompanyRepository{
         name:String,
         address:String,
         phone:String,
-        description:String?,
-        type:String?,
-        rccm:String?,
-        idNat:String?,
-        idCommerce:String?,
-        logo:String?,
-        email:String?,
+        email:String,
     ): Flow<BaseResponse<Document<Map<String, Any>>>>
     suspend fun getCompany(documentId: String): Flow<BaseResponse<CompanyModel>>
 

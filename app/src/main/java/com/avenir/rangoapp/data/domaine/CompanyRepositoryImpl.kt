@@ -16,13 +16,7 @@ class CompanyRepositoryImpl @Inject constructor(
         name: String,
         address: String,
         phone: String,
-        description: String?,
-        type: String?,
-        rccm: String?,
-        idNat: String?,
-        idCommerce: String?,
-        logo: String?,
-        email: String?
+        email: String
     ): Flow<BaseResponse<Document<Map<String, Any>>>> {
 
 
@@ -32,14 +26,7 @@ class CompanyRepositoryImpl @Inject constructor(
                 val docs = companyDataSource.createCompany(
                     name,
                     address,
-                    phone,
-                    description = description.orEmpty(),
-                    type = type.orEmpty(),
-                    rccm = rccm.orEmpty(),
-                    idNat = idNat.orEmpty(),
-                    idCommerce = idCommerce.orEmpty(),
-                    logo = logo.orEmpty(),
-                    email = email.orEmpty()
+                    phone
                 );
                 emit(BaseResponse.Success(docs))
             } catch (e: Exception) {

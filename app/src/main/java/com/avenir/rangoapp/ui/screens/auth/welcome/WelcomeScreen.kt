@@ -54,7 +54,7 @@ fun WelcomeScreen(
 
 
             Text(
-                text = "Rango",
+                text = "Dooka",
                 color = Color.Yellow,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
@@ -75,7 +75,7 @@ fun WelcomeScreen(
             Text(text = text)
             SmallSpace()
             Text(
-                text = "Gerer, controler, organiser votre business grace a Rango, commencer par créer un compte",
+                text = "Gerer, controler, organiser votre business grace a Rooka, commencer par créer un compte",
                 color = Color.Gray, fontSize = 18.sp, fontWeight = FontWeight.W300,
                 textAlign = TextAlign.Center,
             )

@@ -6,11 +6,14 @@ import com.avenir.rangoapp.data.models.toCompanyModel
 import io.appwrite.ID
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.models.Document
+import io.appwrite.services.Account
 import io.appwrite.services.Databases
+import okhttp3.internal.wait
 import javax.inject.Inject
 
 class CompanyDataSource @Inject constructor(
-    private val database: Databases
+    private val database: Databases,
+    private  val account:Account,
 ) {
 
     suspend fun getCompany(docId:String):CompanyModel{
@@ -31,18 +34,15 @@ class CompanyDataSource @Inject constructor(
         name:String,
         address:String,
         phone:String,
-        description:String,
-        type:String,
-        rccm:String,
-        idNat:String,
-        idCommerce:String,
-        logo:String,
-        email:String,
+
+
     ):Document<Map<String,Any>>{
 
 
         try {
             val docId=ID.unique()
+            val user=account.getSession("current")
+               // .wait()
             val document = database.createDocument(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "6679421c0013ffb9cad4",
@@ -52,13 +52,14 @@ class CompanyDataSource @Inject constructor(
                     "name" to name,
                     "address" to address,
                     "phone" to phone,
-                    "description" to description,
-                    "type" to type,
-                    "rccm" to rccm,
-                    "idNat" to idNat,
-                    "idCommerce" to idCommerce,
-                    "logo" to logo,
-                    "email" to email,
+                    "description" to "",
+                    "type" to "",
+                    "rccm" to "",
+                    "idNat" to "",
+                    "idCommerce" to "",
+                    "logo" to "",
+                    "owner" to user.userId,
+                    "email" to user.provider,
                 ),
             )
             print(document)
