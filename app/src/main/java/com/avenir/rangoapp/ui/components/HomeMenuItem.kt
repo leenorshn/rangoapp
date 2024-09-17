@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,17 +31,16 @@ fun HomeMenuItem(
     title: String,
     onTapMenu: () -> Unit
 ) {
-    Box(
+    OutlinedCard(
+        onClick = onTapMenu,
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, color = GrayColor, shape = RoundedCornerShape(16))
-            .padding(24.dp)
-            .clickable {
-                onTapMenu()
-            }
+            //.padding(24.dp)
+
     ){
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().padding(24.dp),
             verticalAlignment = Alignment.CenterVertically,
            ) {
             Icon(icon, contentDescription ="icon", modifier = Modifier.size(24.dp) )

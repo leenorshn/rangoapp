@@ -2,8 +2,10 @@ package com.avenir.rangoapp.ui.loading
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -37,14 +39,14 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.drawable.logo), contentDescription = "",
                 tint = Color.Yellow, modifier = Modifier.size(72.dp)
             )
-            LargeSpace()
+            Spacer(modifier=Modifier.height(72.dp))
             Text(
-                text = "Rango App",
-                color = Color.Yellow,
+                text = "Dooka",
+                color = Color.White,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 32.sp
             )
-
+            Spacer(modifier=Modifier.height(72.dp))
             LargeSpace()
             LargeSpace()
             LargeSpace()

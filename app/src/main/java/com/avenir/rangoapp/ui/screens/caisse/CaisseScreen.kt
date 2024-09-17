@@ -217,27 +217,27 @@ fun CaisseScreen(
                     )
                 }
             }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Row {
-                    OutlinedButton(onClick = { onAccountClicked() },
-                        shape = RoundedCornerShape(16),
-                        modifier = Modifier
-                            .height(64.dp)
-                            .weight(1f)) {
-                        Text(text = "Accounts", color = MaterialTheme.colorScheme.onPrimary)
-                    }
-
-                    Spacer(modifier = Modifier.width(16.dp))
-                    OutlinedButton(onClick = { onTransferClicked() },
-                        shape = RoundedCornerShape(16),
-                        modifier = Modifier
-                            .height(64.dp)
-                            .weight(1f)) {
-                        Text(text = "Transfer", color = MaterialTheme.colorScheme.onPrimary)
-                    }
-                }
-            }
+//            item {
+//                Spacer(modifier = Modifier.height(16.dp))
+//                Row {
+//                    OutlinedButton(onClick = { onAccountClicked() },
+//                        shape = RoundedCornerShape(16),
+//                        modifier = Modifier
+//                            .height(64.dp)
+//                            .weight(1f)) {
+//                        Text(text = "Accounts", color = MaterialTheme.colorScheme.onPrimary)
+//                    }
+//
+//                    Spacer(modifier = Modifier.width(16.dp))
+//                    OutlinedButton(onClick = { onTransferClicked() },
+//                        shape = RoundedCornerShape(16),
+//                        modifier = Modifier
+//                            .height(64.dp)
+//                            .weight(1f)) {
+//                        Text(text = "Transfer", color = MaterialTheme.colorScheme.onPrimary)
+//                    }
+//                }
+//            }
             item {
                 SmallSpace()
                 HorizontalDivider()

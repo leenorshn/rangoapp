@@ -87,17 +87,20 @@ fun HomeScreen(
                 .padding(horizontal = 24.dp)
         ) {
             if (state?.isLoading==true){
-                LinearProgressIndicator()
+                LinearProgressIndicator(
+                    color = Color.Yellow,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }else if (state?.error!=null){
                 Text(text = "Error de chargement", color = Color.Red)
-            }else {
+            }
                 //state?.user?.name?.let {
                     WelcomeBox(
-                        name = state?.user?.name
+                       homeState = state
                     )
 
 
-            }
+
             32.dp.Space()
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -107,7 +110,7 @@ fun HomeScreen(
                 Icon(Icons.AutoMirrored.Outlined.List, contentDescription = "All menus")
             }
             24.dp.Space()
-            HomeMenuItem(icon = painterResource(id = R.drawable.ic_plus), title = "Facture", onTapMenu = {
+            HomeMenuItem(icon = painterResource(id = R.drawable.list), title = "Facture", onTapMenu = {
                 onFactureClicked()
             })
             //24.dp.Space()
@@ -143,15 +146,15 @@ fun HomeScreen(
 
 
 @Composable
-fun WelcomeBox(modifier: Modifier = Modifier, name: String?) {
+fun WelcomeBox(modifier: Modifier = Modifier, homeState: HomeState?) {
     Column {
         16.dp.Space()
         Row {
             Text("Bienvenu , ", fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
-            name?.let {
+            homeState?.let {
                 Text(
-                    text = " $it !",
-                    color = Color.Cyan,
+                    text = " ${if (it.user?.name.isNullOrEmpty()) "" else it.user?.name +"!"} ",
+                    color = Color.Yellow,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -160,7 +163,7 @@ fun WelcomeBox(modifier: Modifier = Modifier, name: String?) {
         }
         8.dp.Space()
         Text(
-            text = "Manage your business easily and have all control for your success !",
+            text = "Gerer facilement votre commerce !",
             color = GrayColor,
         )
     }
