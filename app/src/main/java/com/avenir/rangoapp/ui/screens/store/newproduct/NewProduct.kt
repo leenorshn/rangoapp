@@ -166,7 +166,7 @@ fun NewProductScreen(
                         ),
                         leadingIcon = {
                             Icon(
-                                painter = painterResource(id = R.drawable.usd_cercle_24),
+                                painter = painterResource(id = R.drawable.des_d6_24),
                                 contentDescription = ""
                             )
                         })

@@ -18,8 +18,10 @@ import javax.inject.Inject
 class AuthDataSource @Inject constructor(
     private val account: Account,
     private val database: Databases,
+    private val companyDataStore: CompanyDataStore,
 ) {
-    private val userDatabase = UserDataSource(database)
+    private val userDatabase = UserDataSource(database,account,companyDataStore)
+    private val  companyDataSource=CompanyDataSource(database,account,companyDataStore)
     suspend fun onLogin(
         email: String,
         password: String,
@@ -54,6 +56,15 @@ class AuthDataSource @Inject constructor(
                     email= username,
                     password=password,
                 )
+                //login
+                account.createEmailPasswordSession(username,password)
+                //create empty company
+             val company=   companyDataSource.createCompany(
+                    name = username.split("@")[0],
+                    phone = "",
+                    address = ""
+                )
+                companyDataStore.saveCompany(name =company.id)
                 // create user in db
                 userDatabase.createUser(
                     uid = acc.id,
@@ -61,9 +72,9 @@ class AuthDataSource @Inject constructor(
                     email = username,
                     phone="",
                     role="Admin",
-                    companyId ="",
+
                 )
-                account.createEmailPasswordSession(username,password)
+               // account.createEmailPasswordSession(username,password)
                 emit(BaseResponse.Success(acc))
             } catch (ex: Exception) {
                 emit(BaseResponse.Error(ex.message.toString()))

@@ -8,11 +8,13 @@ import io.appwrite.Query
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.services.Account
 import io.appwrite.services.Databases
+import io.appwrite.services.Functions
 import javax.inject.Inject
 
 class UserDataSource @Inject constructor(
     private val database: Databases,
-    private val account: Account
+    private val account: Account,
+    private  val companyDataStore: CompanyDataStore,
 ) {
 
     suspend fun createUser(
@@ -20,24 +22,24 @@ class UserDataSource @Inject constructor(
         name: String,
         email: String,
         phone:String,
-        companyId: String,
         role: String,
     ) {
 
         try {
             val session=account.getSession("current");
+            val company=companyDataStore.readCompanyData()
             val document = database.createDocument(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "667940ed002fa6cc721f",
                 documentId = ID.unique(),
                 data = mapOf(
-                    "uid" to uid,
+                    "uid" to session.userId,
                     "name" to name,
                     "email" to email,
                     "phone" to phone,
                     "role" to role,
                     "isBlocked" to false,
-                    "company" to session.userId
+                    "company" to company
                 )
             )
             Log.d("UserDataSource", "createUser: ${document.id}")
@@ -47,14 +49,14 @@ class UserDataSource @Inject constructor(
         }
     }
 
-    suspend fun getUsers() :List<UserModel>{
+    suspend fun getUsers() : List<UserModel>{
         try {
-            val session=account.getSession("current");
+            val company=companyDataStore.readCompanyData()
             val documents = database.listDocuments(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "6679421c0013ffb9cad4",
                 queries = listOf(
-                    Query.equal("company", session.userId),
+                    Query.equal("company", company!!),
                     Query.notEqual("isBlocked", true),
                 ),
             )
@@ -66,4 +68,6 @@ class UserDataSource @Inject constructor(
             return emptyList()
         }
     }
+
+
 }

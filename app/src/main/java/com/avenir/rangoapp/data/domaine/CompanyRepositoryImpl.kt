@@ -23,7 +23,7 @@ class CompanyRepositoryImpl @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                val docs = companyDataSource.createCompany(
+                val docs = companyDataSource.updateCompany(
                     name,
                     address,
                     phone

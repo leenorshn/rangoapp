@@ -27,6 +27,7 @@ import com.avenir.rangoapp.ui.screens.settings.users.listOfUser
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
+    state: UserState,
     onShopClicked:()->Unit,
     onUsersClicked:()->Unit,
     onCurrencyClicked:()->Unit,
@@ -34,6 +35,7 @@ fun SettingScreen(
     onPaymentClicked:()->Unit
 ) {
     Scaffold(
+
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(title = {
@@ -45,9 +47,22 @@ fun SettingScreen(
             .padding(it)
             .padding(horizontal = 16.dp)) {
             item {
-                UserProfileItem(
-                    userModel = listOfUser[0]
-                )
+                if(state.isLoading){
+                    Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,){
+                        Text("loading ...")
+                    }
+                }
+                if (state.error != null) {
+                    Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,){
+                        Text("${state.error}")
+                    }
+                }
+                state.user?.let { it1 ->
+                    UserProfileItem(
+                        userModel = it1
+                    )
+                }
+
             }
             item {
                 LargeSpace()

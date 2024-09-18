@@ -60,7 +60,7 @@ fun LoginScreen(
                 tint = Color.Yellow, modifier = Modifier.size(64.dp))
             LargeSpace()
             Text(
-                text = "Dooka App",
+                text = "Dooka",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Yellow,
@@ -81,13 +81,13 @@ fun LoginScreen(
                         RoundedCornerShape(16)
                     ),
                 placeholder = {
-                    Text(text = "Phone")
+                    Text(text = "Votre email")
                 },
                 leadingIcon = {
                     Icon(Icons.Outlined.Phone, contentDescription = "")
                 },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Phone,
+                    keyboardType = KeyboardType.Email,
                 ),
             )
             SmallSpace()

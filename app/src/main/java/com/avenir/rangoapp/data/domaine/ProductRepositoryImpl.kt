@@ -15,9 +15,9 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun createProduct(
         name: String,
         mark: String,
-        priceVente: Double,
-        priceAchat: Double,
-        stock: Int
+        priceVente: Number,
+        priceAchat: Number,
+        stock: Number
     ): Flow<BaseResponse<Boolean>> {
         return flow {
             emit(BaseResponse.Loading)

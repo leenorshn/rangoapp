@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductRepository  {
 
-    suspend fun createProduct(name:String,mark:String,priceVente:Double,priceAchat:Double,stock:Int):Flow<BaseResponse<Boolean>>
+    suspend fun createProduct(name:String,mark:String,priceVente:Number,priceAchat:Number,stock:Number):Flow<BaseResponse<Boolean>>
     suspend fun updateProduct(product:ProductModel):Flow<BaseResponse<Boolean>>
     suspend fun deleteProduct(id:String):Flow<BaseResponse<Boolean>>
     suspend fun getAllProducts():Flow<BaseResponse<List<ProductModel>>>

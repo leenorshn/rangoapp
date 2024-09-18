@@ -4,9 +4,9 @@ package com.avenir.rangoapp.ui.screens.store.newproduct
 data class NewProductState(
     var name:String="",
     var mark:String="",
-    var priceVente:Double=0.0,
-    var priceAchat:Double=0.0,
-    val stock:Int=1,
+    var priceVente:Number=0,
+    var priceAchat:Number=0,
+    val stock:Number=1,
 
 
     val isLoading:Boolean?=false,
@@ -18,8 +18,8 @@ sealed class NewProductEvent{
     data object OnSubmit:NewProductEvent()
     data class OnNameChanged(val name:String):NewProductEvent()
     data class OnMarlChanged(val mark:String):NewProductEvent()
-    data class OnPriceVenteChanged(val priceVente: Double):NewProductEvent()
-    data class OnPriceAchatChanged(val priceAchat: Double):NewProductEvent()
-    data class OnStockChanged(val stock: Int):NewProductEvent()
+    data class OnPriceVenteChanged(val priceVente: Number):NewProductEvent()
+    data class OnPriceAchatChanged(val priceAchat: Number):NewProductEvent()
+    data class OnStockChanged(val stock: Number):NewProductEvent()
 
 }

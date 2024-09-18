@@ -4,20 +4,19 @@ import com.avenir.rangoapp.data.models.ProviderModel
 import com.avenir.rangoapp.data.models.toProviderModel
 import io.appwrite.ID
 import io.appwrite.Query
-import io.appwrite.services.Account
 import io.appwrite.services.Databases
 import javax.inject.Inject
 
 class ProviderDataSource @Inject constructor(
-  val  database:Databases,
- val   account:Account,
+    val  database:Databases,
+    val   companyDataStore: CompanyDataStore,
 ) {
     suspend fun createProvider(
         name:String,
         phone:String,
         address:String
     ):Boolean{
-      val session=  account.getSession("current")
+      val company = companyDataStore.readCompanyData()
         val res=database.createDocument(
             databaseId = "667940d2003bfd8657a8",
             collectionId = "66e97382002a28fea073",
@@ -26,19 +25,19 @@ class ProviderDataSource @Inject constructor(
                 "name" to name,
                 "phone" to phone,
                 "address" to address,
-                "company" to session.userId
+                "company" to company
             )
         )
         return true
     }
 
     suspend fun getProviders():List<ProviderModel>{
-        val session=  account.getSession("current")
+        val company = companyDataStore.readCompanyData()
         val result = database.listDocuments(
             databaseId = "667940d2003bfd8657a8",
             collectionId = "66e97382002a28fea073",
             queries = listOf(
-                Query.equal("company",session.userId)
+                Query.equal("company",company!!)
             )
         )
 
