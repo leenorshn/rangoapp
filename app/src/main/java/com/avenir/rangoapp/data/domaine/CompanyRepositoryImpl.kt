@@ -35,13 +35,14 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCompany(documentId: String): Flow<BaseResponse<CompanyModel>> {
+    override suspend fun getCompany(): Flow<BaseResponse<CompanyModel>> {
         return flow {
             emit(BaseResponse.Loading)
             try {
-                val doc = companyDataSource.getCompany(documentId)
+                val doc = companyDataSource.getCompany()
                 emit(BaseResponse.Success(doc))
             } catch (e: Exception) {
+                println(e)
                 emit(BaseResponse.Error(e.message.toString()))
             }
         }

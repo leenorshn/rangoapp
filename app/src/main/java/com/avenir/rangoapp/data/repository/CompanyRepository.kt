@@ -13,6 +13,6 @@ interface CompanyRepository{
         phone:String,
         email:String,
     ): Flow<BaseResponse<Document<Map<String, Any>>>>
-    suspend fun getCompany(documentId: String): Flow<BaseResponse<CompanyModel>>
+    suspend fun getCompany(): Flow<BaseResponse<CompanyModel>>
 
 }

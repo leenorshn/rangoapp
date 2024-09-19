@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.settings
+package com.avenir.rangoapp.ui.screens.settings.users
 
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
@@ -10,37 +10,38 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(
-    private val repository: UserRepositoryImpl
-) :BaseViewModel<UserState,UserEvent>(){
-    val state= MutableStateFlow(UserState())
+class UsersViewModel @Inject constructor(
+    private val userRepository: UserRepositoryImpl
+): BaseViewModel<UsersState, UsersEvent>() {
+    var state= MutableStateFlow(UsersState())
 
     init {
-        onTriggerEvent(UserEvent.OnLoadUser)
+        onTriggerEvent(UsersEvent.OnLoadUsers)
     }
-    override fun onTriggerEvent(event: UserEvent) {
+
+    override fun onTriggerEvent(event: UsersEvent) {
         when(event){
-            UserEvent.OnLoadUser -> {
+            UsersEvent.OnLoadUsers -> {
                 viewModelScope.launch {
-                    repository.getUsers().collect{
+                    userRepository.getUsers().collect{
                         when(it){
                             is BaseResponse.Error -> {
                                 state.value=state.value.copy(
-                                    user = null,
+                                    users = null,
                                     isLoading = false,
                                     error = it.error
                                 )
                             }
                             BaseResponse.Loading -> {
                                 state.value=state.value.copy(
-                                    user = null,
+                                    users = null,
                                     isLoading = true,
                                     error = null
                                 )
                             }
                             is BaseResponse.Success -> {
                                 state.value=state.value.copy(
-                                    user = if(it.data.isEmpty()) null else it.data[0],
+                                    users = it.data,
                                     isLoading = false,
                                     error = null
                                 )

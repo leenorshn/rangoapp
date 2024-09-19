@@ -39,15 +39,17 @@ class LoginViewModel @Inject constructor(
              repository.login(state.phone,state.password).collect{it->
                  state = when(it){
                      is BaseResponse.Error -> {
-                         state.copy(error = it.error, isLoading = false, user = null)
+                         state.copy(error = it.error, isLoading = false, user = null,
+                             isLogged = false
+                             )
                      }
 
                      BaseResponse.Loading -> {
-                         state.copy(isLoading = true, error = null, user = null)
+                         state.copy(isLoading = true, error = null, user = null, isLogged = false)
                      }
 
                      is BaseResponse.Success -> {
-                         state.copy(user = it.data, isLoading = false, error = null)
+                         state.copy(user = it.data, isLoading = false, error = null, isLogged = true)
                      }
                  }
              }

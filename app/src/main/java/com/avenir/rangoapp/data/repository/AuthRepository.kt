@@ -10,7 +10,7 @@ interface AuthRepository {
     suspend fun login(phone: String, password: String): Flow<BaseResponse<Session>>
     suspend fun createUser(username: String, password: String): Flow<BaseResponse<User<Map<String, Any>>>>
     suspend fun isUserLoggedIn():Flow<BaseResponse<Boolean>>
-    suspend fun logout()
+    suspend fun logout():Flow<BaseResponse<Boolean>>
     suspend fun  getCurrentUser():Flow<BaseResponse<UserModel>>
 //    suspend fun createAccount(
 //        name: String,

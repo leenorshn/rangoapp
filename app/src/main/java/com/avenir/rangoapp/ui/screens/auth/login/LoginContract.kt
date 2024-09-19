@@ -8,7 +8,8 @@ data class LoginState(
     var password:String="",
     val isLoading: Boolean = false,
     val error: String? = null,
-    val user: Session? = null
+    val user: Session? = null,
+    val  isLogged:Boolean=false
 )
 
 sealed class LoginEvent {

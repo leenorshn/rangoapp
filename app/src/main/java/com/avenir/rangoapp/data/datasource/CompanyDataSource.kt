@@ -16,13 +16,15 @@ class CompanyDataSource @Inject constructor(
     private  val companyDataStore: CompanyDataStore
 ) {
 
-    suspend fun getCompany(docId:String):CompanyModel{
+    suspend fun getCompany():CompanyModel{
         try {
+            val company=  companyDataStore.readCompanyData()
             val document = database.getDocument(
                 databaseId = "667940d2003bfd8657a8",
                 collectionId = "6679421c0013ffb9cad4",
-                documentId = docId
+                documentId = company!!
             )
+            println(document)
             return document.toCompanyModel()
         } catch (e: AppwriteException) {
             Log.e("Appwrite", "Error: " + e.message)

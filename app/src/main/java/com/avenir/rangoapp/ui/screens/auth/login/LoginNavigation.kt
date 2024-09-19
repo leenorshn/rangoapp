@@ -14,6 +14,10 @@ fun NavGraphBuilder.loginNavigation(navController: NavController) {
             onEvent = viewModel::onEvent,
             onBackClick = {
                 navController.navigate(DestinationRoute.REGISTER_ROUTE)
-            })
+            },
+            navigateToHome = {
+                navController.navigate(DestinationRoute.MAIN_NAV_ROUTE)
+            }
+        )
     }
 }

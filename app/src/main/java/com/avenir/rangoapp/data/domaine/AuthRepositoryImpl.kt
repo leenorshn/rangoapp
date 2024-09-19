@@ -7,6 +7,7 @@ import com.avenir.rangoapp.data.repository.AuthRepository
 import io.appwrite.models.Session
 import io.appwrite.models.User
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -21,8 +22,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun logout() {
-        return authDataSource.onLogout()
+    override suspend fun logout() :Flow<BaseResponse<Boolean>>{
+        return flow {
+            emit(BaseResponse.Loading)
+            try {
+                authDataSource.onLogout()
+                emit(BaseResponse.Success(true))
+            } catch (e: Exception) {
+                emit(BaseResponse.Error("${e.message}"))
+            }
+        }
     }
 
     override suspend fun getCurrentUser(): Flow<BaseResponse<UserModel>> {

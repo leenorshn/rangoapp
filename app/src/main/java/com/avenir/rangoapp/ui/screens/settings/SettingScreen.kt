@@ -22,7 +22,7 @@ import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.core.Space
 import com.avenir.rangoapp.ui.components.SettingMenuItem
 import com.avenir.rangoapp.ui.components.UserProfileItem
-import com.avenir.rangoapp.ui.screens.settings.users.listOfUser
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

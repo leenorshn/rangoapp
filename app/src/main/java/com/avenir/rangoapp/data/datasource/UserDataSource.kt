@@ -54,12 +54,14 @@ class UserDataSource @Inject constructor(
             val company=companyDataStore.readCompanyData()
             val documents = database.listDocuments(
                 databaseId = "667940d2003bfd8657a8",
-                collectionId = "6679421c0013ffb9cad4",
+                collectionId = "667940ed002fa6cc721f",
                 queries = listOf(
-                    Query.equal("company", company!!),
-                    Query.notEqual("isBlocked", true),
+                   // Query.equal("company", company!!),
+                    //Query.notEqual("isBlocked", true),
                 ),
             )
+
+            println(documents.documents)
             return documents.documents.map {
                 it.toUserModel()
             }

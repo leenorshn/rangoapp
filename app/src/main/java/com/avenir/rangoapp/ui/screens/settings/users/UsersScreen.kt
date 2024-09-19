@@ -2,6 +2,7 @@ package com.avenir.rangoapp.ui.screens.settings.users
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,6 +34,7 @@ import com.avenir.rangoapp.core.Space
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UsersScreen(
+    state: UsersState,
     onNewUserClicked:()->Unit
 ) {
     Scaffold(
@@ -59,32 +62,44 @@ fun UsersScreen(
         LazyColumn(modifier = Modifier.padding(it)) {
             item {
                 24.dp.Space()
-                HorizontalDivider()
-            }
-            items(listOfUser) { user ->
-                Card(onClick = { /*TODO*/ }, modifier = Modifier.padding(horizontal = 16.dp)) {
-                    ListItem(headlineContent = {
-
-                        Text(text = user.name)
-                    },
-                        supportingContent = {
-                            Text(text = "${user.phone} ")
-                        }, overlineContent = {
-                            val color = if (user.role == "Admin") Color.Cyan else Color.Yellow
-                            Row {
-                                Text(text = "Role: ")
-                                Text(text = " ${user.role}", color = color)
-                            }
-                        },
-                        trailingContent = {
-                            val icon =
-                                if (user.role == "Admin") Icons.Outlined.Lock else Icons.Outlined.Create
-                            Icon(imageVector = icon, contentDescription = "")
-                        }
+                if (state.isLoading) {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.Yellow,
                     )
+                }
+                if (state.error != null) {
+                    Text(text = "Error de chargement", color = Color.Yellow)
                 }
                 HorizontalDivider()
             }
+            if (!state.users.isNullOrEmpty()){
+                items(state.users) { user ->
+                    Card(onClick = { /*TODO*/ }, modifier = Modifier.padding(horizontal = 16.dp)) {
+                        ListItem(headlineContent = {
+
+                            Text(text = user.name)
+                        },
+                            supportingContent = {
+                                Text(text = "${user.phone} ")
+                            }, overlineContent = {
+                                val color = if (user.role == "Admin") Color.Cyan else Color.Yellow
+                                Row {
+                                    Text(text = "Role: ")
+                                    Text(text = " ${user.role}", color = color)
+                                }
+                            },
+                            trailingContent = {
+                                val icon =
+                                    if (user.role == "Admin") Icons.Outlined.Lock else Icons.Outlined.Create
+                                Icon(imageVector = icon, contentDescription = "")
+                            }
+                        )
+                    }
+                    HorizontalDivider()
+                }
+            }
+
         }
     }
 }

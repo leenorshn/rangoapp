@@ -3,7 +3,7 @@ package com.avenir.rangoapp.data.models
 import io.appwrite.models.Document
 
 data class CompanyModel(
-    val id: Int,
+    val id: String,
     val name: String,
     val address: String,
     val phone: String,
@@ -19,7 +19,7 @@ data class CompanyModel(
 
 fun Document<Map<String, Any>>.toCompanyModel(): CompanyModel {
     return CompanyModel(
-        id = this.id.toInt(),
+        id = this.id,
         name = this.data["name"] as String,
         address = this.data["address"] as String,
         phone = this.data["phone"] as String,
@@ -34,16 +34,4 @@ fun Document<Map<String, Any>>.toCompanyModel(): CompanyModel {
 }
 
 
- val CompanyModelExample =CompanyModel(
-    id = 1,
-    name = "Zaako",
-    address = "Butembo/Rue President/ Galerie GTB N 59",
-    phone = "+243999999999",
-     type = "Shop-numerique",
-    description = "Nous vendons des produits de qualité,habits, telephone et autres original",
-    logo = "logo",
-     email="email",
-     rccm = "RCCm",
-     idNat = "idNat",
-     idCommerce = "idCommerce"
-)
+

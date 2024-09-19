@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.ButtonDefaults
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +43,14 @@ fun LoginScreen(
     state: LoginState,
     onEvent: (LoginEvent) -> Unit,
     onBackClick:()->Unit,
+    navigateToHome: () -> Unit,
 ) {
+
+    LaunchedEffect(key1 = state.isLogged) {
+        if (state.isLogged) {
+            navigateToHome()
+        }
+    }
 
     Scaffold {
         Column(
@@ -84,7 +93,7 @@ fun LoginScreen(
                     Text(text = "Votre email")
                 },
                 leadingIcon = {
-                    Icon(Icons.Outlined.Phone, contentDescription = "")
+                    Icon(Icons.Outlined.Email, contentDescription = "")
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -134,7 +143,7 @@ fun LoginScreen(
             }
             if (state.error != null) {
                 LargeSpace()
-                Text(text = state.error)
+                Text(text = state.error,color = Color.Yellow)
             }
             Spacer(modifier = Modifier.height(32.dp))
             TextButton(

@@ -22,6 +22,7 @@ class AuthDataSource @Inject constructor(
 ) {
     private val userDatabase = UserDataSource(database,account,companyDataStore)
     private val  companyDataSource=CompanyDataSource(database,account,companyDataStore)
+
     suspend fun onLogin(
         email: String,
         password: String,
@@ -30,9 +31,12 @@ class AuthDataSource @Inject constructor(
             emit(BaseResponse.Loading)
             try {
                 val session = account.createEmailPasswordSession(
-                    "$email@dooka.com",
-                    password,
+                    email= email,
+                    password=password,
                 )
+
+
+               // companyDataStore.saveCompany(name =)
                 emit(BaseResponse.Success(session))
             } catch (ex: Exception) {
                 emit(BaseResponse.Error(ex.message.toString()))
@@ -68,7 +72,7 @@ class AuthDataSource @Inject constructor(
                 // create user in db
                 userDatabase.createUser(
                     uid = acc.id,
-                    name="",
+                    name= username.split("@")[0],
                     email = username,
                     phone="",
                     role="Admin",
@@ -82,8 +86,9 @@ class AuthDataSource @Inject constructor(
         }
     }
 
-    suspend fun onLogout() {
-        account.deleteSession("current")
+    suspend fun onLogout() :Boolean{
+       val  response=account.deleteSession("current")
+       return true
     }
 
     suspend fun isUserLoggedIn(): Flow<BaseResponse<Boolean>> {
@@ -120,4 +125,20 @@ class AuthDataSource @Inject constructor(
             }
         }
     }
+
+    suspend fun getUser(): UserModel {
+                val session = account.getSession("current")
+                val res=  database.listDocuments(
+                    databaseId = "667940d2003bfd8657a8",
+                    collectionId = "667940ed002fa6cc721f",
+                    listOf(Query.equal("uid",session.userId))
+                )
+                val users=  res.documents.map {
+                    it.toUserModel()
+                }
+                Log.d("UserDataSource",users[0].toString())
+
+            return users[0]
+        }
+
 }

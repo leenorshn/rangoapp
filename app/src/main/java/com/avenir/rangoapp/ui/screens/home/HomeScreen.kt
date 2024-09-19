@@ -150,12 +150,12 @@ fun WelcomeBox(modifier: Modifier = Modifier, homeState: HomeState?) {
     Column {
         16.dp.Space()
         Row {
-            Text("Bienvenu , ", fontSize = 32.sp, fontWeight = FontWeight.SemiBold)
+            Text("Bienvenu , ", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
             homeState?.let {
                 Text(
                     text = " ${if (it.user?.name.isNullOrEmpty()) "" else it.user?.name +"!"} ",
                     color = Color.Yellow,
-                    fontSize = 32.sp,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             }

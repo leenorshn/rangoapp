@@ -30,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.ui.components.ProductItem
-import com.avenir.rangoapp.ui.screens.auth.profile.ViewState
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)
