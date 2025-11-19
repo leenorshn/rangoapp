@@ -1,54 +1,70 @@
 package com.avenir.rangoapp.data.domaine
 
 import com.avenir.rangoapp.core.BaseResponse
-import com.avenir.rangoapp.data.datasource.AuthDataSource
+import com.avenir.rangoapp.data.datasource.GraphQLAuthDataSource
 import com.avenir.rangoapp.data.models.UserModel
+import com.avenir.rangoapp.data.models.GraphQLSession
 import com.avenir.rangoapp.data.repository.AuthRepository
-import io.appwrite.models.Session
-import io.appwrite.models.User
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authDataSource: AuthDataSource
+    private val graphQLAuthDataSource: GraphQLAuthDataSource
 ) : AuthRepository {
-    override suspend fun login(phone: String, password: String): Flow<BaseResponse<Session>> {
-        return authDataSource.onLogin(phone, password)
+    
+    override suspend fun login(phone: String, password: String): Flow<BaseResponse<GraphQLSession>> {
+        return graphQLAuthDataSource.login(phone, password)
     }
 
     override suspend fun isUserLoggedIn(): Flow<BaseResponse<Boolean>> {
-        return authDataSource.isUserLoggedIn()
-
+        return graphQLAuthDataSource.isUserLoggedIn()
     }
 
-    override suspend fun logout() :Flow<BaseResponse<Boolean>>{
-        return flow {
-            emit(BaseResponse.Loading)
-            try {
-                authDataSource.onLogout()
-                emit(BaseResponse.Success(true))
-            } catch (e: Exception) {
-                emit(BaseResponse.Error("${e.message}"))
-            }
-        }
+    override suspend fun logout(): Flow<BaseResponse<Boolean>> {
+        return graphQLAuthDataSource.logout()
     }
 
     override suspend fun getCurrentUser(): Flow<BaseResponse<UserModel>> {
-        return  authDataSource.getCurrentUser()
+        return graphQLAuthDataSource.getCurrentUser()
     }
 
-    override suspend fun createUser(
-        username: String,
+    override suspend fun register(
+        email: String,
         password: String,
-    ): Flow<BaseResponse<User<Map<String, Any>>>> {
-        return authDataSource.onRegister(
-            username,
-            password,
+        name: String,
+        phone: String,
+        companyName: String,
+        companyAddress: String,
+        companyPhone: String,
+        companyDescription: String,
+        companyType: String,
+        storeName: String,
+        storeAddress: String,
+        storePhone: String,
+        companyEmail: String?,
+        companyLogo: String?,
+        companyRccm: String?,
+        companyIdNat: String?,
+        companyIdCommerce: String?
+    ): Flow<BaseResponse<GraphQLSession>> {
+        return graphQLAuthDataSource.register(
+            email = email,
+            password = password,
+            name = name,
+            phone = phone,
+            companyName = companyName,
+            companyAddress = companyAddress,
+            companyPhone = companyPhone,
+            companyDescription = companyDescription,
+            companyType = companyType,
+            storeName = storeName,
+            storeAddress = storeAddress,
+            storePhone = storePhone,
+            companyEmail = companyEmail,
+            companyLogo = companyLogo,
+            companyRccm = companyRccm,
+            companyIdNat = companyIdNat,
+            companyIdCommerce = companyIdCommerce
         )
     }
-
-
-
-
 }

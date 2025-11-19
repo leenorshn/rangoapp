@@ -2,26 +2,31 @@ package com.avenir.rangoapp.data.repository
 
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.models.UserModel
-import io.appwrite.models.Session
-import io.appwrite.models.User
+import com.avenir.rangoapp.data.models.GraphQLSession
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
-    suspend fun login(phone: String, password: String): Flow<BaseResponse<Session>>
-    suspend fun createUser(username: String, password: String): Flow<BaseResponse<User<Map<String, Any>>>>
-    suspend fun isUserLoggedIn():Flow<BaseResponse<Boolean>>
-    suspend fun logout():Flow<BaseResponse<Boolean>>
-    suspend fun  getCurrentUser():Flow<BaseResponse<UserModel>>
-//    suspend fun createAccount(
-//        name: String,
-//        phone: String,
-//        rccm: String?,
-//        idNat: String?,
-//        idCommerce: String?,
-//        logo: String?,
-//        address: String,
-//        description: String?,
-//        type: String,
-//        city: String,
-//    ):Flow<BaseResponse<User<Map<String, Any>>>>
+    suspend fun login(phone: String, password: String): Flow<BaseResponse<GraphQLSession>>
+    suspend fun register(
+        email: String,
+        password: String,
+        name: String,
+        phone: String,
+        companyName: String,
+        companyAddress: String,
+        companyPhone: String,
+        companyDescription: String,
+        companyType: String,
+        storeName: String,
+        storeAddress: String,
+        storePhone: String,
+        companyEmail: String? = null,
+        companyLogo: String? = null,
+        companyRccm: String? = null,
+        companyIdNat: String? = null,
+        companyIdCommerce: String? = null
+    ): Flow<BaseResponse<GraphQLSession>>
+    suspend fun isUserLoggedIn(): Flow<BaseResponse<Boolean>>
+    suspend fun logout(): Flow<BaseResponse<Boolean>>
+    suspend fun getCurrentUser(): Flow<BaseResponse<UserModel>>
 }

@@ -133,6 +133,13 @@ fun AppNavHost(
                     state = registerState,
                     onEvent = registerViewModel::onTriggerEvent,
                     navigateToCompanyCreation = {
+                        // Pass user data to CompanyViewModel before navigation
+                        companyViewModel.setUserData(
+                            email = registerState.username,
+                            password = registerState.password,
+                            name = registerState.username.split("@").firstOrNull() ?: registerState.username,
+                            phone = "" // Will use company phone if not provided
+                        )
                         navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
                     }
                 )

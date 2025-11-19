@@ -1,15 +1,14 @@
 package com.avenir.rangoapp.ui.screens.auth.login
 
-import io.appwrite.models.Session
-
+import com.avenir.rangoapp.data.models.GraphQLSession
 
 data class LoginState(
-    var phone:String="",
-    var password:String="",
+    var phone: String = "",
+    var password: String = "",
     val isLoading: Boolean = false,
     val error: String? = null,
-    val user: Session? = null,
-    val  isLogged:Boolean=false
+    val user: GraphQLSession? = null,
+    val isLogged: Boolean = false
 )
 
 sealed class LoginEvent {

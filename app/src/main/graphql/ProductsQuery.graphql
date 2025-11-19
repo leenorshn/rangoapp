@@ -1,0 +1,23 @@
+query Products($storeId: String) {
+  products(storeId: $storeId) {
+    id
+    name
+    mark
+    priceVente
+    priceAchat
+    stock
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

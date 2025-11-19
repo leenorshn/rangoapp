@@ -1,0 +1,35 @@
+mutation CreateFacture($input: CreateFactureInput!) {
+  createFacture(input: $input) {
+    id
+    factureNumber
+    products {
+      productId
+      product {
+        id
+        name
+        mark
+      }
+      quantity
+      price
+    }
+    quantity
+    date
+    price
+    currency
+    client {
+      id
+      name
+      phone
+    }
+    storeId
+    store {
+      id
+      name
+    }
+    createdAt
+  }
+}
+
+
+
+

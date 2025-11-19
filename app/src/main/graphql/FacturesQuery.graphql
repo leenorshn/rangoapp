@@ -1,0 +1,38 @@
+query Factures($storeId: String) {
+  factures(storeId: $storeId) {
+    id
+    factureNumber
+    products {
+      productId
+      product {
+        id
+        name
+        mark
+        priceVente
+      }
+      quantity
+      price
+    }
+    quantity
+    date
+    price
+    currency
+    client {
+      id
+      name
+      phone
+    }
+    storeId
+    store {
+      id
+      name
+      address
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

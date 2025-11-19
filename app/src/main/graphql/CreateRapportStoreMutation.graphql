@@ -1,0 +1,24 @@
+mutation CreateRapportStore($input: CreateRapportStoreInput!) {
+  createRapportStore(input: $input) {
+    id
+    type
+    product {
+      id
+      name
+      mark
+      stock
+    }
+    quantity
+    date
+    storeId
+    store {
+      id
+      name
+    }
+    createdAt
+  }
+}
+
+
+
+

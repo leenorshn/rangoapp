@@ -1,0 +1,19 @@
+mutation CreateProvider($input: CreateProviderInput!) {
+  createProvider(input: $input) {
+    id
+    name
+    phone
+    address
+    storeId
+    store {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

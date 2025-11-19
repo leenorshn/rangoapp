@@ -4,14 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.core.BaseViewModel
-import com.avenir.rangoapp.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val repository: AuthRepository
 ): BaseViewModel<RegisterState, RegisterEvent>() {
 
     var state= mutableStateOf(RegisterState())
@@ -23,7 +21,16 @@ class RegisterViewModel @Inject constructor(
                 state.value=state.value.copy(username = event.name)
             }
             RegisterEvent.Submit -> {
-                onSubmit()
+                // Just validate and mark as ready to proceed
+                // The actual registration will happen in CompanyViewModel with all data
+                if (state.value.isTwoPasswordValid && state.value.username.isNotEmpty()) {
+                    state.value=state.value.copy(isSuccess = true, error = null)
+                } else {
+                    state.value=state.value.copy(
+                        error = "Veuillez remplir tous les champs correctement",
+                        isSuccess = false
+                    )
+                }
             }
             is RegisterEvent.PasswordChanged -> {
                 state.value=state.value.copy(password = event.password)
@@ -36,35 +43,17 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-   private fun onSubmit() {
-        viewModelScope.launch {
-            repository.createUser(
-                username = state.value.username,
-                password = state.value.password,
-            ).collect{
-                when(it){
-                    is BaseResponse.Error -> {
-                        state.value=state.value.copy(error = it.error, isLoading = false, isSuccess = false)
-                    }
-                    BaseResponse.Loading -> {
-                        state.value=state.value.copy(isLoading = true, isSuccess = false, error = null)
-                    }
-                    is BaseResponse.Success -> {
-                        state.value=state.value.copy(isLoading = false, isSuccess = true, error = null)
-                    }
-                }
-            }
-        }
-    }
-
     private fun checkPassword() {
         if (state.value.password != state.value.confirmPassword) {
-            state.value = state.value.copy(error = "Les mots de passe ne correspondent pas",
-                isTwoPasswordValid = false)
-        }else{
-            state.value = state.value.copy(isTwoPasswordValid = true)
+            state.value = state.value.copy(
+                error = "Les mots de passe ne correspondent pas",
+                isTwoPasswordValid = false
+            )
+        } else {
+            state.value = state.value.copy(
+                isTwoPasswordValid = true,
+                error = null
+            )
         }
-
     }
-
 }

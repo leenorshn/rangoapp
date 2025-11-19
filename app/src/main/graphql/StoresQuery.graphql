@@ -1,0 +1,19 @@
+query Stores {
+  stores {
+    id
+    name
+    address
+    phone
+    companyId
+    company {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

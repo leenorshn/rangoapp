@@ -1,0 +1,27 @@
+query RapportStore($storeId: String) {
+  rapportStore(storeId: $storeId) {
+    id
+    type
+    product {
+      id
+      name
+      mark
+      priceVente
+      stock
+    }
+    quantity
+    date
+    storeId
+    store {
+      id
+      name
+      address
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

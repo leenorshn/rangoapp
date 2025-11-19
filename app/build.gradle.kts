@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.apollo.graphql)
 
 }
 
@@ -100,6 +101,11 @@ dependencies{
 
     implementation(libs.sdk.appwrite.android)
 
+    // Apollo GraphQL
+    implementation(libs.apollo.runtime)
+    implementation(libs.apollo.api)
+    implementation(libs.okhttp)
+
     // Retrofit
 //    implementation(libs.retrofit)
 //    implementation(libs.converter.gson)
@@ -115,4 +121,11 @@ dependencies{
 
     implementation(libs.datetime)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+}
+
+apollo {
+    service("api") {
+        packageName.set("com.avenir.rangoapp.graphql")
+        srcDir("src/main/graphql")
+    }
 }

@@ -31,6 +31,7 @@ retrofit = "2.9.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
 roomVersion = "2.6.1"
 sdkForAndroid = "5.1.0"
+apolloGraphql = "3.8.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -71,6 +72,8 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 sdk-appwrite-android = { module = "io.appwrite:sdk-for-android", version.ref = "sdkForAndroid" }
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloGraphql" }
+apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "apolloGraphql" }
 
 datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
@@ -82,3 +85,4 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+apollo-graphql = { id = "com.apollographql.apollo3", version.ref = "apolloGraphql" }

@@ -1,0 +1,19 @@
+query Clients($storeId: String) {
+  clients(storeId: $storeId) {
+    id
+    name
+    phone
+    storeId
+    store {
+      id
+      name
+      address
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

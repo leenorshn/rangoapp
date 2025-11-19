@@ -3,7 +3,7 @@ package com.avenir.rangoapp.ui.screens.settings
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.core.BaseViewModel
-import com.avenir.rangoapp.data.domaine.UserRepositoryImpl
+import com.avenir.rangoapp.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val repository: UserRepositoryImpl
+    private val authRepository: AuthRepository
 ) :BaseViewModel<UserState,UserEvent>(){
     val state= MutableStateFlow(UserState())
 
@@ -22,7 +22,7 @@ class SettingViewModel @Inject constructor(
         when(event){
             UserEvent.OnLoadUser -> {
                 viewModelScope.launch {
-                    repository.getUsers().collect{
+                    authRepository.getCurrentUser().collect{
                         when(it){
                             is BaseResponse.Error -> {
                                 state.value=state.value.copy(
@@ -40,7 +40,7 @@ class SettingViewModel @Inject constructor(
                             }
                             is BaseResponse.Success -> {
                                 state.value=state.value.copy(
-                                    user = if(it.data.isEmpty()) null else it.data[0],
+                                    user = it.data,
                                     isLoading = false,
                                     error = null
                                 )

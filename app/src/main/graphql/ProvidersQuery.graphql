@@ -1,0 +1,20 @@
+query Providers($storeId: String) {
+  providers(storeId: $storeId) {
+    id
+    name
+    phone
+    address
+    storeId
+    store {
+      id
+      name
+      address
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+

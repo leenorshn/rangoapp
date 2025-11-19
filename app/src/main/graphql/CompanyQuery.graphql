@@ -1,0 +1,27 @@
+query Company {
+  company {
+    id
+    name
+    address
+    phone
+    email
+    description
+    type
+    logo
+    rccm
+    idNat
+    idCommerce
+    stores {
+      id
+      name
+      address
+      phone
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+
+
