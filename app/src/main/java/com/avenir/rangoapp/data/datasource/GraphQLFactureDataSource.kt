@@ -23,7 +23,11 @@ class GraphQLFactureDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                val response = apolloClient.query(FacturesQuery(storeId)).execute()
+                val response = apolloClient.query(
+                    FacturesQuery(
+                        com.apollographql.apollo3.api.Optional.presentIfNotNull(storeId)
+                    )
+                ).execute()
 
                 if (response.hasErrors()) {
                     val errorMessage = response.errors?.firstOrNull()?.message ?: "Unknown error"
@@ -31,64 +35,58 @@ class GraphQLFactureDataSource @Inject constructor(
                     return@flow
                 }
 
-                val factures = response.data?.factures?.mapNotNull { facture ->
-                    if (facture != null) {
-                        FactureModel(
-                            id = facture.id,
-                            factureNumber = facture.factureNumber,
-                            products = facture.products.mapNotNull { factureProduct ->
-                                if (factureProduct != null && factureProduct.product != null) {
-                                    val product = factureProduct.product
-                                    FactureProductModel(
-                                        productId = factureProduct.productId,
-                                        product = ProductModel(
-                                            id = product.id,
-                                            name = product.name,
-                                            mark = product.mark,
-                                            priceVente = product.priceVente,
-                                            priceAchat = 0.0, // Not available in query
-                                            stock = 0.0, // Not available in query
-                                            storeId = facture.storeId,
-                                            store = facture.store?.let { store ->
-                                                StoreInfo(
-                                                    id = store.id,
-                                                    name = store.name,
-                                                    address = store.address
-                                                )
-                                            }
-                                        ),
-                                        quantity = factureProduct.quantity,
-                                        price = factureProduct.price
-                                    )
-                                } else {
-                                    null
-                                }
-                            },
-                            quantity = facture.quantity,
-                            date = facture.date,
-                            price = facture.price,
-                            currency = facture.currency,
-                            client = facture.client?.let { client ->
-                                ClientModel(
-                                    id = client.id,
-                                    name = client.name,
-                                    phone = client.phone
+                val factures = response.data?.factures?.map { facture ->
+                    FactureModel(
+                        id = facture.id,
+                        factureNumber = facture.factureNumber,
+                        products = facture.products.map { factureProduct ->
+                            run {
+                                val product = factureProduct.product
+                                FactureProductModel(
+                                    productId = factureProduct.productId,
+                                    product = ProductModel(
+                                        id = product.id,
+                                        name = product.name,
+                                        mark = product.mark,
+                                        priceVente = product.priceVente,
+                                        priceAchat = 0.0, // Not available in query
+                                        stock = 0.0, // Not available in query
+                                        storeId = facture.storeId,
+                                        store = facture.store?.let { store ->
+                                            StoreInfo(
+                                                id = store.id,
+                                                name = store.name,
+                                                address = store.address
+                                            )
+                                        }
+                                    ),
+                                    quantity = factureProduct.quantity,
+                                    price = factureProduct.price
                                 )
-                            } ?: ClientModel("", "", ""),
-                            storeId = facture.storeId,
-                            store = facture.store?.let { store ->
-                                StoreInfo(
-                                    id = store.id,
-                                    name = store.name,
-                                    address = store.address
-                                )
-                            },
-                            createdAt = facture.createdAt,
-                            updatedAt = facture.updatedAt
-                        )
-                    } else {
-                        null
-                    }
+                            }
+                        },
+                        quantity = facture.quantity,
+                        date = facture.date,
+                        price = facture.price,
+                        currency = facture.currency,
+                        client = facture.client?.let { client ->
+                            ClientModel(
+                                id = client.id,
+                                name = client.name,
+                                phone = client.phone
+                            )
+                        } ?: ClientModel("", "", ""),
+                        storeId = facture.storeId,
+                        store = facture.store?.let { store ->
+                            StoreInfo(
+                                id = store.id,
+                                name = store.name,
+                                address = store.address
+                            )
+                        },
+                        createdAt = facture.createdAt,
+                        updatedAt = facture.updatedAt
+                    )
                 } ?: emptyList()
 
                 emit(BaseResponse.Success(factures))
@@ -152,8 +150,8 @@ class GraphQLFactureDataSource @Inject constructor(
                     val factureModel = FactureModel(
                         id = data.id,
                         factureNumber = data.factureNumber,
-                        products = data.products.mapNotNull { factureProduct ->
-                            if (factureProduct != null && factureProduct.product != null) {
+                        products = data.products.map { factureProduct ->
+                            run {
                                 val product = factureProduct.product
                                 FactureProductModel(
                                     productId = factureProduct.productId,
@@ -169,8 +167,6 @@ class GraphQLFactureDataSource @Inject constructor(
                                     quantity = factureProduct.quantity,
                                     price = factureProduct.price
                                 )
-                            } else {
-                                null
                             }
                         },
                         quantity = data.quantity,

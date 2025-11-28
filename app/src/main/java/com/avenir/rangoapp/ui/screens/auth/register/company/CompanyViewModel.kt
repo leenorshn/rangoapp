@@ -4,124 +4,65 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.core.BaseViewModel
-import com.avenir.rangoapp.data.repository.AuthRepository
+import com.avenir.rangoapp.data.repository.CompanyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CompanyViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val companyRepository: CompanyRepository
 ) : BaseViewModel<ViewState, CompanyEvent>() {
 
     var state = mutableStateOf(ViewState())
     private set
     
-    // Method to set user data from RegisterViewModel
-    fun setUserData(password: String, name: String, phone: String) {
-        state.value = state.value.copy(
-            userPassword = password,
-            userName = name,
-            userPhone = phone
-        )
-    }
-    
-    // Method to set store data from StoreViewModel
-    fun setStoreData(name: String, address: String, phone: String) {
-        state.value = state.value.copy(
-            storeName = name,
-            storeAddress = address,
-            storePhone = phone
-        )
-    }
-    
     override fun onTriggerEvent(event: CompanyEvent) {
         when(event) {
-            is CompanyEvent.AddressChanged -> {
-                state.value = state.value.copy(address = event.address)
-            }
-            is CompanyEvent.LogoChanged -> {
-                state.value = state.value.copy(logo = event.logo)
-            }
             is CompanyEvent.NameChanged -> {
                 state.value = state.value.copy(name = event.name)
             }
             is CompanyEvent.PhoneChanged -> {
                 state.value = state.value.copy(phone = event.phone)
             }
-            is CompanyEvent.DescriptionChanged -> {
-                state.value = state.value.copy(description = event.description)
+            is CompanyEvent.EmailChanged -> {
+                state.value = state.value.copy(email = event.email)
             }
             is CompanyEvent.TypeChanged -> {
                 state.value = state.value.copy(type = event.type)
             }
-            is CompanyEvent.RccmChanged -> {
-                state.value = state.value.copy(rccm = event.rccm)
-            }
-            is CompanyEvent.IdNatChanged -> {
-                state.value = state.value.copy(idNat = event.idNat)
-            }
-            is CompanyEvent.IdCommerceChanged -> {
-                state.value = state.value.copy(idCommerce = event.idCommerce)
-            }
-            is CompanyEvent.StoreNameChanged -> {
-                state.value = state.value.copy(storeName = event.storeName)
-            }
-            is CompanyEvent.StoreAddressChanged -> {
-                state.value = state.value.copy(storeAddress = event.storeAddress)
-            }
-            is CompanyEvent.StorePhoneChanged -> {
-                state.value = state.value.copy(storePhone = event.storePhone)
-            }
             CompanyEvent.OnSubmit -> {
-                register()
+                createCompany()
             }
         }
     }
 
-    private fun register() {
+    private fun createCompany() {
         viewModelScope.launch {
-            // Use company phone as user phone if user phone is empty
-            val userPhone = if (state.value.userPhone.isNotEmpty()) {
-                state.value.userPhone
-            } else {
-                state.value.phone
-            }
-            
-            // Use company name as user name if user name is empty
-            val userName = if (state.value.userName.isNotEmpty()) {
-                state.value.userName
-            } else {
-                state.value.name.split(" ").firstOrNull() ?: state.value.name
-            }
-            
-            // Use store name as company name if company name is empty, otherwise use company name
-            val companyName = if (state.value.name.isNotEmpty()) {
-                state.value.name
-            } else {
-                state.value.storeName
+            // Validate required fields
+            if (state.value.name.isBlank() || state.value.phone.isBlank()) {
+                state.value = state.value.copy(
+                    error = "Le nom et le téléphone sont requis",
+                    isLoading = false
+                )
+                return@launch
             }
             
             // Default values for required fields
-            val companyDescription = state.value.description.ifEmpty { "Entreprise créée via l'application" }
-            val companyType = state.value.type.ifEmpty { "SARL" }
+            val companyDescription = state.value.description.ifEmpty { "not definie yet" }
+            val companyType = state.value.type.ifEmpty { "Commerce" }
             
-            authRepository.register(
-                password = state.value.userPassword,
-                name = userName,
-                phone = userPhone,
-                companyName = companyName,
-                companyAddress = state.value.address,
-                companyPhone = state.value.phone,
-                companyDescription = companyDescription,
-                companyType = companyType,
-                storeName = state.value.storeName.ifEmpty { "Boutique Principale" },
-                storeAddress = state.value.storeAddress.ifEmpty { state.value.address },
-                storePhone = state.value.storePhone.ifEmpty { state.value.phone },
-                companyLogo = state.value.logo.takeIf { it.isNotEmpty() },
-                companyRccm = state.value.rccm.takeIf { it.isNotEmpty() },
-                companyIdNat = state.value.idNat.takeIf { it.isNotEmpty() },
-                companyIdCommerce = state.value.idCommerce.takeIf { it.isNotEmpty() }
+            companyRepository.createCompany(
+                name = state.value.name.trim(),
+                address = state.value.address.ifEmpty { "Non spécifiée" }, // Required by schema
+                phone = state.value.phone.trim(),
+                email = state.value.email.takeIf { it.isNotBlank() },
+                description = companyDescription,
+                type = companyType,
+                logo = null,
+                rccm = null,
+                idNat = null,
+                idCommerce = null
             ).collect {
                 when(it) {
                     is BaseResponse.Error -> {

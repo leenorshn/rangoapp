@@ -146,17 +146,31 @@ fun StepThreeScreen(
                 )
             }
             item {
-                Text(
-                    text = error.value,
-                    color = FailureColor,
-                    fontSize = 12.sp
-                )
+                if (state.error != null) {
+                    Text(
+                        text = state.error,
+                        color = FailureColor,
+                        fontSize = 12.sp
+                    )
+                }
+                if (error.value.isNotEmpty()) {
+                    Text(
+                        text = error.value,
+                        color = FailureColor,
+                        fontSize = 12.sp
+                    )
+                }
                 Spacer(modifier = Modifier.height(50.dp))
-                PrimaryButton(label = "Suivant") {
-                    if (state.name.length > 2 && state.address.length > 6 && state.phone.length > 8) {
-                        onNext()
-                    } else {
-                        error.value = "Veuillez remplir tous les champs correctement"
+                if (state.isLoading) {
+                    androidx.compose.material3.CircularProgressIndicator(color = Color.Yellow)
+                    SmallSpace()
+                } else {
+                    PrimaryButton(label = "Terminer") {
+                        if (state.name.length > 2 && state.address.length > 6 && state.phone.length > 8) {
+                            onEvent(StoreEvent.OnSubmit)
+                        } else {
+                            error.value = "Veuillez remplir tous les champs correctement"
+                        }
                     }
                 }
             }

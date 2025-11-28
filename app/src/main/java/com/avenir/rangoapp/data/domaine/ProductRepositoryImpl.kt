@@ -24,7 +24,7 @@ class ProductRepositoryImpl @Inject constructor(
             dataSource.createProduct(name, mark, priceVente, priceAchat, stock).collect { response ->
                 when (response) {
                     is BaseResponse.Success -> emit(BaseResponse.Success(true))
-                    is BaseResponse.Error -> emit(BaseResponse.Error(response.message))
+                    is BaseResponse.Error -> emit(BaseResponse.Error(response.error))
                     is BaseResponse.Loading -> emit(BaseResponse.Loading)
                 }
             }
@@ -39,7 +39,7 @@ class ProductRepositoryImpl @Inject constructor(
             dataSource.updateProduct(product).collect { response ->
                 when (response) {
                     is BaseResponse.Success -> emit(BaseResponse.Success(true))
-                    is BaseResponse.Error -> emit(BaseResponse.Error(response.message))
+                    is BaseResponse.Error -> emit(BaseResponse.Error(response.error))
                     is BaseResponse.Loading -> emit(BaseResponse.Loading)
                 }
             }

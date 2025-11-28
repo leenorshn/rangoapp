@@ -21,7 +21,11 @@ class GraphQLRapportStoreDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                val response = apolloClient.query(RapportStoreQuery(storeId)).execute()
+                val response = apolloClient.query(
+                    RapportStoreQuery(
+                        com.apollographql.apollo3.api.Optional.presentIfNotNull(storeId)
+                    )
+                ).execute()
 
                 if (response.hasErrors()) {
                     val errorMessage = response.errors?.firstOrNull()?.message ?: "Unknown error"

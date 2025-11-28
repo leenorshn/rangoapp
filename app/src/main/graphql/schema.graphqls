@@ -11,7 +11,6 @@ type User {
   uid: String!
   name: String!
   phone: String!
-  
   role: String! # Admin, User, etc.
   isBlocked: Boolean!
   companyId: String!
@@ -26,6 +25,7 @@ type Company {
   name: String!
   address: String!
   phone: String!
+  email: String
   description: String!
   type: String!
   logo: String
@@ -121,29 +121,47 @@ type AuthResponse {
   user: User!
 }
 
+type CaisseTransaction {
+  id: ID!
+  amount: Float!
+  operation: String! # "Entree" or "Sortie"
+  description: String!
+  currency: String! # "USD" or "CDF"
+  storeId: String!
+  store: Store!
+  date: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Caisse {
+  currentBalance: Float!
+  in: Float!
+  out: Float!
+  currency: String! # "USD" or "CDF"
+  storeId: String
+  store: Store
+}
+
 # ============ INPUTS ============
 
 input RegisterInput {
-  # Informations utilisateur Admin
-  password: String!
   name: String!
   phone: String!
+  password: String!
+}
 
-  # Informations Company
-  companyName: String!
-  companyAddress: String!
-  companyPhone: String!
-  companyDescription: String!
-  companyType: String!
-  companyLogo: String
-  companyRccm: String
-  companyIdNat: String
-  companyIdCommerce: String
-
-  # Informations du premier Store (boutique)
-  storeName: String!
-  storeAddress: String!
-  storePhone: String!
+input CreateCompanyInput {
+  name: String!
+  address: String!
+  phone: String!
+  email: String
+  description: String!
+  type: String!
+  logo: String
+  rccm: String
+  idNat: String
+  idCommerce: String
 }
 
 input CreateUserInput {
@@ -165,6 +183,7 @@ input UpdateCompanyInput {
   name: String
   address: String
   phone: String
+  email: String
   description: String
   type: String
   logo: String
@@ -177,6 +196,7 @@ input CreateStoreInput {
   name: String!
   address: String!
   phone: String!
+  companyID:ID!
 }
 
 input UpdateStoreInput {
@@ -259,6 +279,15 @@ input CreateRapportStoreInput {
   date: String!
 }
 
+input CreateCaisseTransactionInput {
+  amount: Float!
+  operation: String! # "Entree" or "Sortie"
+  description: String!
+  currency: String! # "USD" or "CDF"
+  storeId: String!
+  date: String
+}
+
 # ============ QUERIES ============
 
 type Query {
@@ -295,6 +324,11 @@ type Query {
   # RapportStore
   rapportStore(storeId: String): [RapportStore!]! @auth # Si storeId non fourni, retourne les rapports des stores accessibles
   rapportStoreById(id: ID!): RapportStore @auth
+
+  # Caisse
+  caisse(storeId: String, currency: String, period: String): Caisse! @auth # period: "jour", "semaine", "mois", "annee" ou null pour tout
+  caisseTransactions(storeId: String, currency: String, period: String, limit: Int): [CaisseTransaction!]! @auth
+  caisseTransaction(id: ID!): CaisseTransaction @auth
 }
 
 # ============ MUTATIONS ============
@@ -314,7 +348,9 @@ type Mutation {
   assignUserToStore(userId: ID!, storeId: ID!): User! @auth # Assigner un utilisateur User à un store
 
   # Company
+  createCompany(input: CreateCompanyInput!): Company! @auth
   updateCompany(input: UpdateCompanyInput!): Company! @auth
+  deleteCompany: Boolean! @auth
 
   # Stores
   createStore(input: CreateStoreInput!): Store! @auth
@@ -344,4 +380,8 @@ type Mutation {
   # RapportStore
   createRapportStore(input: CreateRapportStoreInput!): RapportStore! @auth
   deleteRapportStore(id: ID!): Boolean! @auth
+
+  # Caisse
+  createCaisseTransaction(input: CreateCaisseTransactionInput!): CaisseTransaction! @auth
+  deleteCaisseTransaction(id: ID!): Boolean! @auth
 }

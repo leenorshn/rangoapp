@@ -21,15 +21,7 @@ import com.avenir.rangoapp.ui.screens.auth.register.account.StepOneScreen
 import com.avenir.rangoapp.ui.screens.auth.register.company.CompanyViewModel
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepTwoScreen
 import com.avenir.rangoapp.ui.screens.auth.register.store.StepThreeScreen
-import com.avenir.rangoapp.ui.screens.auth.register.store.StoreState
-import com.avenir.rangoapp.ui.screens.auth.register.store.StoreEvent
-import com.avenir.rangoapp.ui.screens.auth.register.summary.SummaryScreen
-import com.avenir.rangoapp.ui.screens.auth.register.summary.PersonalInfo
-import com.avenir.rangoapp.ui.screens.auth.register.summary.CompanyInfo
-import com.avenir.rangoapp.ui.screens.auth.register.summary.StoreInfo
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
 import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
@@ -136,12 +128,6 @@ fun AppNavHost(
                     state = registerState,
                     onEvent = registerViewModel::onTriggerEvent,
                     navigateToCompanyCreation = {
-                        // Pass user data to CompanyViewModel before navigation
-                        companyViewModel.setUserData(
-                            password = registerState.password,
-                            name = registerState.username.split("@").firstOrNull() ?: registerState.username,
-                            phone = "" // Will use company phone if not provided
-                        )
                         navController.navigate(DestinationRoute.REGISTER_STEP_TWO_ROUTE)
                     }
                 )
@@ -149,105 +135,74 @@ fun AppNavHost(
 
             // Étape 2: Informations de l'entreprise
             composable(DestinationRoute.REGISTER_STEP_TWO_ROUTE) {
+                LaunchedEffect(key1 = companyState.isSuccess) {
+                    if (companyState.isSuccess) {
+                        navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
+                    }
+                }
                 StepTwoScreen(
                     state = companyState,
                     onNext = {
-                        navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
+                        // Navigation handled by LaunchedEffect when isSuccess is true
                     },
                     onEvent = companyViewModel::onTriggerEvent,
                 )
             }
-
-            // Étape 3: Informations du magasin
+            
+            // Étape 3: Liste des stores (si vide, afficher "Pas de Boutique")
             composable(DestinationRoute.REGISTER_STEP_THREE_ROUTE) {
-                val storeState = remember {
-                    mutableStateOf(
-                        StoreState(
-                            name = companyState.storeName,
-                            address = companyState.storeAddress,
-                            phone = companyState.storePhone
-                        )
-                    )
-                }
+                val storeViewModel: com.avenir.rangoapp.ui.screens.auth.register.store.StoreViewModel = hiltViewModel()
+                val storeState by storeViewModel.state
                 
-                StepThreeScreen(
-                    state = storeState.value,
-                    onEvent = { event ->
-                        when (event) {
-                            is StoreEvent.NameChanged -> {
-                                storeState.value = storeState.value.copy(name = event.name)
-                                companyViewModel.onTriggerEvent(
-                                    com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.StoreNameChanged(event.name)
-                                )
-                            }
-                            is StoreEvent.AddressChanged -> {
-                                storeState.value = storeState.value.copy(address = event.address)
-                                companyViewModel.onTriggerEvent(
-                                    com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.StoreAddressChanged(event.address)
-                                )
-                            }
-                            is StoreEvent.PhoneChanged -> {
-                                storeState.value = storeState.value.copy(phone = event.phone)
-                                companyViewModel.onTriggerEvent(
-                                    com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.StorePhoneChanged(event.phone)
-                                )
-                            }
-                        }
-                    },
-                    onNext = {
-                        companyViewModel.setStoreData(
-                            name = storeState.value.name,
-                            address = storeState.value.address,
-                            phone = storeState.value.phone
-                        )
-                        navController.navigate(DestinationRoute.REGISTER_STEP_SUMMARY_ROUTE)
-                    },
-                    onPrevious = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-
-            // Étape 4: Résumé
-            composable(DestinationRoute.REGISTER_STEP_SUMMARY_ROUTE) {
-                SummaryScreen(
-                    personalInfo = PersonalInfo(
-                        name = companyState.userName.ifEmpty { 
-                            registerState.username.split("@").firstOrNull() ?: registerState.username 
-                        },
-                        phone = companyState.userPhone.ifEmpty { companyState.phone }
-                    ),
-                    companyInfo = CompanyInfo(
-                        name = companyState.name,
-                        address = companyState.address,
-                        phone = companyState.phone
-                    ),
-                    storeInfo = StoreInfo(
-                        name = companyState.storeName,
-                        address = companyState.storeAddress,
-                        phone = companyState.storePhone
-                    ),
-                    isLoading = companyState.isLoading,
-                    error = companyState.error,
-                    onPrevious = {
-                        navController.popBackStack()
-                    },
-                    onSubmit = {
-                        companyViewModel.onTriggerEvent(
-                            com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.OnSubmit
-                        )
-                    }
-                )
-                
-                // Navigate to home when registration is successful
-                LaunchedEffect(companyState.isSuccess) {
-                    if (companyState.isSuccess) {
-                        navController.navigate(DestinationRoute.MAIN_NAV_ROUTE) {
+                LaunchedEffect(key1 = storeState.isSuccess) {
+                    if (storeState.isSuccess) {
+                        // Navigate to home or login after successful store creation
+                        navController.navigate(DestinationRoute.LOGIN_ROUTE) {
                             popUpTo(DestinationRoute.AUTH_ROUTE) { inclusive = true }
                         }
                     }
                 }
+                
+                com.avenir.rangoapp.ui.screens.auth.register.store.StoreListScreen(
+                    stores = emptyList(), // Empty list means no stores yet
+                    onAddStore = {
+                        navController.navigate("${DestinationRoute.REGISTER_STEP_THREE_ROUTE}/create")
+                    }
+                )
             }
+            
+            // Étape 4: Création de la première boutique
+            composable("${DestinationRoute.REGISTER_STEP_THREE_ROUTE}/create") {
+                val storeViewModel: com.avenir.rangoapp.ui.screens.auth.register.store.StoreViewModel = hiltViewModel()
+                val storeState by storeViewModel.state
+                
+                LaunchedEffect(key1 = storeState.isSuccess) {
+                    if (storeState.isSuccess) {
+                        // Navigate to home or login after successful store creation
+                        navController.navigate(DestinationRoute.LOGIN_ROUTE) {
+                            popUpTo(DestinationRoute.AUTH_ROUTE) { inclusive = true }
+                        }
+                    }
+                }
+                
+                StepThreeScreen(
+                    state = storeState,
+                    onEvent = storeViewModel::onTriggerEvent,
+                    onNext = {
+                        // Navigation handled by LaunchedEffect
+                    },
+                    onPrevious = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+
+            // Note: Summary screen removed - each step is now independent and complete
+            // Step 1: Register user account
+            // Step 2: Create company
+            // Step 3: List stores (empty initially)
+            // Step 4: Create first store
 
 
 

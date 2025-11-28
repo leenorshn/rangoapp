@@ -70,9 +70,34 @@ fun StepOneScreen(
             item {
                 LargeSpace()
                 TextInputWidget(
-                    value = state.username,
+                    value = state.name,
                     onValueChange = {
                         onEvent(RegisterEvent.NameChanged(it))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                    ),
+                    placeholder = {
+                        Text(text = "Entrer votre nom")
+                    },
+                    label = "Nom",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Email,
+                            contentDescription = ""
+                        )
+                    },
+                    supportingText = {
+                        Text("Votre nom complet", fontSize = 12.sp,color=Color.Gray)
+                    }
+                )
+                SmallSpace()
+                TextInputWidget(
+                    value = state.phone,
+                    onValueChange = {
+                        onEvent(RegisterEvent.PhoneChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -82,7 +107,7 @@ fun StepOneScreen(
                     placeholder = {
                         Text(text = "Entrer votre téléphone")
                     },
-                    label = "",
+                    label = "Téléphone",
                     leadingIcon = {
                         Icon(
                             Icons.Outlined.Phone,
@@ -90,7 +115,7 @@ fun StepOneScreen(
                         )
                     },
                     trailingIcon = {
-                        if (state.username.length in 10..13) Icon(
+                        if (state.phone.length in 10..13) Icon(
                             painter = painterResource(id = R.drawable.verified_icon),
                             contentDescription = "",
                             tint = Color.Green)
@@ -98,7 +123,6 @@ fun StepOneScreen(
                     supportingText = {
                         Text("Numéro de téléphone", fontSize = 12.sp,color=Color.Gray)
                     }
-
                 )
 
 

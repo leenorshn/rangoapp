@@ -44,31 +44,32 @@ class GraphQLAuthDataSource @Inject constructor(
                     
                     // Convert GraphQL user to UserModel
                     val graphQLUser = data.user
-                    if (graphQLUser != null) {
-                        val userModel = UserModel(
-                            uid = graphQLUser.uid,
-                            name = graphQLUser.name,
-                            phone = graphQLUser.phone,
-                            role = graphQLUser.role,
-                            isBlocked = graphQLUser.isBlocked
-                        )
-                        // Save storeId to CompanyDataStore (non-blocking)
-                        val storeIdToSave = userModel.assignedStoreId 
-                            ?: userModel.storeIds?.firstOrNull()
-                        if (storeIdToSave != null) {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                companyDataStore.saveCompany(storeIdToSave)
-                            }
+                    val userModel = UserModel(
+                        uid = graphQLUser.uid,
+                        name = graphQLUser.name,
+                        phone = graphQLUser.phone,
+                        role = graphQLUser.role,
+                        isBlocked = graphQLUser.isBlocked,
+                        companyId = graphQLUser.companyId,
+                        storeIds = graphQLUser.storeIds,
+                        assignedStoreId = graphQLUser.assignedStoreId,
+                        createdAt = graphQLUser.createdAt,
+                        updatedAt = graphQLUser.updatedAt
+                    )
+                    // Save storeId to CompanyDataStore (non-blocking)
+                    val storeIdToSave = userModel.assignedStoreId
+                        ?: userModel.storeIds?.firstOrNull()
+                    if (storeIdToSave != null) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            companyDataStore.saveCompany(storeIdToSave)
                         }
-                        
-                        val session = GraphQLSession(
-                            token = data.token,
-                            user = userModel
-                        )
-                        emit(BaseResponse.Success(session))
-                    } else {
-                        emit(BaseResponse.Error("User data is null"))
                     }
+
+                    val session = GraphQLSession(
+                        token = data.token,
+                        user = userModel
+                    )
+                    emit(BaseResponse.Success(session))
                 } else {
                     emit(BaseResponse.Error("No data returned"))
                 }
@@ -82,40 +83,24 @@ class GraphQLAuthDataSource @Inject constructor(
     suspend fun register(
         password: String,
         name: String,
-        phone: String,
-        companyName: String,
-        companyAddress: String,
-        companyPhone: String,
-        companyDescription: String,
-        companyType: String,
-        storeName: String,
-        storeAddress: String,
-        storePhone: String,
-        companyLogo: String? = null,
-        companyRccm: String? = null,
-        companyIdNat: String? = null,
-        companyIdCommerce: String? = null
+        phone: String
     ): Flow<BaseResponse<GraphQLSession>> {
         return flow {
             emit(BaseResponse.Loading)
             try {
+                // Validate required fields are not empty
+                if (password.isBlank() || name.isBlank() || phone.isBlank()) {
+                    emit(BaseResponse.Error("Tous les champs requis doivent être remplis"))
+                    return@flow
+                }
+                
                 val registerInput = com.avenir.rangoapp.graphql.type.RegisterInput(
-                    password = password,
-                    name = name,
-                    phone = phone,
-                    companyName = companyName,
-                    companyAddress = companyAddress,
-                    companyPhone = companyPhone,
-                    companyDescription = companyDescription,
-                    companyType = companyType,
-                    companyLogo = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyLogo),
-                    companyRccm = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyRccm),
-                    companyIdNat = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyIdNat),
-                    companyIdCommerce = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyIdCommerce),
-                    storeName = storeName,
-                    storeAddress = storeAddress,
-                    storePhone = storePhone
+                    password = password.trim(),
+                    name = name.trim(),
+                    phone = phone.trim()
                 )
+                
+                Log.d("GraphQLAuthDataSource", "Register input: name=$name, phone=$phone")
                 
                 val response = apolloClient.mutation(
                     RegisterMutation(registerInput)
@@ -123,6 +108,8 @@ class GraphQLAuthDataSource @Inject constructor(
 
                 if (response.hasErrors()) {
                     val errorMessage = response.errors?.firstOrNull()?.message ?: "Unknown error"
+                    Log.e("GraphQLAuthDataSource", "Register error: $errorMessage")
+                    Log.e("GraphQLAuthDataSource", "Errors: ${response.errors?.joinToString { it.message }}")
                     emit(BaseResponse.Error(errorMessage))
                     return@flow
                 }
@@ -134,37 +121,47 @@ class GraphQLAuthDataSource @Inject constructor(
                     
                     // Convert GraphQL user to UserModel
                     val graphQLUser = data.user
-                    if (graphQLUser != null) {
-                        val userModel = UserModel(
-                            uid = graphQLUser.uid,
-                            name = graphQLUser.name,
-                            phone = graphQLUser.phone,
-                            role = graphQLUser.role,
-                            isBlocked = graphQLUser.isBlocked
-                        )
-                        // Save storeId to CompanyDataStore (non-blocking)
-                        val storeIdToSave = userModel.assignedStoreId 
-                            ?: userModel.storeIds?.firstOrNull()
-                        if (storeIdToSave != null) {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                companyDataStore.saveCompany(storeIdToSave)
-                            }
+                    val userModel = UserModel(
+                        uid = graphQLUser.uid,
+                        name = graphQLUser.name,
+                        phone = graphQLUser.phone,
+                        role = graphQLUser.role,
+                        isBlocked = graphQLUser.isBlocked,
+                        companyId = graphQLUser.companyId,
+                        storeIds = graphQLUser.storeIds,
+                        assignedStoreId = graphQLUser.assignedStoreId,
+                        createdAt = graphQLUser.createdAt,
+                        updatedAt = graphQLUser.updatedAt
+                    )
+                    // Save storeId to CompanyDataStore (non-blocking)
+                    val storeIdToSave = userModel.assignedStoreId
+                        ?: userModel.storeIds?.firstOrNull()
+                    if (storeIdToSave != null) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            companyDataStore.saveCompany(storeIdToSave)
                         }
-                        
-                        val session = GraphQLSession(
-                            token = data.token,
-                            user = userModel
-                        )
-                        emit(BaseResponse.Success(session))
-                    } else {
-                        emit(BaseResponse.Error("User data is null"))
                     }
+
+                    val session = GraphQLSession(
+                        token = data.token,
+                        user = userModel
+                    )
+                    emit(BaseResponse.Success(session))
                 } else {
                     emit(BaseResponse.Error("No data returned"))
                 }
             } catch (ex: Exception) {
                 Log.e("GraphQLAuthDataSource", "Register error: ${ex.message}", ex)
-                emit(BaseResponse.Error(ex.message ?: "Unknown error"))
+                val errorMessage = when {
+                    ex.message?.contains("422") == true -> {
+                        "Erreur de validation: Veuillez vérifier que tous les champs requis sont correctement remplis"
+                    }
+                    ex.message?.contains("422") == true || ex.message?.contains("Unprocessable") == true -> {
+                        "Erreur de validation: Les données fournies ne sont pas valides. Veuillez vérifier tous les champs."
+                    }
+                    else -> ex.message ?: "Erreur inconnue lors de l'enregistrement"
+                }
+                emit(BaseResponse.Error(errorMessage))
             }
         }
     }

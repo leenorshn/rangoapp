@@ -14,11 +14,26 @@ class CompanyRepositoryImpl @Inject constructor(
         name: String,
         address: String,
         phone: String,
-        email: String
+        email: String?,
+        description: String,
+        type: String,
+        logo: String?,
+        rccm: String?,
+        idNat: String?,
+        idCommerce: String?
     ): Flow<BaseResponse<CompanyModel>> {
-        // La création de company se fait lors de l'enregistrement
-        // Pour l'instant, on retourne une erreur car updateCompany existe dans le schéma
-        return dataSource.getCompany()
+        return dataSource.createCompany(
+            name = name,
+            address = address,
+            phone = phone,
+            email = email,
+            description = description,
+            type = type,
+            logo = logo,
+            rccm = rccm,
+            idNat = idNat,
+            idCommerce = idCommerce
+        )
     }
 
     override suspend fun getCompany(): Flow<BaseResponse<CompanyModel>> {

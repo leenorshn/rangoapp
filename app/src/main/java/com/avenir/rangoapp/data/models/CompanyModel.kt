@@ -5,6 +5,7 @@ data class CompanyModel(
     val name: String,
     val address: String,
     val phone: String,
+    val email: String? = null,
     val description: String,
     val type: String,
     val logo: String? = null,

@@ -31,36 +31,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun register(
         password: String,
         name: String,
-        phone: String,
-        companyName: String,
-        companyAddress: String,
-        companyPhone: String,
-        companyDescription: String,
-        companyType: String,
-        storeName: String,
-        storeAddress: String,
-        storePhone: String,
-        companyLogo: String?,
-        companyRccm: String?,
-        companyIdNat: String?,
-        companyIdCommerce: String?
+        phone: String
     ): Flow<BaseResponse<GraphQLSession>> {
         return graphQLAuthDataSource.register(
             password = password,
             name = name,
-            phone = phone,
-            companyName = companyName,
-            companyAddress = companyAddress,
-            companyPhone = companyPhone,
-            companyDescription = companyDescription,
-            companyType = companyType,
-            storeName = storeName,
-            storeAddress = storeAddress,
-            storePhone = storePhone,
-            companyLogo = companyLogo,
-            companyRccm = companyRccm,
-            companyIdNat = companyIdNat,
-            companyIdCommerce = companyIdCommerce
+            phone = phone
         )
     }
 }

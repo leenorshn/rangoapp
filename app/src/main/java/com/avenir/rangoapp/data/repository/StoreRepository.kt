@@ -9,7 +9,8 @@ interface StoreRepository {
     suspend fun createStore(
         name: String,
         address: String,
-        phone: String
+        phone: String,
+        companyId: String
     ): Flow<BaseResponse<StoreModel>>
 }
 

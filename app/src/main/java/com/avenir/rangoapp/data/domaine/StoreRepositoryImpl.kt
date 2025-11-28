@@ -18,9 +18,10 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun createStore(
         name: String,
         address: String,
-        phone: String
+        phone: String,
+        companyId: String
     ): Flow<BaseResponse<StoreModel>> {
-        return graphQLStoreDataSource.createStore(name, address, phone)
+        return graphQLStoreDataSource.createStore(name, address, phone, companyId)
     }
 }
 

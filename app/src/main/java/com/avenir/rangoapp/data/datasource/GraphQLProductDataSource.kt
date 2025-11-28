@@ -23,7 +23,11 @@ class GraphQLProductDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                val response = apolloClient.query(ProductsQuery(storeId)).execute()
+                val response = apolloClient.query(
+                    ProductsQuery(
+                        com.apollographql.apollo3.api.Optional.presentIfNotNull(storeId)
+                    )
+                ).execute()
 
                 if (response.hasErrors()) {
                     val errorMessage = response.errors?.firstOrNull()?.message ?: "Unknown error"
@@ -182,11 +186,11 @@ class GraphQLProductDataSource @Inject constructor(
             emit(BaseResponse.Loading)
             try {
                 val input = com.avenir.rangoapp.graphql.type.UpdateProductInput(
-                    name = product.name,
-                    mark = product.mark,
-                    priceVente = product.priceVente.toDouble(),
-                    priceAchat = product.priceAchat.toDouble(),
-                    stock = product.stock.toDouble()
+                    name = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.name),
+                    mark = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.mark),
+                    priceVente = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.priceVente.toDouble()),
+                    priceAchat = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.priceAchat.toDouble()),
+                    stock = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.stock.toDouble())
                 )
 
                 val response = apolloClient.mutation(

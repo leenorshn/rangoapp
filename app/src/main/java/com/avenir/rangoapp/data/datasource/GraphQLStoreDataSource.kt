@@ -7,6 +7,7 @@ import com.avenir.rangoapp.data.models.StoreModel
 import com.avenir.rangoapp.data.models.CompanyInfo
 import com.avenir.rangoapp.graphql.StoresQuery
 import com.avenir.rangoapp.graphql.CreateStoreMutation
+import com.avenir.rangoapp.graphql.MeQuery
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -27,26 +28,22 @@ class GraphQLStoreDataSource @Inject constructor(
                     return@flow
                 }
 
-                val stores = response.data?.stores?.mapNotNull { store ->
-                    if (store != null) {
-                        StoreModel(
-                            id = store.id,
-                            name = store.name,
-                            address = store.address,
-                            phone = store.phone,
-                            companyId = store.companyId,
-                            company = store.company?.let { company ->
-                                CompanyInfo(
-                                    id = company.id,
-                                    name = company.name
-                                )
-                            },
-                            createdAt = store.createdAt,
-                            updatedAt = store.updatedAt
-                        )
-                    } else {
-                        null
-                    }
+                val stores = response.data?.stores?.map { store ->
+                    StoreModel(
+                        id = store.id,
+                        name = store.name,
+                        address = store.address,
+                        phone = store.phone,
+                        companyId = store.companyId,
+                        company = store.company?.let { company ->
+                            CompanyInfo(
+                                id = company.id,
+                                name = company.name
+                            )
+                        },
+                        createdAt = store.createdAt,
+                        updatedAt = store.updatedAt
+                    )
                 } ?: emptyList()
 
                 emit(BaseResponse.Success(stores))
@@ -60,15 +57,23 @@ class GraphQLStoreDataSource @Inject constructor(
     suspend fun createStore(
         name: String,
         address: String,
-        phone: String
+        phone: String,
+        companyId: String
     ): Flow<BaseResponse<StoreModel>> {
         return flow {
             emit(BaseResponse.Loading)
             try {
+                // Validate required fields
+                if (name.isBlank() || address.isBlank() || phone.isBlank() || companyId.isBlank()) {
+                    emit(BaseResponse.Error("Tous les champs requis doivent être remplis"))
+                    return@flow
+                }
+
                 val input = com.avenir.rangoapp.graphql.type.CreateStoreInput(
-                    name = name,
-                    address = address,
-                    phone = phone
+                    name = name.trim(),
+                    address = address.trim(),
+                    phone = phone.trim(),
+                    companyID = companyId
                 )
 
                 val response = apolloClient.mutation(
@@ -89,7 +94,7 @@ class GraphQLStoreDataSource @Inject constructor(
                         address = data.address,
                         phone = data.phone,
                         companyId = data.companyId,
-                        company = data.company?.let { company ->
+                        company = data.company.let { company ->
                             CompanyInfo(
                                 id = company.id,
                                 name = company.name

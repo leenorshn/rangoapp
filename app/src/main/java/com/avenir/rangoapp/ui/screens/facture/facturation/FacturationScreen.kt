@@ -8,16 +8,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +31,8 @@ import com.avenir.rangoapp.ui.components.FactureCardItem
 
 @Composable
 fun FacturationScreen(
+    state: FactureState,
+    onEvent: (FactureEvent) -> Unit,
     onClientClicked:()->Unit,
     onNewFactureClicked:()->Unit,
 ) {
@@ -43,6 +48,19 @@ fun FacturationScreen(
             }
         }
     ) {
+        if (state.isLoading) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().padding(it),
+                color = Color.Yellow,
+            )
+        } else if (state.error != null) {
+            Text(
+                text = state.error,
+                modifier = Modifier.fillMaxWidth().padding(it),
+                color = Color.Red
+            )
+        }
+        
         LazyColumn(modifier = Modifier.padding(it)) {
             item {
                 Row(
@@ -76,8 +94,20 @@ fun FacturationScreen(
             item {
                 SmallSpace()
             }
-            items(3) {
-                FactureCardItem()
+            if (state.factures.isEmpty() && !state.isLoading && state.error == null) {
+                item {
+                    Text(
+                        text = "Aucune facture trouvée",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        color = Color.Gray
+                    )
+                }
+            } else {
+                items(state.factures) { facture ->
+                    FactureCardItem(facture = facture)
+                }
             }
         }
     }

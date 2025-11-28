@@ -9,12 +9,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +33,7 @@ import com.avenir.rangoapp.core.LargeSpace
 import com.avenir.rangoapp.core.SmallSpace
 import com.avenir.rangoapp.ui.components.PrimaryButton
 import com.avenir.rangoapp.ui.components.TextInputWidget
+import com.avenir.rangoapp.ui.components.DropDownMenuItem
 import com.avenir.rangoapp.ui.theme.FailureColor
 
 
@@ -38,10 +43,18 @@ fun StepTwoScreen(
     onEvent: (CompanyEvent) -> Unit,
     onNext: () -> Unit,
 ) {
-    
-    var error= remember {
-        mutableStateOf("")
+    var error = remember { mutableStateOf("") }
+    val companyTypes = listOf("Type", "Commerce", "SARL", "SA", "SNC", "Autre")
+    val selectedTypeIndex = remember { 
+        mutableStateOf(
+            if (state.type.isNotEmpty()) {
+                companyTypes.indexOf(state.type).takeIf { it > 0 } ?: 0
+            } else {
+                0
+            }
+        )
     }
+    
     Scaffold {
         LazyColumn(
             modifier = Modifier
@@ -52,18 +65,13 @@ fun StepTwoScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(24.dp))
-
                 Icon(
-                    painter = painterResource(id = R.drawable.logo), contentDescription = "",
+                    painter = painterResource(id = R.drawable.logo), 
+                    contentDescription = "",
                     modifier = Modifier.size(72.dp),
                     tint = Color.Yellow,
                 )
-                Text(text = "Informations de l'entreprise", fontSize = 24.sp)
-                Text(
-                    text = "Renseignez les informations de votre entreprise",
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
+                Text(text = "New Company", fontSize = 24.sp)
             }
             item {
                 LargeSpace()
@@ -73,52 +81,37 @@ fun StepTwoScreen(
                         onEvent(CompanyEvent.NameChanged(it))
                     },
                     placeholder = {
-                        Text(text = "Nom de l'entreprise")
+                        Text(text = "Nom")
                     },
-                    supportingText = {
-                        Text(
-                            text = "Exemple: Dooka-Shop",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "Nom de l'entreprise",
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Nom",
                     leadingIcon = {
                         Icon(
                             Icons.Outlined.Create,
                             contentDescription = ""
                         )
                     }
-
                 )
                 SmallSpace()
                 TextInputWidget(
-                    value = state.address,
+                    value = state.email,
                     onValueChange = {
-                        onEvent(CompanyEvent.AddressChanged(it))
+                        onEvent(CompanyEvent.EmailChanged(it))
                     },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "Adresse de l'entreprise",
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Email",
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email
+                    ),
+                    placeholder = {
+                        Text(text = "Email")
+                    },
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.LocationOn,
+                            Icons.Outlined.Email,
                             contentDescription = ""
                         )
-                    },
-                    placeholder = {
-                        Text(text = "Adresse")
-                    },
-                    supportingText = {
-                        Text(
-                            text = "Exemple: Butembo/Rue-Kin/GTB N=32",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
                     }
-
                 )
                 SmallSpace()
                 TextInputWidget(
@@ -126,46 +119,59 @@ fun StepTwoScreen(
                     onValueChange = {
                         onEvent(CompanyEvent.PhoneChanged(it))
                     },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "Téléphone de l'entreprise",
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Phone,
-                            contentDescription = ""
-                        )
-                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Some phone",
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Phone
                     ),
                     placeholder = {
                         Text(text = "Téléphone")
                     },
-                    supportingText = {
-                        Text(
-                            text = "Numéro de contact de l'entreprise",
-                            fontSize = 12.sp,
-                            color = Color.Gray
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Phone,
+                            contentDescription = ""
                         )
                     }
                 )
-
+                SmallSpace()
+                // Dropdown for Type
+                Column {
+                    Text(text = "Type", fontSize = 12.sp, color = Color.Gray)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    DropDownMenuItem(
+                        itemList = companyTypes,
+                        selectedIndex = selectedTypeIndex.value,
+                        modifier = Modifier.fillMaxWidth(),
+                        onItemClick = { index ->
+                            if (index > 0) { // Skip "Type" placeholder
+                                selectedTypeIndex.value = index
+                                onEvent(CompanyEvent.TypeChanged(companyTypes[index]))
+                            }
+                        }
+                    )
+                }
             }
-
             item {
-                Text(text = error.value,color= FailureColor, fontSize = 12.sp)
-                Spacer(modifier = Modifier.height(80.dp))
-
-
-
-                PrimaryButton(label = "Suivant") {
-                    if (state.name.length > 2 && state.address.length > 6 && state.phone.length > 8) {
-                        onNext()
-                    } else {
-                        error.value = "Veuillez remplir tous les champs correctement"
+                if (state.error != null) {
+                    Text(text = state.error, color = FailureColor, fontSize = 12.sp)
+                }
+                if (error.value.isNotEmpty()) {
+                    Text(text = error.value, color = FailureColor, fontSize = 12.sp)
+                }
+                Spacer(modifier = Modifier.height(50.dp))
+                if (state.isLoading) {
+                    androidx.compose.material3.CircularProgressIndicator(color = Color.Yellow)
+                    SmallSpace()
+                } else {
+                    PrimaryButton(label = "Creer") {
+                        if (state.name.length > 2 && state.phone.length > 8) {
+                            onEvent(CompanyEvent.OnSubmit)
+                        } else {
+                            error.value = "Veuillez remplir tous les champs correctement"
+                        }
                     }
                 }
-
             }
         }
     }
