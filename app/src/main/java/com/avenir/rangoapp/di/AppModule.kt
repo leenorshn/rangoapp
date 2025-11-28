@@ -8,6 +8,7 @@ import com.avenir.rangoapp.data.datasource.GraphQLCompanyDataSource
 import com.avenir.rangoapp.data.datasource.GraphQLRapportStoreDataSource
 import com.avenir.rangoapp.data.datasource.GraphQLUserDataSource
 import com.avenir.rangoapp.data.datasource.GraphQLFactureDataSource
+import com.avenir.rangoapp.data.datasource.GraphQLClientDataSource
 import com.avenir.rangoapp.data.datasource.CompanyDataStore
 import com.avenir.rangoapp.data.datasource.SharePrefDB
 import com.avenir.rangoapp.data.domaine.AuthRepositoryImpl
@@ -16,12 +17,14 @@ import com.avenir.rangoapp.data.domaine.CompanyRepositoryImpl
 import com.avenir.rangoapp.data.domaine.RapportStoreRepositoryImpl
 import com.avenir.rangoapp.data.domaine.UserRepositoryImpl
 import com.avenir.rangoapp.data.domaine.VenteRepositoryImpl
+import com.avenir.rangoapp.data.domaine.ClientRepositoryImpl
 import com.avenir.rangoapp.data.repository.AuthRepository
 import com.avenir.rangoapp.data.repository.StoreRepository
 import com.avenir.rangoapp.data.repository.CompanyRepository
 import com.avenir.rangoapp.data.repository.RapportStoreRepository
 import com.avenir.rangoapp.data.repository.UserRepository
 import com.avenir.rangoapp.data.repository.VenteRepository
+import com.avenir.rangoapp.data.repository.ClientRepository
 import com.avenir.rangoapp.core.TokenManager
 import com.avenir.rangoapp.core.GraphQLClient
 import com.apollographql.apollo3.ApolloClient
@@ -193,6 +196,22 @@ object AppModule {
         return VenteRepositoryImpl(graphQLFactureDataSource)
     }
 
-    // ========== Note: Other repositories (Client, Provider, etc.) ==========
-    // ========== will be added here as GraphQL data sources are created ==========
+    // ========== Client Repository ==========
+    
+    @Provides
+    @Singleton
+    fun provideGraphQLClientDataSource(
+        apolloClient: ApolloClient,
+        companyDataStore: CompanyDataStore
+    ): GraphQLClientDataSource {
+        return GraphQLClientDataSource(apolloClient, companyDataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideClientRepository(
+        graphQLClientDataSource: GraphQLClientDataSource
+    ): ClientRepository {
+        return ClientRepositoryImpl(graphQLClientDataSource)
+    }
 }
