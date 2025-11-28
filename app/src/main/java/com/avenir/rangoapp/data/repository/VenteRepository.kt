@@ -5,15 +5,14 @@ import com.avenir.rangoapp.data.models.FactureModel
 import kotlinx.coroutines.flow.Flow
 
 interface VenteRepository {
-
     suspend fun createVente(
-        products:List<String>,
-        client:String,
-        quantity:Int,
-        price:Double,
-        date:String,
-        currency:String
-    ):Flow<BaseResponse<Boolean>>
+        products: List<Pair<String, Pair<Int, Double>>>, // List of (productId, (quantity, price))
+        clientId: String,
+        quantity: Int,
+        price: Double,
+        date: String,
+        currency: String
+    ): Flow<BaseResponse<FactureModel>>
 
-    suspend fun getFactures():Flow<BaseResponse<List<FactureModel>>>
+    suspend fun getFactures(): Flow<BaseResponse<List<FactureModel>>>
 }

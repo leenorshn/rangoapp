@@ -3,7 +3,7 @@ package com.avenir.rangoapp.ui.screens.facture.facturation
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.core.BaseViewModel
-import com.avenir.rangoapp.data.domaine.VenteRepositoryImpl
+import com.avenir.rangoapp.data.repository.VenteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FactureViewModel @Inject constructor(
-    private val repository: VenteRepositoryImpl
+    private val repository: VenteRepository
 ):BaseViewModel<FactureState,FactureEvent> (){
 
     val state = MutableStateFlow(FactureState())
@@ -22,16 +22,46 @@ class FactureViewModel @Inject constructor(
             FactureEvent.OnFactureLoaded -> {
                 getFactures()
             }
-            is FactureEvent.OnSaveFacture -> TODO()
+            is FactureEvent.OnSaveFacture -> {
+                createFacture(event)
+            }
         }
     }
 
     //private save
-    private fun createFacture(){
+    private fun createFacture(event: FactureEvent.OnSaveFacture){
         viewModelScope.launch {
-//            repository.createVente().collect{
-//
-//            }
+            repository.createVente(
+                products = event.products,
+                clientId = event.clientId,
+                quantity = event.quantity,
+                price = event.price,
+                date = event.date,
+                currency = event.currency
+            ).collect{
+                when(it){
+                    is BaseResponse.Error -> {
+                        state.value = state.value.copy(
+                            error = it.error,
+                            isLoading = false
+                        )
+                    }
+                    BaseResponse.Loading -> {
+                        state.value = state.value.copy(
+                            isLoading = true,
+                            error = null
+                        )
+                    }
+                    is BaseResponse.Success -> {
+                        state.value = state.value.copy(
+                            isLoading = false,
+                            error = null
+                        )
+                        // Reload factures after successful creation
+                        getFactures()
+                    }
+                }
+            }
         }
     }
     //private loadData

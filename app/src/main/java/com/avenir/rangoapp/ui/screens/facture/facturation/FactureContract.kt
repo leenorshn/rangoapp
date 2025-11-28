@@ -14,10 +14,11 @@ data class FactureState(
 sealed class FactureEvent{
     data object OnFactureLoaded:FactureEvent()
     data class OnSaveFacture(
-        val products:List<String>,
-        val client:String,
-        val quantity:Int,
-        val price:Double,
-        val date:String,
+        val products: List<Pair<String, Pair<Int, Double>>>, // List of (productId, (quantity, price))
+        val clientId: String,
+        val quantity: Int,
+        val price: Double,
+        val date: String,
+        val currency: String
     ):FactureEvent()
 }
