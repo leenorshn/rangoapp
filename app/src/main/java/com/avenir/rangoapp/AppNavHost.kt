@@ -19,9 +19,17 @@ import com.avenir.rangoapp.ui.screens.auth.profile.profileNavGraph
 import com.avenir.rangoapp.ui.screens.auth.register.account.RegisterViewModel
 import com.avenir.rangoapp.ui.screens.auth.register.account.StepOneScreen
 import com.avenir.rangoapp.ui.screens.auth.register.company.CompanyViewModel
-import com.avenir.rangoapp.ui.screens.auth.register.company.StepFinalScreen
-
 import com.avenir.rangoapp.ui.screens.auth.register.company.StepTwoScreen
+import com.avenir.rangoapp.ui.screens.auth.register.store.StepThreeScreen
+import com.avenir.rangoapp.ui.screens.auth.register.store.StoreState
+import com.avenir.rangoapp.ui.screens.auth.register.store.StoreEvent
+import com.avenir.rangoapp.ui.screens.auth.register.summary.SummaryScreen
+import com.avenir.rangoapp.ui.screens.auth.register.summary.PersonalInfo
+import com.avenir.rangoapp.ui.screens.auth.register.summary.CompanyInfo
+import com.avenir.rangoapp.ui.screens.auth.register.summary.StoreInfo
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 import com.avenir.rangoapp.ui.screens.auth.welcome.welcomeNavigation
 import com.avenir.rangoapp.ui.screens.caisse.account.accountCaisseNavigation
@@ -43,11 +51,11 @@ import com.avenir.rangoapp.ui.screens.settings.settingsNavigation
 import com.avenir.rangoapp.ui.screens.settings.shop.shopSettingsNavigation
 import com.avenir.rangoapp.ui.screens.settings.users.newuser.newUserNavigation
 import com.avenir.rangoapp.ui.screens.settings.users.userSettingNavigation
-import com.avenir.rangoapp.ui.screens.store.newproduct.newProductStoreNavigation
-import com.avenir.rangoapp.ui.screens.store.provider.newprovider.newProviderNavigation
-import com.avenir.rangoapp.ui.screens.store.provider.providerStoreNavigation
-import com.avenir.rangoapp.ui.screens.store.rapport.rapportStoreNavigation
-import com.avenir.rangoapp.ui.screens.store.storeNavigation
+import com.avenir.rangoapp.ui.screens.stock.newproduct.newProductStoreNavigation
+import com.avenir.rangoapp.ui.screens.stock.provider.newprovider.newProviderNavigation
+import com.avenir.rangoapp.ui.screens.stock.provider.providerStoreNavigation
+import com.avenir.rangoapp.ui.screens.stock.rapport.rapportStoreNavigation
+import com.avenir.rangoapp.ui.screens.stock.storeNavigation
 
 
 /**
@@ -68,13 +76,8 @@ fun AppNavHost(
 
     val companyState by companyViewModel.state
 
-    val startDestination = if (state.isLoggedIn) {
-        DestinationRoute.MAIN_NAV_ROUTE
-    } else if (state.isLoading) {
-        DestinationRoute.LOADING_SCREEN_ROUTE
-    } else {
-        DestinationRoute.AUTH_ROUTE
-    }
+    // Toujours afficher le login en premier
+    val startDestination = DestinationRoute.AUTH_ROUTE
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         loadingScreenNavigation()
 
@@ -122,7 +125,7 @@ fun AppNavHost(
 
         }
         navigation(
-            startDestination = DestinationRoute.WELCOME_ROUTE,
+            startDestination = DestinationRoute.LOGIN_ROUTE,
             route = DestinationRoute.AUTH_ROUTE,
         ) {
             welcomeNavigation(navController)
@@ -135,7 +138,6 @@ fun AppNavHost(
                     navigateToCompanyCreation = {
                         // Pass user data to CompanyViewModel before navigation
                         companyViewModel.setUserData(
-                            email = registerState.username,
                             password = registerState.password,
                             name = registerState.username.split("@").firstOrNull() ?: registerState.username,
                             phone = "" // Will use company phone if not provided
@@ -145,29 +147,106 @@ fun AppNavHost(
                 )
             }
 
+            // Étape 2: Informations de l'entreprise
             composable(DestinationRoute.REGISTER_STEP_TWO_ROUTE) {
                 StepTwoScreen(
                     state = companyState,
                     onNext = {
-                        navController.navigate(DestinationRoute.REGISTER_STEP_FINAL_ROUTE)
+                        navController.navigate(DestinationRoute.REGISTER_STEP_THREE_ROUTE)
                     },
                     onEvent = companyViewModel::onTriggerEvent,
-
                 )
             }
 
-            composable(DestinationRoute.REGISTER_STEP_FINAL_ROUTE) {
-                StepFinalScreen(
-                    state = companyState,
-
-                    onEvent = companyViewModel::onTriggerEvent,
-                onPrevious = {
-                    navController.popBackStack()
-                },
-                    navigateToHome = {
-                        navController.navigate(DestinationRoute.HOME_ROUTE)
+            // Étape 3: Informations du magasin
+            composable(DestinationRoute.REGISTER_STEP_THREE_ROUTE) {
+                val storeState = remember {
+                    mutableStateOf(
+                        StoreState(
+                            name = companyState.storeName,
+                            address = companyState.storeAddress,
+                            phone = companyState.storePhone
+                        )
+                    )
+                }
+                
+                StepThreeScreen(
+                    state = storeState.value,
+                    onEvent = { event ->
+                        when (event) {
+                            is StoreEvent.NameChanged -> {
+                                storeState.value = storeState.value.copy(name = event.name)
+                                companyViewModel.onTriggerEvent(
+                                    com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.StoreNameChanged(event.name)
+                                )
+                            }
+                            is StoreEvent.AddressChanged -> {
+                                storeState.value = storeState.value.copy(address = event.address)
+                                companyViewModel.onTriggerEvent(
+                                    com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.StoreAddressChanged(event.address)
+                                )
+                            }
+                            is StoreEvent.PhoneChanged -> {
+                                storeState.value = storeState.value.copy(phone = event.phone)
+                                companyViewModel.onTriggerEvent(
+                                    com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.StorePhoneChanged(event.phone)
+                                )
+                            }
+                        }
+                    },
+                    onNext = {
+                        companyViewModel.setStoreData(
+                            name = storeState.value.name,
+                            address = storeState.value.address,
+                            phone = storeState.value.phone
+                        )
+                        navController.navigate(DestinationRoute.REGISTER_STEP_SUMMARY_ROUTE)
+                    },
+                    onPrevious = {
+                        navController.popBackStack()
                     }
                 )
+            }
+
+            // Étape 4: Résumé
+            composable(DestinationRoute.REGISTER_STEP_SUMMARY_ROUTE) {
+                SummaryScreen(
+                    personalInfo = PersonalInfo(
+                        name = companyState.userName.ifEmpty { 
+                            registerState.username.split("@").firstOrNull() ?: registerState.username 
+                        },
+                        phone = companyState.userPhone.ifEmpty { companyState.phone }
+                    ),
+                    companyInfo = CompanyInfo(
+                        name = companyState.name,
+                        address = companyState.address,
+                        phone = companyState.phone
+                    ),
+                    storeInfo = StoreInfo(
+                        name = companyState.storeName,
+                        address = companyState.storeAddress,
+                        phone = companyState.storePhone
+                    ),
+                    isLoading = companyState.isLoading,
+                    error = companyState.error,
+                    onPrevious = {
+                        navController.popBackStack()
+                    },
+                    onSubmit = {
+                        companyViewModel.onTriggerEvent(
+                            com.avenir.rangoapp.ui.screens.auth.register.company.CompanyEvent.OnSubmit
+                        )
+                    }
+                )
+                
+                // Navigate to home when registration is successful
+                LaunchedEffect(companyState.isSuccess) {
+                    if (companyState.isSuccess) {
+                        navController.navigate(DestinationRoute.MAIN_NAV_ROUTE) {
+                            popUpTo(DestinationRoute.AUTH_ROUTE) { inclusive = true }
+                        }
+                    }
+                }
             }
 
 

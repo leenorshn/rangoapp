@@ -99,7 +99,7 @@ fun StepFinalScreen(
             }
 
             item {
-                Spacer(modifier = Modifier.height(100.dp))
+                Spacer(modifier = Modifier.height(40.dp))
                 if (!state.isLoading){
                     Row {
                         ElevatedButton(

@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store
+package com.avenir.rangoapp.ui.screens.stock
 
 import android.os.Build
 import androidx.annotation.RequiresApi

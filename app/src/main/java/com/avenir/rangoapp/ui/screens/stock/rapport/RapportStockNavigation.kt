@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store.rapport
+package com.avenir.rangoapp.ui.screens.stock.rapport
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -12,7 +12,7 @@ import com.avenir.rangoapp.core.DestinationRoute
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.rapportStoreNavigation() {
     composable(DestinationRoute.RAPPORT_STORE_ROUTE) {
-        val viewModel:RapportStoreViewModel= hiltViewModel()
+        val viewModel:RapportStockViewModel= hiltViewModel()
         val state by viewModel.state.collectAsState()
         RapportStoreScreen(
             state = state,

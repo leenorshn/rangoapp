@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store.newproduct
+package com.avenir.rangoapp.ui.screens.stock.newproduct
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue

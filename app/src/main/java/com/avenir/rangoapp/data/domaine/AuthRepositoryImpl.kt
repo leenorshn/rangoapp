@@ -29,7 +29,6 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun register(
-        email: String,
         password: String,
         name: String,
         phone: String,
@@ -41,14 +40,12 @@ class AuthRepositoryImpl @Inject constructor(
         storeName: String,
         storeAddress: String,
         storePhone: String,
-        companyEmail: String?,
         companyLogo: String?,
         companyRccm: String?,
         companyIdNat: String?,
         companyIdCommerce: String?
     ): Flow<BaseResponse<GraphQLSession>> {
         return graphQLAuthDataSource.register(
-            email = email,
             password = password,
             name = name,
             phone = phone,
@@ -60,7 +57,6 @@ class AuthRepositoryImpl @Inject constructor(
             storeName = storeName,
             storeAddress = storeAddress,
             storePhone = storePhone,
-            companyEmail = companyEmail,
             companyLogo = companyLogo,
             companyRccm = companyRccm,
             companyIdNat = companyIdNat,

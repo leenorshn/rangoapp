@@ -10,7 +10,6 @@ data class ViewState(
     val logo: String = "",
     val phone: String = "",
     val address: String = "",
-    val email: String = "",
     val description: String = "",
     val type: String = "",
     val rccm: String = "",
@@ -23,7 +22,6 @@ data class ViewState(
     val storePhone: String = "",
     
     // User info from Step 1 (passed from RegisterViewModel)
-    val userEmail: String = "",
     val userPassword: String = "",
     val userName: String = "",
     val userPhone: String = ""
@@ -34,7 +32,6 @@ sealed class CompanyEvent {
     data class LogoChanged(val logo: String): CompanyEvent()
     data class PhoneChanged(val phone: String): CompanyEvent()
     data class AddressChanged(val address: String): CompanyEvent()
-    data class EmailChanged(val email: String): CompanyEvent()
     data class DescriptionChanged(val description: String): CompanyEvent()
     data class TypeChanged(val type: String): CompanyEvent()
     data class RccmChanged(val rccm: String): CompanyEvent()

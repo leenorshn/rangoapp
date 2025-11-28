@@ -6,7 +6,6 @@ mutation Register($input: RegisterInput!) {
       uid
       name
       phone
-      email
       role
       isBlocked
       companyId
@@ -17,6 +16,8 @@ mutation Register($input: RegisterInput!) {
     }
   }
 }
+
+
 
 
 

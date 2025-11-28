@@ -99,8 +99,6 @@ dependencies{
     // KotlinX Serialization
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.sdk.appwrite.android)
-
     // Apollo GraphQL
     implementation(libs.apollo.runtime)
     implementation(libs.apollo.api)

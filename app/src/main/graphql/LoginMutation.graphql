@@ -6,7 +6,6 @@ mutation Login($phone: String!, $password: String!) {
       uid
       name
       phone
-      email
       role
       isBlocked
       companyId
@@ -17,6 +16,8 @@ mutation Login($phone: String!, $password: String!) {
     }
   }
 }
+
+
 
 
 

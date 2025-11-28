@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store
+package com.avenir.rangoapp.ui.screens.stock
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -9,12 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.avenir.rangoapp.core.DestinationRoute
-import com.avenir.rangoapp.ui.screens.auth.profile.ProfileViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.storeNavigation(navController: NavController) {
     composable(DestinationRoute.STORE_ROUTE) {
-        val viewModel:StoreViewModel= hiltViewModel()
+        val viewModel:StockViewModel= hiltViewModel()
         val state by viewModel.state.collectAsState()
         StoreScreen(
             state = state,

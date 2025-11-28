@@ -4,7 +4,6 @@ query Users {
     uid
     name
     phone
-    email
     role
     isBlocked
     companyId
@@ -14,6 +13,8 @@ query Users {
     updatedAt
   }
 }
+
+
 
 
 

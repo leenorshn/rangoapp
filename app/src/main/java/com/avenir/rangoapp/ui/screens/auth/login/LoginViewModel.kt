@@ -6,14 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
-import com.avenir.rangoapp.data.domaine.AuthRepositoryImpl
+import com.avenir.rangoapp.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: AuthRepositoryImpl
+    private val repository: AuthRepository
 ): ViewModel() {
 
     var state by mutableStateOf(LoginState())

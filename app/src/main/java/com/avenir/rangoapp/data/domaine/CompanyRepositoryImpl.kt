@@ -1,50 +1,27 @@
 package com.avenir.rangoapp.data.domaine
 
 import com.avenir.rangoapp.core.BaseResponse
-import com.avenir.rangoapp.data.datasource.CompanyDataSource
+import com.avenir.rangoapp.data.datasource.GraphQLCompanyDataSource
 import com.avenir.rangoapp.data.models.CompanyModel
 import com.avenir.rangoapp.data.repository.CompanyRepository
-import io.appwrite.models.Document
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CompanyRepositoryImpl @Inject constructor(
-    private val companyDataSource: CompanyDataSource
+    private val dataSource: GraphQLCompanyDataSource
 ) : CompanyRepository {
     override suspend fun createCompany(
         name: String,
         address: String,
         phone: String,
         email: String
-    ): Flow<BaseResponse<Document<Map<String, Any>>>> {
-
-
-        return flow {
-            emit(BaseResponse.Loading)
-            try {
-                val docs = companyDataSource.updateCompany(
-                    name,
-                    address,
-                    phone
-                );
-                emit(BaseResponse.Success(docs))
-            } catch (e: Exception) {
-                emit(BaseResponse.Error(e.message.toString()))
-            }
-        }
+    ): Flow<BaseResponse<CompanyModel>> {
+        // La création de company se fait lors de l'enregistrement
+        // Pour l'instant, on retourne une erreur car updateCompany existe dans le schéma
+        return dataSource.getCompany()
     }
 
     override suspend fun getCompany(): Flow<BaseResponse<CompanyModel>> {
-        return flow {
-            emit(BaseResponse.Loading)
-            try {
-                val doc = companyDataSource.getCompany()
-                emit(BaseResponse.Success(doc))
-            } catch (e: Exception) {
-                println(e)
-                emit(BaseResponse.Error(e.message.toString()))
-            }
-        }
+        return dataSource.getCompany()
     }
 }

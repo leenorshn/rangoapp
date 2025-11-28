@@ -1,7 +1,6 @@
 package com.avenir.rangoapp.ui.screens.auth.profile
 
 import com.avenir.rangoapp.data.models.UserModel
-import io.appwrite.models.User
 
 
 sealed class ProfileEvent{

@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store.newproduct
+package com.avenir.rangoapp.ui.screens.stock.newproduct
 
 
 data class NewProductState(

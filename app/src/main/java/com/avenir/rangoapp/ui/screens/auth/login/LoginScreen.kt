@@ -90,13 +90,13 @@ fun LoginScreen(
                         RoundedCornerShape(16)
                     ),
                 placeholder = {
-                    Text(text = "Votre email")
+                    Text(text = "Numero de telephone")
                 },
                 leadingIcon = {
-                    Icon(Icons.Outlined.Email, contentDescription = "")
+                    Icon(Icons.Outlined.Phone, contentDescription = "")
                 },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
+                    keyboardType = KeyboardType.Phone,
                 ),
             )
             SmallSpace()
@@ -122,6 +122,7 @@ fun LoginScreen(
             LargeSpace()
             LargeSpace()
             LargeSpace()
+
             if (state.isLoading){
                 CircularProgressIndicator(color = Color.Yellow, modifier = Modifier.size(32.dp))
             }else {

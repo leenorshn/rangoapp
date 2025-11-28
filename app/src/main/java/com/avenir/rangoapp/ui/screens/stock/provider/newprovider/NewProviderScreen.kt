@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store.provider.newprovider
+package com.avenir.rangoapp.ui.screens.stock.provider.newprovider
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store.provider
+package com.avenir.rangoapp.ui.screens.stock.provider
 
 import com.avenir.rangoapp.data.models.ProviderModel
 

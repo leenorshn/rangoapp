@@ -9,13 +9,18 @@ import com.avenir.rangoapp.graphql.MeQuery
 import com.avenir.rangoapp.graphql.RegisterMutation
 import com.avenir.rangoapp.data.models.UserModel
 import com.avenir.rangoapp.data.models.GraphQLSession
+import com.avenir.rangoapp.data.datasource.CompanyDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GraphQLAuthDataSource @Inject constructor(
     private val apolloClient: ApolloClient,
-    private val tokenManager: TokenManager
+    private val tokenManager: TokenManager,
+    private val companyDataStore: CompanyDataStore
 ) {
     
     suspend fun login(phone: String, password: String): Flow<BaseResponse<GraphQLSession>> {
@@ -47,6 +52,15 @@ class GraphQLAuthDataSource @Inject constructor(
                             role = graphQLUser.role,
                             isBlocked = graphQLUser.isBlocked
                         )
+                        // Save storeId to CompanyDataStore (non-blocking)
+                        val storeIdToSave = userModel.assignedStoreId 
+                            ?: userModel.storeIds?.firstOrNull()
+                        if (storeIdToSave != null) {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                companyDataStore.saveCompany(storeIdToSave)
+                            }
+                        }
+                        
                         val session = GraphQLSession(
                             token = data.token,
                             user = userModel
@@ -66,7 +80,6 @@ class GraphQLAuthDataSource @Inject constructor(
     }
 
     suspend fun register(
-        email: String,
         password: String,
         name: String,
         phone: String,
@@ -78,7 +91,6 @@ class GraphQLAuthDataSource @Inject constructor(
         storeName: String,
         storeAddress: String,
         storePhone: String,
-        companyEmail: String? = null,
         companyLogo: String? = null,
         companyRccm: String? = null,
         companyIdNat: String? = null,
@@ -88,7 +100,6 @@ class GraphQLAuthDataSource @Inject constructor(
             emit(BaseResponse.Loading)
             try {
                 val registerInput = com.avenir.rangoapp.graphql.type.RegisterInput(
-                    email = email,
                     password = password,
                     name = name,
                     phone = phone,
@@ -97,7 +108,6 @@ class GraphQLAuthDataSource @Inject constructor(
                     companyPhone = companyPhone,
                     companyDescription = companyDescription,
                     companyType = companyType,
-                    companyEmail = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyEmail),
                     companyLogo = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyLogo),
                     companyRccm = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyRccm),
                     companyIdNat = com.apollographql.apollo3.api.Optional.presentIfNotNull(companyIdNat),
@@ -132,6 +142,15 @@ class GraphQLAuthDataSource @Inject constructor(
                             role = graphQLUser.role,
                             isBlocked = graphQLUser.isBlocked
                         )
+                        // Save storeId to CompanyDataStore (non-blocking)
+                        val storeIdToSave = userModel.assignedStoreId 
+                            ?: userModel.storeIds?.firstOrNull()
+                        if (storeIdToSave != null) {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                companyDataStore.saveCompany(storeIdToSave)
+                            }
+                        }
+                        
                         val session = GraphQLSession(
                             token = data.token,
                             user = userModel
@@ -169,7 +188,12 @@ class GraphQLAuthDataSource @Inject constructor(
                         name = user.name,
                         phone = user.phone,
                         role = user.role,
-                        isBlocked = user.isBlocked
+                        isBlocked = user.isBlocked,
+                        companyId = user.companyId,
+                        storeIds = user.storeIds,
+                        assignedStoreId = user.assignedStoreId,
+                        createdAt = user.createdAt,
+                        updatedAt = user.updatedAt
                     )
                     emit(BaseResponse.Success(userModel))
                 } else {

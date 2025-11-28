@@ -62,7 +62,7 @@ fun StepOneScreen(
                     modifier = Modifier.size(72.dp),
                     tint = Color.Yellow,
                 )
-                Text(text = "Création de compte", fontSize = 32.sp, fontWeight = FontWeight.W300)
+                Text(text = "Création de compte", fontSize = 24.sp, fontWeight = FontWeight.W300)
                 if (state.error!=null){
                     Text(text = "${state.error}", color = Color.Red)
                 }
@@ -77,15 +77,15 @@ fun StepOneScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
+                        keyboardType = KeyboardType.Phone,
                     ),
                     placeholder = {
-                        Text(text = "Entrer votre email")
+                        Text(text = "Entrer votre téléphone")
                     },
-                    label = "Votre gmail",
+                    label = "",
                     leadingIcon = {
                         Icon(
-                            Icons.Outlined.Email,
+                            Icons.Outlined.Phone,
                             contentDescription = ""
                         )
                     },
@@ -96,13 +96,13 @@ fun StepOneScreen(
                             tint = Color.Green)
                     },
                     supportingText = {
-                        Text("Votre address email (gmail)", fontSize = 12.sp,color=Color.Gray)
+                        Text("Numéro de téléphone", fontSize = 12.sp,color=Color.Gray)
                     }
 
                 )
 
 
-                SmallSpace()
+               // SmallSpace()
                 TextInputWidget(
                     value = state.password,
                     onValueChange = {
@@ -114,7 +114,7 @@ fun StepOneScreen(
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Mot de passe ",
+                    label = "",
                     placeholder = {
                         Text(text = "Mot de passe")
                     },
@@ -136,7 +136,7 @@ fun StepOneScreen(
 
                 )
 
-                SmallSpace()
+                //SmallSpace()
                 TextInputWidget(
                     value = state.confirmPassword,
                     onValueChange = {
@@ -148,7 +148,7 @@ fun StepOneScreen(
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = "Confirmer mot de passe ",
+                    label = "",
                     placeholder = {
                         Text(text = "Confirmer mot de passe")
                     },
@@ -177,7 +177,7 @@ fun StepOneScreen(
             }
 
             item {
-                Spacer(modifier = Modifier.height(100.dp))
+                Spacer(modifier = Modifier.height(50.dp))
                 if (state.isLoading) {
                     CircularProgressIndicator(color = Color.Yellow)
                     SmallSpace()

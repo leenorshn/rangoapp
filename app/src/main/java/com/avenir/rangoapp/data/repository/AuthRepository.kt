@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     suspend fun login(phone: String, password: String): Flow<BaseResponse<GraphQLSession>>
     suspend fun register(
-        email: String,
         password: String,
         name: String,
         phone: String,
@@ -20,7 +19,6 @@ interface AuthRepository {
         storeName: String,
         storeAddress: String,
         storePhone: String,
-        companyEmail: String? = null,
         companyLogo: String? = null,
         companyRccm: String? = null,
         companyIdNat: String? = null,

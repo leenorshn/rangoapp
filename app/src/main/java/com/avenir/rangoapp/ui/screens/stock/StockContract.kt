@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store
+package com.avenir.rangoapp.ui.screens.stock
 
 import com.avenir.rangoapp.data.models.ProductModel
 

@@ -11,7 +11,7 @@ type User {
   uid: String!
   name: String!
   phone: String!
-  email: String
+  
   role: String! # Admin, User, etc.
   isBlocked: Boolean!
   companyId: String!
@@ -26,7 +26,6 @@ type Company {
   name: String!
   address: String!
   phone: String!
-  email: String
   description: String!
   type: String!
   logo: String
@@ -126,7 +125,6 @@ type AuthResponse {
 
 input RegisterInput {
   # Informations utilisateur Admin
-  email: String!
   password: String!
   name: String!
   phone: String!
@@ -137,7 +135,6 @@ input RegisterInput {
   companyPhone: String!
   companyDescription: String!
   companyType: String!
-  companyEmail: String
   companyLogo: String
   companyRccm: String
   companyIdNat: String
@@ -152,7 +149,6 @@ input RegisterInput {
 input CreateUserInput {
   name: String!
   phone: String!
-  email: String
   password: String!
   role: String! # "Admin" ou "User"
   storeId: String # Optionnel: si role="User", assigner directement à un store
@@ -161,7 +157,6 @@ input CreateUserInput {
 input UpdateUserInput {
   name: String
   phone: String
-  email: String
   role: String
   storeId: String # Pour changer l'assignation de store (si role="User")
 }
@@ -170,7 +165,6 @@ input UpdateCompanyInput {
   name: String
   address: String
   phone: String
-  email: String
   description: String
   type: String
   logo: String

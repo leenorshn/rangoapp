@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -55,7 +58,12 @@ fun StepTwoScreen(
                     modifier = Modifier.size(72.dp),
                     tint = Color.Yellow,
                 )
-                Text(text = "Identité de l'entreprise", fontSize = 24.sp)
+                Text(text = "Informations de l'entreprise", fontSize = 24.sp)
+                Text(
+                    text = "Renseignez les informations de votre entreprise",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
             }
             item {
                 LargeSpace()
@@ -112,21 +120,49 @@ fun StepTwoScreen(
                     }
 
                 )
-
+                SmallSpace()
+                TextInputWidget(
+                    value = state.phone,
+                    onValueChange = {
+                        onEvent(CompanyEvent.PhoneChanged(it))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "Téléphone de l'entreprise",
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Phone,
+                            contentDescription = ""
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone
+                    ),
+                    placeholder = {
+                        Text(text = "Téléphone")
+                    },
+                    supportingText = {
+                        Text(
+                            text = "Numéro de contact de l'entreprise",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
+                    }
+                )
 
             }
 
             item {
                 Text(text = error.value,color= FailureColor, fontSize = 12.sp)
-                Spacer(modifier = Modifier.height(140.dp))
+                Spacer(modifier = Modifier.height(80.dp))
 
 
 
                 PrimaryButton(label = "Suivant") {
-                    if (state.name.length>2&&state.address.length>6) {
+                    if (state.name.length > 2 && state.address.length > 6 && state.phone.length > 8) {
                         onNext()
-                    }else{
-                        error.value="Veuillez remplir tous les champs"
+                    } else {
+                        error.value = "Veuillez remplir tous les champs correctement"
                     }
                 }
 

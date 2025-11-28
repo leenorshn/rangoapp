@@ -1,4 +1,4 @@
-package com.avenir.rangoapp.ui.screens.store.provider.newprovider
+package com.avenir.rangoapp.ui.screens.stock.provider.newprovider
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

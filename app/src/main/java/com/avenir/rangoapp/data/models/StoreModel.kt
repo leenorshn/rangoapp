@@ -16,3 +16,6 @@ data class CompanyInfo(
     val name: String
 )
 
+
+
+

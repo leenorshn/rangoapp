@@ -18,12 +18,20 @@ class CompanyViewModel @Inject constructor(
     private set
     
     // Method to set user data from RegisterViewModel
-    fun setUserData(email: String, password: String, name: String, phone: String) {
+    fun setUserData(password: String, name: String, phone: String) {
         state.value = state.value.copy(
-            userEmail = email,
             userPassword = password,
             userName = name,
             userPhone = phone
+        )
+    }
+    
+    // Method to set store data from StoreViewModel
+    fun setStoreData(name: String, address: String, phone: String) {
+        state.value = state.value.copy(
+            storeName = name,
+            storeAddress = address,
+            storePhone = phone
         )
     }
     
@@ -40,9 +48,6 @@ class CompanyViewModel @Inject constructor(
             }
             is CompanyEvent.PhoneChanged -> {
                 state.value = state.value.copy(phone = event.phone)
-            }
-            is CompanyEvent.EmailChanged -> {
-                state.value = state.value.copy(email = event.email)
             }
             is CompanyEvent.DescriptionChanged -> {
                 state.value = state.value.copy(description = event.description)
@@ -102,7 +107,6 @@ class CompanyViewModel @Inject constructor(
             val companyType = state.value.type.ifEmpty { "SARL" }
             
             authRepository.register(
-                email = state.value.userEmail,
                 password = state.value.userPassword,
                 name = userName,
                 phone = userPhone,
@@ -114,7 +118,6 @@ class CompanyViewModel @Inject constructor(
                 storeName = state.value.storeName.ifEmpty { "Boutique Principale" },
                 storeAddress = state.value.storeAddress.ifEmpty { state.value.address },
                 storePhone = state.value.storePhone.ifEmpty { state.value.phone },
-                companyEmail = state.value.email.takeIf { it.isNotEmpty() },
                 companyLogo = state.value.logo.takeIf { it.isNotEmpty() },
                 companyRccm = state.value.rccm.takeIf { it.isNotEmpty() },
                 companyIdNat = state.value.idNat.takeIf { it.isNotEmpty() },

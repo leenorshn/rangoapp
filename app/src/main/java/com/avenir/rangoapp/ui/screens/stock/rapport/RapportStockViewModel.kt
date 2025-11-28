@@ -1,17 +1,17 @@
-package com.avenir.rangoapp.ui.screens.store.rapport
+package com.avenir.rangoapp.ui.screens.stock.rapport
 
 import androidx.lifecycle.viewModelScope
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.core.BaseViewModel
-import com.avenir.rangoapp.data.domaine.RapportStoreRepositoryImpl
+import com.avenir.rangoapp.data.repository.RapportStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RapportStoreViewModel @Inject constructor(
-    private val repository: RapportStoreRepositoryImpl
+class RapportStockViewModel @Inject constructor(
+    private val repository: RapportStoreRepository
 ):BaseViewModel<RapportStoreState,RapportStoreEvent>() {
     val state= MutableStateFlow(RapportStoreState())
     init {

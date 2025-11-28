@@ -19,3 +19,6 @@ mutation CreateProduct($input: CreateProductInput!) {
 
 
 
+
+
+

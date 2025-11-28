@@ -4,7 +4,6 @@ mutation CreateUser($input: CreateUserInput!) {
     uid
     name
     phone
-    email
     role
     isBlocked
     companyId
@@ -14,6 +13,8 @@ mutation CreateUser($input: CreateUserInput!) {
     updatedAt
   }
 }
+
+
 
 
 
