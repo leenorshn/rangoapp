@@ -8,6 +8,12 @@ mutation CreateFacture($input: CreateFactureInput!) {
         id
         name
         mark
+        priceVente
+        priceAchat
+        stock
+        storeId
+        createdAt
+        updatedAt
       }
       quantity
       price
@@ -20,19 +26,24 @@ mutation CreateFacture($input: CreateFactureInput!) {
       id
       name
       phone
+      storeId
+      createdAt
+      updatedAt
     }
     storeId
     store {
       id
       name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
+    updatedAt
   }
 }
-
-
-
-
 
 
 

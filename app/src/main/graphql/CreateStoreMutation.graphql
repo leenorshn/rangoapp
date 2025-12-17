@@ -8,15 +8,22 @@ mutation CreateStore($input: CreateStoreInput!) {
     company {
       id
       name
+      address
+      phone
+      email
+      description
+      type
+      logo
+      rccm
+      idNat
+      idCommerce
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

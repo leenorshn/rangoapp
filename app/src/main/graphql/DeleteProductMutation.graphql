@@ -4,7 +4,3 @@ mutation DeleteProduct($id: ID!) {
 
 
 
-
-
-
-

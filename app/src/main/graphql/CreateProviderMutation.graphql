@@ -8,15 +8,16 @@ mutation CreateProvider($input: CreateProviderInput!) {
     store {
       id
       name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

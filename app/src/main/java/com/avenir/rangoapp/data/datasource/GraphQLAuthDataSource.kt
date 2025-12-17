@@ -45,6 +45,7 @@ class GraphQLAuthDataSource @Inject constructor(
                     // Convert GraphQL user to UserModel
                     val graphQLUser = data.user
                     val userModel = UserModel(
+                        id = graphQLUser.id,
                         uid = graphQLUser.uid,
                         name = graphQLUser.name,
                         phone = graphQLUser.phone,
@@ -56,6 +57,7 @@ class GraphQLAuthDataSource @Inject constructor(
                         createdAt = graphQLUser.createdAt,
                         updatedAt = graphQLUser.updatedAt
                     )
+                    
                     // Save storeId to CompanyDataStore (non-blocking)
                     val storeIdToSave = userModel.assignedStoreId
                         ?: userModel.storeIds?.firstOrNull()
@@ -88,40 +90,29 @@ class GraphQLAuthDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
-                // Validate required fields are not empty
-                if (password.isBlank() || name.isBlank() || phone.isBlank()) {
-                    emit(BaseResponse.Error("Tous les champs requis doivent être remplis"))
-                    return@flow
-                }
-                
-                val registerInput = com.avenir.rangoapp.graphql.type.RegisterInput(
-                    password = password.trim(),
+                val input = com.avenir.rangoapp.graphql.type.RegisterInput(
                     name = name.trim(),
-                    phone = phone.trim()
+                    phone = phone.trim(),
+                    password = password
                 )
-                
-                Log.d("GraphQLAuthDataSource", "Register input: name=$name, phone=$phone")
-                
+
                 val response = apolloClient.mutation(
-                    RegisterMutation(registerInput)
+                    RegisterMutation(input)
                 ).execute()
 
                 if (response.hasErrors()) {
                     val errorMessage = response.errors?.firstOrNull()?.message ?: "Unknown error"
-                    Log.e("GraphQLAuthDataSource", "Register error: $errorMessage")
-                    Log.e("GraphQLAuthDataSource", "Errors: ${response.errors?.joinToString { it.message }}")
                     emit(BaseResponse.Error(errorMessage))
                     return@flow
                 }
 
                 val data = response.data?.register
                 if (data != null) {
-                    // Save token
                     tokenManager.saveToken(data.token)
                     
-                    // Convert GraphQL user to UserModel
                     val graphQLUser = data.user
                     val userModel = UserModel(
+                        id = graphQLUser.id,
                         uid = graphQLUser.uid,
                         name = graphQLUser.name,
                         phone = graphQLUser.phone,
@@ -133,14 +124,6 @@ class GraphQLAuthDataSource @Inject constructor(
                         createdAt = graphQLUser.createdAt,
                         updatedAt = graphQLUser.updatedAt
                     )
-                    // Save storeId to CompanyDataStore (non-blocking)
-                    val storeIdToSave = userModel.assignedStoreId
-                        ?: userModel.storeIds?.firstOrNull()
-                    if (storeIdToSave != null) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            companyDataStore.saveCompany(storeIdToSave)
-                        }
-                    }
 
                     val session = GraphQLSession(
                         token = data.token,
@@ -152,16 +135,7 @@ class GraphQLAuthDataSource @Inject constructor(
                 }
             } catch (ex: Exception) {
                 Log.e("GraphQLAuthDataSource", "Register error: ${ex.message}", ex)
-                val errorMessage = when {
-                    ex.message?.contains("422") == true -> {
-                        "Erreur de validation: Veuillez vérifier que tous les champs requis sont correctement remplis"
-                    }
-                    ex.message?.contains("422") == true || ex.message?.contains("Unprocessable") == true -> {
-                        "Erreur de validation: Les données fournies ne sont pas valides. Veuillez vérifier tous les champs."
-                    }
-                    else -> ex.message ?: "Erreur inconnue lors de l'enregistrement"
-                }
-                emit(BaseResponse.Error(errorMessage))
+                emit(BaseResponse.Error(ex.message ?: "Unknown error"))
             }
         }
     }
@@ -181,6 +155,7 @@ class GraphQLAuthDataSource @Inject constructor(
                 val user = response.data?.me
                 if (user != null) {
                     val userModel = UserModel(
+                        id = user.id,
                         uid = user.uid,
                         name = user.name,
                         phone = user.phone,
@@ -236,16 +211,15 @@ class GraphQLAuthDataSource @Inject constructor(
                     return@flow
                 }
 
-                // Clear token regardless of response
+                // Clear token locally
                 tokenManager.clearToken()
                 emit(BaseResponse.Success(true))
             } catch (ex: Exception) {
-                // Clear token even if request fails
-                tokenManager.clearToken()
                 Log.e("GraphQLAuthDataSource", "Logout error: ${ex.message}", ex)
+                // Clear token locally even if request fails
+                tokenManager.clearToken()
                 emit(BaseResponse.Success(true))
             }
         }
     }
 }
-

@@ -1,0 +1,37 @@
+mutation CreateSale($input: CreateSaleInput!) {
+  createSale(input: $input) {
+    id
+    priceToPay
+    pricePayed
+    change
+    currency
+    date
+    client {
+      id
+      name
+      phone
+    }
+    operator {
+      id
+      name
+    }
+    store {
+      id
+      name
+    }
+    basket {
+      productId
+      quantity
+      price
+      product {
+        id
+        name
+        priceVente
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+

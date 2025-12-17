@@ -9,6 +9,11 @@ query Factures($storeId: String) {
         name
         mark
         priceVente
+        priceAchat
+        stock
+        storeId
+        createdAt
+        updatedAt
       }
       quantity
       price
@@ -21,21 +26,24 @@ query Factures($storeId: String) {
       id
       name
       phone
+      storeId
+      createdAt
+      updatedAt
     }
     storeId
     store {
       id
       name
       address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

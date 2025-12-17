@@ -1,0 +1,37 @@
+query Sales($storeId: String) {
+  sales(storeId: $storeId) {
+    id
+    date
+    priceToPay
+    pricePayed
+    change
+    currency
+    client {
+      id
+      name
+      phone
+    }
+    operator {
+      id
+      name
+    }
+    store {
+      id
+      name
+    }
+    basket {
+      productId
+      quantity
+      price
+      product {
+        id
+        name
+        priceVente
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+

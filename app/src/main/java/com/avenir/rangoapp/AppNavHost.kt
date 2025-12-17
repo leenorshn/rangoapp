@@ -36,7 +36,6 @@ import com.avenir.rangoapp.ui.screens.facture.facturation.factureNavigation
 import com.avenir.rangoapp.ui.screens.facture.facturation.newfacture.newFactureNavigation
 import com.avenir.rangoapp.ui.screens.home.homeNavigation
 import com.avenir.rangoapp.ui.screens.settings.about.helpNavigation
-import com.avenir.rangoapp.ui.screens.settings.cloud_storage.cloudStorageNavigation
 import com.avenir.rangoapp.ui.screens.settings.payment.currencySettingsNavigation
 import com.avenir.rangoapp.ui.screens.settings.payment.paymentSettingsNavigation
 import com.avenir.rangoapp.ui.screens.settings.settingsNavigation
@@ -68,8 +67,36 @@ fun AppNavHost(
 
     val companyState by companyViewModel.state
 
-    // Toujours afficher le login en premier
-    val startDestination = DestinationRoute.AUTH_ROUTE
+    // Déterminer la destination de départ selon l'état d'authentification
+    val startDestination = if (state.isLoggedIn && !state.isLoading) {
+        DestinationRoute.MAIN_NAV_ROUTE
+    } else {
+        DestinationRoute.AUTH_ROUTE
+    }
+
+    // Gérer la navigation automatique selon l'état d'authentification
+    LaunchedEffect(key1 = state.isLoggedIn, key2 = state.isLoading) {
+        if (!state.isLoading) {
+            if (state.isLoggedIn) {
+                // Si l'utilisateur est connecté, naviguer vers la page principale
+                navController.navigate(DestinationRoute.MAIN_NAV_ROUTE) {
+                    // Supprimer toutes les routes d'authentification de la pile
+                    popUpTo(DestinationRoute.AUTH_ROUTE) { inclusive = true }
+                    // Éviter les multiples navigations
+                    launchSingleTop = true
+                }
+            } else {
+                // Si l'utilisateur n'est pas connecté, naviguer vers la page d'accueil
+                navController.navigate(DestinationRoute.AUTH_ROUTE) {
+                    // Supprimer toutes les routes principales de la pile
+                    popUpTo(DestinationRoute.MAIN_NAV_ROUTE) { inclusive = true }
+                    // Éviter les multiples navigations
+                    launchSingleTop = true
+                }
+            }
+        }
+    }
+
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         loadingScreenNavigation()
 
@@ -108,7 +135,6 @@ fun AppNavHost(
             shopSettingsNavigation(navController)
             currencySettingsNavigation(navController)
             paymentSettingsNavigation(navController)
-            cloudStorageNavigation(navController)
             helpNavigation()
 
             //profile
@@ -117,7 +143,7 @@ fun AppNavHost(
 
         }
         navigation(
-            startDestination = DestinationRoute.LOGIN_ROUTE,
+            startDestination = DestinationRoute.WELCOME_ROUTE,
             route = DestinationRoute.AUTH_ROUTE,
         ) {
             welcomeNavigation(navController)

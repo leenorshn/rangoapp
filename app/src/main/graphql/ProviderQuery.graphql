@@ -1,0 +1,23 @@
+query Provider($id: ID!) {
+  provider(id: $id) {
+    id
+    name
+    phone
+    address
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

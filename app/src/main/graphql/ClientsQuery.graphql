@@ -8,15 +8,15 @@ query Clients($storeId: String) {
       id
       name
       address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

@@ -1,0 +1,812 @@
+================================================================================
+PROMPT PROFESSIONNEL - DÉVELOPPEMENT WEB RANGOAPP
+Version Web avec Next.js 14+ et Tailwind CSS
+================================================================================
+
+CONTEXTE DU PROJET
+================================================================================
+
+Créer une application web professionnelle et responsive pour RangoApp, un système 
+de gestion multi-boutiques permettant aux entreprises de gérer leurs stocks, 
+ventes, factures, clients, fournisseurs et caisse. L'application web doit être 
+une réplique fidèle de l'application mobile Android existante, avec une interface 
+moderne, intuitive et entièrement responsive.
+
+L'application doit supporter :
+- Gestion multi-boutiques (une entreprise peut avoir plusieurs stores)
+- Rôles utilisateurs (Admin peut voir toutes les boutiques, User voit sa boutique assignée)
+- Authentification JWT via GraphQL
+- Opérations CRUD complètes sur tous les modules
+- Interface responsive (mobile, tablette, desktop)
+- Design moderne et professionnel
+
+================================================================================
+ARCHITECTURE TECHNIQUE
+================================================================================
+
+STACK TECHNIQUE REQUIS :
+------------------------
+- Framework: Next.js 14+ (App Router)
+- Language: TypeScript (strict mode)
+- Styling: Tailwind CSS 3.4+
+- UI Components: shadcn/ui ou Radix UI
+- GraphQL Client: Apollo Client ou urql
+- State Management: Zustand ou React Context + useReducer
+- Forms: React Hook Form + Zod validation
+- Date Handling: date-fns ou dayjs
+- Icons: Lucide React ou Heroicons
+- HTTP Client: Axios ou fetch API
+- Authentication: NextAuth.js ou custom JWT handling
+- File Upload: react-dropzone (si nécessaire)
+- Charts: Recharts ou Chart.js (pour les rapports)
+- Tables: TanStack Table (React Table v8)
+- Notifications: react-hot-toast ou sonner
+- Loading States: react-loading-skeleton
+
+STRUCTURE DU PROJET :
+---------------------
+```
+rangoapp-web/
+├── .env.local                    # Variables d'environnement
+├── .env.example                  # Exemple de variables
+├── .gitignore
+├── next.config.js                # Configuration Next.js
+├── tailwind.config.js            # Configuration Tailwind
+├── tsconfig.json                 # Configuration TypeScript
+├── package.json
+├── README.md
+│
+├── public/
+│   ├── images/                   # Images statiques
+│   ├── icons/                    # Icônes
+│   └── favicon.ico
+│
+├── src/
+│   ├── app/                      # Next.js App Router
+│   │   ├── layout.tsx            # Layout principal
+│   │   ├── page.tsx              # Page d'accueil
+│   │   ├── (auth)/               # Routes d'authentification
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   │   └── welcome/
+│   │   ├── (dashboard)/          # Routes protégées
+│   │   │   ├── dashboard/        # Page d'accueil dashboard
+│   │   │   ├── ventes/           # Module ventes
+│   │   │   │   ├── page.tsx      # Liste des ventes
+│   │   │   │   ├── [id]/         # Détail d'une vente
+│   │   │   │   └── new/          # Nouvelle vente
+│   │   │   ├── stock/             # Module stock
+│   │   │   │   ├── page.tsx      # Liste des produits
+│   │   │   │   ├── products/
+│   │   │   │   ├── providers/
+│   │   │   │   └── rapports/
+│   │   │   ├── clients/          # Module clients
+│   │   │   ├── caisse/           # Module caisse
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── transactions/
+│   │   │   │   ├── entree/
+│   │   │   │   ├── sortie/
+│   │   │   │   └── transfert/
+│   │   │   └── settings/         # Paramètres
+│   │   │       ├── page.tsx
+│   │   │       ├── shop/
+│   │   │       ├── users/
+│   │   │       └── help/
+│   │   └── api/                  # API routes (si nécessaire)
+│   │
+│   ├── components/               # Composants réutilisables
+│   │   ├── ui/                   # Composants UI de base (shadcn/ui)
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── toast.tsx
+│   │   │   └── ...
+│   │   ├── layout/               # Composants de layout
+│   │   │   ├── Header.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── MobileNav.tsx
+│   │   │   └── Footer.tsx
+│   │   ├── forms/                # Composants de formulaires
+│   │   │   ├── ProductForm.tsx
+│   │   │   ├── ClientForm.tsx
+│   │   │   ├── SaleForm.tsx
+│   │   │   └── ...
+│   │   ├── tables/               # Composants de tableaux
+│   │   │   ├── ProductsTable.tsx
+│   │   │   ├── SalesTable.tsx
+│   │   │   ├── ClientsTable.tsx
+│   │   │   └── ...
+│   │   └── charts/               # Composants de graphiques
+│   │       └── SalesChart.tsx
+│   │
+│   ├── lib/                      # Utilitaires et configurations
+│   │   ├── apollo/               # Configuration Apollo Client
+│   │   │   └── client.ts
+│   │   ├── auth/                 # Gestion de l'authentification
+│   │   │   ├── auth.ts
+│   │   │   └── token.ts
+│   │   ├── utils/                # Fonctions utilitaires
+│   │   │   ├── cn.ts             # Class name merger
+│   │   │   ├── format.ts         # Formatage (dates, currency)
+│   │   │   └── validation.ts
+│   │   └── constants/            # Constantes
+│   │       └── routes.ts
+│   │
+│   ├── hooks/                    # Custom React hooks
+│   │   ├── useAuth.ts
+│   │   ├── useStore.ts
+│   │   ├── useProducts.ts
+│   │   ├── useSales.ts
+│   │   └── ...
+│   │
+│   ├── graphql/                  # Fichiers GraphQL
+│   │   ├── queries/              # GraphQL queries
+│   │   │   ├── users.ts
+│   │   │   ├── products.ts
+│   │   │   ├── sales.ts
+│   │   │   ├── clients.ts
+│   │   │   └── ...
+│   │   ├── mutations/            # GraphQL mutations
+│   │   │   ├── auth.ts
+│   │   │   ├── products.ts
+│   │   │   ├── sales.ts
+│   │   │   └── ...
+│   │   └── fragments/            # GraphQL fragments
+│   │
+│   ├── types/                    # Types TypeScript
+│   │   ├── user.ts
+│   │   ├── product.ts
+│   │   ├── sale.ts
+│   │   ├── client.ts
+│   │   ├── store.ts
+│   │   └── index.ts
+│   │
+│   ├── store/                    # State management (Zustand)
+│   │   ├── authStore.ts
+│   │   ├── storeStore.ts
+│   │   └── uiStore.ts
+│   │
+│   └── styles/                   # Styles globaux
+│       └── globals.css
+│
+└── tests/                        # Tests (optionnel)
+    ├── __mocks__/
+    └── components/
+```
+
+================================================================================
+DESIGN SYSTEM & UI/UX
+================================================================================
+
+COULEURS PRINCIPALES :
+----------------------
+- Primary: Cyan (#00BCD4) - Actions principales, liens
+- Secondary: Yellow (#FFC107) - Accents, highlights
+- Success: Green (#4CAF50) - Succès, confirmations
+- Error: Red (#F44336) - Erreurs, alertes
+- Warning: Orange (#FF9800) - Avertissements
+- Background: White (#FFFFFF) / Light Gray (#F5F5F5)
+- Text Primary: Dark Gray (#212121)
+- Text Secondary: Medium Gray (#757575)
+- Border: Light Gray (#E0E0E0)
+
+TYPOGRAPHIE :
+-------------
+- Font Family: Inter ou System UI (sans-serif)
+- Headings: Font-weight 600-700
+- Body: Font-weight 400
+- Small text: Font-weight 300-400
+- Sizes: xs (12px), sm (14px), base (16px), lg (18px), xl (20px), 2xl (24px), 3xl (30px)
+
+ESPACEMENT :
+------------
+- Utiliser l'échelle Tailwind: 4px, 8px, 12px, 16px, 24px, 32px, 48px, 64px
+- Padding cards: 16px-24px
+- Gap entre éléments: 16px-24px
+- Marges sections: 32px-48px
+
+COMPOSANTS UI :
+---------------
+- Utiliser shadcn/ui comme base
+- Tous les composants doivent être accessibles (ARIA)
+- Dark mode: Optionnel mais recommandé
+- Animations: Subtiles avec Framer Motion (optionnel)
+- Loading states: Skeleton loaders pour meilleure UX
+- Empty states: Messages et illustrations appropriés
+
+RESPONSIVE BREAKPOINTS :
+-------------------------
+- Mobile: < 640px (sm)
+- Tablet: 640px - 1024px (md, lg)
+- Desktop: > 1024px (xl, 2xl)
+
+Layout mobile:
+- Sidebar devient un drawer/menu hamburger
+- Tables deviennent des cards empilées
+- Formulaires en pleine largeur
+- Navigation bottom bar (optionnel)
+
+Layout desktop:
+- Sidebar fixe à gauche (240px-280px)
+- Contenu principal avec max-width 1280px centré
+- Header fixe en haut
+- Tables avec toutes les colonnes visibles
+
+================================================================================
+FONCTIONNALITÉS PRINCIPALES
+================================================================================
+
+1. AUTHENTIFICATION
+-------------------
+Pages:
+- /welcome - Page d'accueil (bienvenue)
+- /login - Connexion (phone + password)
+- /register - Inscription multi-étapes:
+  * Étape 1: Informations personnelles (name, phone, password)
+  * Étape 2: Création entreprise (name, address, phone, email, description, type, logo, rccm, idNat, idCommerce)
+    - Utilise la mutation CreateCompany
+  * Étape 3: Création première boutique (name, address, phone, companyId)
+    - Utilise la mutation CreateStore
+
+Fonctionnalités:
+- Validation des formulaires avec Zod
+- Messages d'erreur clairs
+- Redirection automatique après connexion
+- Gestion du token JWT (localStorage ou httpOnly cookie)
+- Refresh token automatique
+- Logout avec nettoyage du state
+
+2. DASHBOARD (Page d'accueil)
+------------------------------
+Route: /dashboard
+
+Contenu:
+- Message de bienvenue personnalisé
+- Statistiques rapides (cards):
+  * Total ventes du jour
+  * Produits en stock faible
+  * Clients actifs
+  * Montant caisse
+- Graphiques (optionnel):
+  * Ventes des 7 derniers jours
+  * Top 5 produits
+- Actions rapides:
+  * Nouvelle vente
+  * Nouveau produit
+  * Nouveau client
+
+3. MODULE VENTES
+----------------
+Routes:
+- /ventes - Liste des ventes
+- /ventes/new - Créer une nouvelle vente
+- /ventes/[id] - Détail d'une vente
+
+Fonctionnalités:
+- Liste des ventes avec:
+  * Filtres (date, client, montant)
+  * Recherche
+  * Pagination
+  * Tri (date, montant)
+- Création vente:
+  * Sélection client
+  * Ajout produits au panier
+  * Calcul automatique (sous-total, TVA, total)
+  * Sélection devise (USD, EUR, XAF, XOF, CDF)
+  * Date de vente
+  * Montant payé et monnaie rendue
+- Détail vente:
+  * Informations complètes
+  * Liste des produits
+  * Bouton "Générer facture"
+  * Bouton "Imprimer"
+- Actions:
+  * Supprimer une vente
+  * Générer facture depuis vente
+
+4. MODULE STOCK
+---------------
+Routes:
+- /stock - Vue d'ensemble
+- /stock/products - Liste des produits
+- /stock/products/new - Nouveau produit
+- /stock/products/[id] - Détail/Édition produit
+- /stock/providers - Liste fournisseurs
+- /stock/providers/new - Nouveau fournisseur
+- /stock/rapports - Rapports de stock
+
+Fonctionnalités Produits:
+- Liste avec:
+  * Nom, marque, prix vente, prix achat, stock
+  * Filtres (nom, marque, stock faible)
+  * Recherche
+  * Actions: Modifier, Supprimer
+- Création/Édition:
+  * Formulaire complet
+  * Validation
+  * Upload image (optionnel)
+- Alertes stock faible
+
+Fonctionnalités Fournisseurs:
+- CRUD complet
+- Liste avec recherche et filtres
+
+Fonctionnalités Rapports:
+- Vue d'ensemble du stock
+- Produits en rupture
+- Historique des mouvements
+
+5. MODULE CLIENTS
+-----------------
+Routes:
+- /clients - Liste des clients
+- /clients/new - Nouveau client
+- /clients/[id] - Détail/Édition client
+
+Fonctionnalités:
+- Liste avec recherche
+- CRUD complet
+- Historique des ventes par client (optionnel)
+
+6. MODULE CAISSE
+----------------
+Routes:
+- /caisse - Vue d'ensemble
+- /caisse/transactions - Historique transactions
+- /caisse/entree - Entrée d'argent
+- /caisse/sortie - Sortie d'argent
+- /caisse/transfert - Transfert entre caisses
+
+Fonctionnalités:
+- Solde actuel de la caisse
+- Historique des transactions
+- Filtres par type, date
+- Création entrée/sortie/transfert
+- Rapports de caisse
+
+7. MODULE PARAMÈTRES
+--------------------
+Routes:
+- /settings - Page principale
+- /settings/shop - Paramètres boutique/entreprise
+- /settings/users - Gestion utilisateurs
+- /settings/help - Aide
+
+Fonctionnalités:
+- Paramètres boutique:
+  * Édition nom, adresse, téléphone, RCCM
+  * Sauvegarde avec validation
+  * Utilise UpdateCompany et UpdateStore
+- Gestion utilisateurs:
+  * Liste des utilisateurs
+  * Création utilisateur (CreateUser)
+  * Actions: Bloquer (BlockUser), Débloquer (UnblockUser), Supprimer (DeleteUser)
+  * Gestion des rôles
+- Aide:
+  * FAQ
+  * Guide d'utilisation
+  * Contact support
+
+================================================================================
+INTÉGRATION GRAPHQL
+================================================================================
+
+CONFIGURATION APOLLO CLIENT :
+------------------------------
+- Endpoint GraphQL: Variable d'environnement NEXT_PUBLIC_GRAPHQL_URL
+- Headers: Authorization Bearer token
+- Cache: Configuration appropriée
+- Error handling: Global error handler
+- Loading states: Gestion des états de chargement
+
+QUERIES PRINCIPALES :
+---------------------
+- Me (utilisateur connecté)
+- Users (liste utilisateurs)
+- Products (liste produits)
+- Sales (liste ventes)
+- Clients (liste clients)
+- Providers (liste fournisseurs)
+- Stores (liste boutiques)
+- Company (informations entreprise)
+- CaisseTransactions (transactions caisse)
+
+MUTATIONS PRINCIPALES :
+-----------------------
+- Login
+- Register
+- Logout
+- CreateUser, UpdateUser, DeleteUser, BlockUser, UnblockUser
+- CreateCompany, UpdateCompany, DeleteCompany
+- CreateStore, UpdateStore, DeleteStore
+- CreateProduct, UpdateProduct, DeleteProduct
+- CreateSale, DeleteSale
+- CreateClient, UpdateClient, DeleteClient
+- CreateProvider, UpdateProvider, DeleteProvider
+- CreateFactureFromSale
+- CreateCaisseTransaction, DeleteCaisseTransaction
+
+GESTION DES ERREURS :
+---------------------
+- Messages d'erreur utilisateur-friendly
+- Toast notifications pour les erreurs
+- Retry automatique pour les erreurs réseau
+- Logging des erreurs (console en dev, service en prod)
+
+================================================================================
+GESTION D'ÉTAT
+================================================================================
+
+STORE ZUSTAND :
+---------------
+- authStore: État d'authentification, utilisateur connecté
+- storeStore: Store actif sélectionné (pour multi-stores)
+- uiStore: État UI (sidebar ouvert/fermé, thème, etc.)
+
+CONTEXT API :
+-------------
+- AuthContext: Contexte d'authentification
+- StoreContext: Contexte du store actif
+
+LOCAL STATE :
+-------------
+- React Hook Form pour les formulaires
+- useState/useReducer pour les états locaux
+- useQuery/useMutation d'Apollo pour les données serveur
+
+================================================================================
+ROUTING & NAVIGATION
+================================================================================
+
+STRUCTURE ROUTES :
+------------------
+- Utiliser Next.js App Router
+- Routes protégées avec middleware
+- Layouts partagés pour les sections
+- Loading.tsx et error.tsx pour chaque route
+
+NAVIGATION :
+------------
+- Sidebar navigation (desktop)
+- Mobile navigation (drawer)
+- Breadcrumbs pour navigation profonde
+- Active state pour les liens
+
+PROTECTION DES ROUTES :
+-----------------------
+- Middleware Next.js pour vérifier l'authentification
+- Redirection vers /login si non authentifié
+- Vérification des permissions (Admin vs User)
+
+================================================================================
+FORMULAIRES & VALIDATION
+================================================================================
+
+REACT HOOK FORM + ZOD :
+-----------------------
+- Tous les formulaires utilisent React Hook Form
+- Validation avec Zod schemas
+- Messages d'erreur en français
+- Validation côté client et serveur
+
+EXEMPLES DE SCHEMAS :
+---------------------
+- UserSchema: name, phone, password, role
+- CompanySchema: name, address, phone, email, description, type, logo, rccm, idNat, idCommerce
+- StoreSchema: name, address, phone, companyId
+- ProductSchema: name, mark, priceVente, priceAchat, stock
+- SaleSchema: clientId, basket, priceToPay, pricePayed, currency
+- ClientSchema: name, phone
+
+================================================================================
+COMPOSANTS RÉUTILISABLES
+================================================================================
+
+COMPOSANTS UI DE BASE :
+-----------------------
+- Button: Variants (primary, secondary, outline, ghost, danger)
+- Input: Text, number, email, phone, password
+- Select: Dropdown avec recherche
+- Card: Container avec header, body, footer
+- Table: Tableau avec tri, pagination, filtres
+- Dialog/Modal: Modales pour confirmations, formulaires
+- Toast: Notifications
+- Badge: Badges pour statuts, rôles
+- Loading: Spinner, skeleton loaders
+
+COMPOSANTS MÉTIER :
+-------------------
+- ProductCard: Carte produit
+- SaleCard: Carte vente
+- ClientCard: Carte client
+- StatCard: Carte statistique
+- DataTable: Tableau de données générique
+- FormField: Champ de formulaire avec label et erreur
+
+================================================================================
+RESPONSIVE DESIGN
+================================================================================
+
+STRATÉGIE MOBILE-FIRST :
+------------------------
+- Développer d'abord pour mobile
+- Améliorer progressivement pour tablette et desktop
+- Utiliser les breakpoints Tailwind
+
+ADAPTATIONS MOBILE :
+--------------------
+- Sidebar → Drawer/Menu hamburger
+- Tables → Cards empilées avec informations essentielles
+- Formulaires → Pleine largeur, labels au-dessus
+- Actions → Boutons pleine largeur
+- Navigation → Bottom bar ou drawer
+
+ADAPTATIONS TABLETTE :
+----------------------
+- Sidebar réduite ou collapsible
+- Tables avec colonnes principales
+- Layout en 2 colonnes pour les formulaires
+
+ADAPTATIONS DESKTOP :
+---------------------
+- Sidebar fixe complète
+- Tables avec toutes les colonnes
+- Layout en 3 colonnes si nécessaire
+- Hover states pour les interactions
+
+================================================================================
+PERFORMANCE & OPTIMISATION
+================================================================================
+
+OPTIMISATIONS :
+---------------
+- Code splitting automatique (Next.js)
+- Lazy loading des composants lourds
+- Image optimization (next/image)
+- SSR/SSG où approprié
+- Memoization des composants coûteux
+- Debounce pour les recherches
+- Pagination pour les grandes listes
+- Virtual scrolling pour les très grandes listes (optionnel)
+
+SEO :
+-----
+- Metadata appropriée pour chaque page
+- Open Graph tags
+- Sitemap.xml
+- robots.txt
+
+================================================================================
+GESTION DES ERREURS
+================================================================================
+
+ERROR BOUNDARIES :
+-----------------
+- Error boundary global
+- Error boundaries par section
+- Pages d'erreur personnalisées (404, 500)
+
+HANDLING :
+----------
+- Try-catch dans les mutations
+- Error states dans les composants
+- Messages d'erreur clairs et actionnables
+- Logging des erreurs (Sentry ou similaire en prod)
+
+================================================================================
+ACCESSIBILITÉ
+================================================================================
+
+REQUIREMENTS :
+--------------
+- ARIA labels sur tous les éléments interactifs
+- Navigation au clavier
+- Contraste des couleurs (WCAG AA minimum)
+- Focus states visibles
+- Alt text pour les images
+- Semantic HTML
+
+================================================================================
+INTERNATIONALISATION (OPTIONNEL)
+================================================================================
+
+Si nécessaire, préparer la structure pour i18n:
+- next-intl ou react-i18next
+- Fichiers de traduction
+- Support français (par défaut) et autres langues
+
+================================================================================
+TESTS (OPTIONNEL MAIS RECOMMANDÉ)
+================================================================================
+
+- Unit tests: Jest + React Testing Library
+- Integration tests: Tests des flows complets
+- E2E tests: Playwright ou Cypress
+- Coverage: Minimum 70%
+
+================================================================================
+DÉPLOIEMENT
+================================================================================
+
+ENVIRONNEMENTS :
+----------------
+- Development: localhost:3000
+- Staging: Vercel preview ou similaire
+- Production: Vercel, Netlify, ou serveur dédié
+
+VARIABLES D'ENVIRONNEMENT :
+---------------------------
+- NEXT_PUBLIC_GRAPHQL_URL: URL du serveur GraphQL
+- NEXT_PUBLIC_APP_NAME: Nom de l'application
+- (Autres selon besoins)
+
+BUILD :
+-------
+- npm run build
+- Optimisations de production activées
+- Minification et compression
+
+================================================================================
+BONNES PRATIQUES
+================================================================================
+
+CODE QUALITY :
+--------------
+- TypeScript strict mode
+- ESLint + Prettier configurés
+- Pre-commit hooks (Husky)
+- Code reviews
+- Documentation des composants complexes
+
+GIT WORKFLOW :
+--------------
+- Branches: main, develop, feature/*
+- Commits conventionnels (Conventional Commits)
+- Pull requests avec descriptions détaillées
+
+DOCUMENTATION :
+---------------
+- README.md complet
+- Documentation des composants (JSDoc)
+- Guide de contribution
+- Architecture decision records (ADR)
+
+================================================================================
+EXIGENCES SPÉCIFIQUES
+================================================================================
+
+1. TOUS LES FORMULAIRES doivent avoir:
+   - Validation en temps réel
+   - Messages d'erreur clairs
+   - États de chargement
+   - Confirmation avant soumission (si action destructive)
+
+2. TOUTES LES LISTES doivent avoir:
+   - Recherche
+   - Filtres appropriés
+   - Pagination (si > 20 items)
+   - Actions (modifier, supprimer) avec confirmation
+   - Empty states
+
+3. TOUTES LES ACTIONS doivent avoir:
+   - Feedback visuel (loading, success, error)
+   - Toast notifications
+   - Optimistic updates où approprié
+
+4. GESTION MULTI-STORES:
+   - Sélecteur de store en header (si Admin)
+   - Filtrage automatique selon le store sélectionné
+   - Store context pour partager le store actif
+
+5. GESTION DES RÔLES:
+   - Admin: Accès complet à toutes les boutiques
+   - User: Accès uniquement à sa boutique assignée
+   - Masquer les fonctionnalités selon les permissions
+
+6. FORMATAGE DES DONNÉES:
+   - Dates: Format français (DD/MM/YYYY)
+   - Devises: Format avec séparateurs (1 000,00 USD)
+   - Nombres: Format français avec virgule
+
+7. IMPRESSION:
+   - Styles d'impression pour les factures
+   - Bouton "Imprimer" avec preview
+   - PDF generation (optionnel avec jsPDF)
+
+================================================================================
+EXEMPLES DE COMPOSANTS
+================================================================================
+
+1. CompanyForm:
+   - Champs: name, address, phone, email, description, type, logo, rccm, idNat, idCommerce
+   - Validation: name, address, phone, description, type requis
+   - Actions: Créer entreprise (CreateCompany), Mettre à jour (UpdateCompany)
+   - Utilisé dans: Inscription étape 2, Paramètres boutique
+
+2. StoreForm:
+   - Champs: name, address, phone, companyId
+   - Validation: Tous les champs requis
+   - Actions: Créer boutique (CreateStore), Mettre à jour (UpdateStore)
+   - Utilisé dans: Inscription étape 3, Paramètres boutique
+
+3. ProductForm:
+   - Champs: name, mark, priceVente, priceAchat, stock
+   - Validation: Tous requis, prix > 0, stock >= 0
+   - Actions: Enregistrer, Annuler
+
+4. SaleForm:
+   - Sélection client (dropdown avec recherche)
+   - Liste produits avec quantité et prix
+   - Calcul automatique des totaux
+   - Sélection devise
+   - Date picker
+   - Montant payé et monnaie rendue
+
+5. DataTable générique:
+   - Colonnes configurables
+   - Tri par colonne
+   - Filtres
+   - Pagination
+   - Actions par ligne
+
+================================================================================
+PRIORITÉS DE DÉVELOPPEMENT
+================================================================================
+
+PHASE 1 - FONDATIONS:
+---------------------
+1. Setup projet Next.js + Tailwind
+2. Configuration Apollo Client
+3. Authentification (login, register)
+   - Register avec CreateCompany et CreateStore
+4. Layout de base (Header, Sidebar)
+5. Routing et protection des routes
+
+PHASE 2 - MODULES CORE:
+----------------------
+1. Dashboard
+2. Module Ventes (liste, création, détail)
+3. Module Stock/Produits (CRUD complet)
+4. Module Clients (CRUD complet)
+5. Paramètres boutique (UpdateCompany, UpdateStore)
+
+PHASE 3 - MODULES AVANCÉS:
+--------------------------
+1. Module Caisse
+2. Module Fournisseurs
+3. Module Paramètres
+4. Rapports
+
+PHASE 4 - POLISH:
+-----------------
+1. Responsive design complet
+2. Optimisations performance
+3. Tests
+4. Documentation
+
+================================================================================
+NOTES FINALES
+================================================================================
+
+- L'application doit être PRODUCTION-READY
+- Code propre, maintenable, et bien documenté
+- Performance optimale
+- UX fluide et intuitive
+- Design moderne et professionnel
+- Accessible et responsive
+- Sécurisé (validation, sanitization, HTTPS)
+
+- Tous les composants doivent être réutilisables
+- Tous les types doivent être définis en TypeScript
+- Toutes les erreurs doivent être gérées proprement
+- Tous les états de chargement doivent être affichés
+
+================================================================================
+FIN DU PROMPT
+================================================================================
+

@@ -19,6 +19,3 @@ mutation Login($phone: String!, $password: String!) {
 
 
 
-
-
-

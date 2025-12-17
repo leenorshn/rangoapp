@@ -194,3 +194,5 @@ app/src/main/java/com/avenir/rangoapp/
 
 **Dernière mise à jour** : Analyse basée sur le code actuel du projet
 
+
+

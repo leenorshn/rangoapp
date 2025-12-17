@@ -13,4 +13,3 @@ sealed class NewClientEvent {
     data class OnPhoneChanged(val phone: String) : NewClientEvent()
     data object OnSubmit : NewClientEvent()
 }
-

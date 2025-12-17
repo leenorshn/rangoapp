@@ -2,6 +2,7 @@ package com.avenir.rangoapp.data.datasource
 
 import android.util.Log
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.models.CompanyModel
 import com.avenir.rangoapp.data.models.StoreInfo
@@ -30,17 +31,23 @@ class GraphQLCompanyDataSource @Inject constructor(
         return flow {
             emit(BaseResponse.Loading)
             try {
+                // Validation des champs requis
+                if (name.isBlank() || address.isBlank() || phone.isBlank() || description.isBlank() || type.isBlank()) {
+                    emit(BaseResponse.Error("Les champs nom, adresse, téléphone, description et type sont requis"))
+                    return@flow
+                }
+
                 val input = com.avenir.rangoapp.graphql.type.CreateCompanyInput(
                     name = name.trim(),
                     address = address.trim(),
                     phone = phone.trim(),
                     description = description.trim(),
                     type = type.trim(),
-                    email = com.apollographql.apollo3.api.Optional.presentIfNotNull(email?.takeIf { it.isNotBlank() }),
-                    logo = com.apollographql.apollo3.api.Optional.presentIfNotNull(logo?.takeIf { it.isNotBlank() }),
-                    rccm = com.apollographql.apollo3.api.Optional.presentIfNotNull(rccm?.takeIf { it.isNotBlank() }),
-                    idNat = com.apollographql.apollo3.api.Optional.presentIfNotNull(idNat?.takeIf { it.isNotBlank() }),
-                    idCommerce = com.apollographql.apollo3.api.Optional.presentIfNotNull(idCommerce?.takeIf { it.isNotBlank() })
+                    email = Optional.presentIfNotNull(email?.trim()),
+                    logo = Optional.presentIfNotNull(logo?.trim()),
+                    rccm = Optional.presentIfNotNull(rccm?.trim()),
+                    idNat = Optional.presentIfNotNull(idNat?.trim()),
+                    idCommerce = Optional.presentIfNotNull(idCommerce?.trim())
                 )
 
                 val response = apolloClient.mutation(
@@ -49,7 +56,6 @@ class GraphQLCompanyDataSource @Inject constructor(
 
                 if (response.hasErrors()) {
                     val errorMessage = response.errors?.firstOrNull()?.message ?: "Unknown error"
-                    Log.e("GraphQLCompanyDataSource", "CreateCompany error: $errorMessage")
                     emit(BaseResponse.Error(errorMessage))
                     return@flow
                 }
@@ -61,14 +67,14 @@ class GraphQLCompanyDataSource @Inject constructor(
                         name = data.name,
                         address = data.address,
                         phone = data.phone,
-                        email = data.email ?: null,
+                        email = data.email,
                         description = data.description,
                         type = data.type,
                         logo = data.logo,
                         rccm = data.rccm,
                         idNat = data.idNat,
                         idCommerce = data.idCommerce,
-                        stores = data.stores.map { store ->
+                        stores = data.stores?.map { store ->
                             StoreInfo(
                                 id = store.id,
                                 name = store.name,
@@ -102,20 +108,21 @@ class GraphQLCompanyDataSource @Inject constructor(
                     return@flow
                 }
 
-                val company = response.data?.company
-                if (company != null) {
+                val data = response.data?.company
+                if (data != null) {
                     val companyModel = CompanyModel(
-                        id = company.id,
-                        name = company.name,
-                        address = company.address,
-                        phone = company.phone,
-                        description = company.description,
-                        type = company.type,
-                        logo = company.logo,
-                        rccm = company.rccm,
-                        idNat = company.idNat,
-                        idCommerce = company.idCommerce,
-                        stores = company.stores.map { store ->
+                        id = data.id,
+                        name = data.name,
+                        address = data.address,
+                        phone = data.phone,
+                        email = data.email,
+                        description = data.description,
+                        type = data.type,
+                        logo = data.logo,
+                        rccm = data.rccm,
+                        idNat = data.idNat,
+                        idCommerce = data.idCommerce,
+                        stores = data.stores?.map { store ->
                             StoreInfo(
                                 id = store.id,
                                 name = store.name,
@@ -123,12 +130,12 @@ class GraphQLCompanyDataSource @Inject constructor(
                                 phone = store.phone
                             )
                         },
-                        createdAt = company.createdAt,
-                        updatedAt = company.updatedAt
+                        createdAt = data.createdAt,
+                        updatedAt = data.updatedAt
                     )
                     emit(BaseResponse.Success(companyModel))
                 } else {
-                    emit(BaseResponse.Error("Company not found"))
+                    emit(BaseResponse.Error("No company data"))
                 }
             } catch (ex: Exception) {
                 Log.e("GraphQLCompanyDataSource", "GetCompany error: ${ex.message}", ex)

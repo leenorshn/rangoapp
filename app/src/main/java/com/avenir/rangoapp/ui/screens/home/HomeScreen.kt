@@ -110,7 +110,7 @@ fun HomeScreen(
                 Icon(Icons.AutoMirrored.Outlined.List, contentDescription = "All menus")
             }
             24.dp.Space()
-            HomeMenuItem(icon = painterResource(id = R.drawable.list), title = "Facture", onTapMenu = {
+            HomeMenuItem(icon = painterResource(id = R.drawable.list), title = "Ventes", onTapMenu = {
                 onFactureClicked()
             })
             //24.dp.Space()

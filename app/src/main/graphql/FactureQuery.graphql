@@ -1,0 +1,49 @@
+query Facture($id: ID!) {
+  facture(id: $id) {
+    id
+    factureNumber
+    products {
+      productId
+      product {
+        id
+        name
+        mark
+        priceVente
+        priceAchat
+        stock
+        storeId
+        createdAt
+        updatedAt
+      }
+      quantity
+      price
+    }
+    quantity
+    date
+    price
+    currency
+    client {
+      id
+      name
+      phone
+      storeId
+      createdAt
+      updatedAt
+    }
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

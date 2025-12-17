@@ -32,9 +32,29 @@ class NewClientViewModel @Inject constructor(
 
     private fun createClient() {
         viewModelScope.launch {
+            // Validation
+            if (state.value.name.isBlank()) {
+                state.value = state.value.copy(
+                    error = "Le nom est requis",
+                    isLoading = false,
+                    success = false
+                )
+                return@launch
+            }
+
+            if (state.value.phone.isBlank()) {
+                state.value = state.value.copy(
+                    error = "Le téléphone est requis",
+                    isLoading = false,
+                    success = false
+                )
+                return@launch
+            }
+
             repository.createClient(
-                name = state.value.name,
-                phone = state.value.phone
+                name = state.value.name.trim(),
+                phone = state.value.phone.trim(),
+                storeId = null // Will use current store from CompanyDataStore
             ).collect { response ->
                 when (response) {
                     is BaseResponse.Error -> {
@@ -63,4 +83,3 @@ class NewClientViewModel @Inject constructor(
         }
     }
 }
-

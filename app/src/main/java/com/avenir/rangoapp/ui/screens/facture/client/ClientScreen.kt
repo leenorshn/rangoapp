@@ -13,9 +13,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -29,7 +36,21 @@ fun ClientScreen(
     state: ClientState,
     onNewClient: () -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    
+    // Afficher une notification quand un client est ajouté avec succès
+    LaunchedEffect(state.showSuccessMessage) {
+        if (state.showSuccessMessage && !state.isLoading) {
+            kotlinx.coroutines.delay(300) // Petit délai pour s'assurer que l'écran est visible
+            snackbarHostState.showSnackbar(
+                message = "Client ajouté avec succès",
+                duration = androidx.compose.material3.SnackbarDuration.Short
+            )
+        }
+    }
+    
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(text = "My clients") },
@@ -69,7 +90,7 @@ fun ClientScreen(
                 item {
                     HorizontalDivider()
                 }
-                if (state.clients.isEmpty() && !state.isLoading && state.error == null) {
+                if (state.clients.isEmpty() && !state.isLoading) {
                     item {
                         Text(
                             text = "Aucun client trouvé",

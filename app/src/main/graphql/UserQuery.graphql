@@ -1,0 +1,18 @@
+query User($id: ID!) {
+  user(id: $id) {
+    id
+    uid
+    name
+    phone
+    role
+    isBlocked
+    companyId
+    storeIds
+    assignedStoreId
+    createdAt
+    updatedAt
+  }
+}
+
+
+

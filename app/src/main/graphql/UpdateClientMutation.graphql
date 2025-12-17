@@ -1,0 +1,22 @@
+mutation UpdateClient($id: ID!, $input: UpdateClientInput!) {
+  updateClient(id: $id, input: $input) {
+    id
+    name
+    phone
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

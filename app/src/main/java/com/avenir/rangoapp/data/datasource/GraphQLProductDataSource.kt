@@ -2,6 +2,7 @@ package com.avenir.rangoapp.data.datasource
 
 import android.util.Log
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.avenir.rangoapp.core.BaseResponse
 import com.avenir.rangoapp.data.models.ProductModel
 import com.avenir.rangoapp.data.models.StoreInfo
@@ -25,7 +26,7 @@ class GraphQLProductDataSource @Inject constructor(
             try {
                 val response = apolloClient.query(
                     ProductsQuery(
-                        com.apollographql.apollo3.api.Optional.presentIfNotNull(storeId)
+                        storeId = Optional.presentIfNotNull(storeId)
                     )
                 ).execute()
 
@@ -36,29 +37,25 @@ class GraphQLProductDataSource @Inject constructor(
                 }
 
                 val products = response.data?.products?.mapNotNull { product ->
-                    if (product != null) {
-                        ProductModel(
-                            id = product.id,
-                            name = product.name,
-                            mark = product.mark,
-                            priceVente = product.priceVente,
-                            priceAchat = product.priceAchat,
-                            stock = product.stock,
-                            storeId = product.storeId,
-                            store = product.store?.let { store ->
-                                StoreInfo(
-                                    id = store.id,
-                                    name = store.name,
-                                    address = store.address,
-                                    phone = store.phone
-                                )
-                            },
-                            createdAt = product.createdAt,
-                            updatedAt = product.updatedAt
-                        )
-                    } else {
-                        null
-                    }
+                    ProductModel(
+                        id = product.id,
+                        name = product.name,
+                        mark = product.mark,
+                        priceVente = product.priceVente.toDouble(),
+                        priceAchat = product.priceAchat.toDouble(),
+                        stock = product.stock.toDouble(),
+                        storeId = product.storeId,
+                        store = product.store?.let { store ->
+                            StoreInfo(
+                                id = store.id,
+                                name = store.name,
+                                address = store.address,
+                                phone = store.phone
+                            )
+                        },
+                        createdAt = product.createdAt,
+                        updatedAt = product.updatedAt
+                    )
                 } ?: emptyList()
 
                 emit(BaseResponse.Success(products))
@@ -87,9 +84,9 @@ class GraphQLProductDataSource @Inject constructor(
                         id = product.id,
                         name = product.name,
                         mark = product.mark,
-                        priceVente = product.priceVente,
-                        priceAchat = product.priceAchat,
-                        stock = product.stock,
+                        priceVente = product.priceVente.toDouble(),
+                        priceAchat = product.priceAchat.toDouble(),
+                        stock = product.stock.toDouble(),
                         storeId = product.storeId,
                         store = product.store?.let { store ->
                             StoreInfo(
@@ -157,14 +154,16 @@ class GraphQLProductDataSource @Inject constructor(
                         id = data.id,
                         name = data.name,
                         mark = data.mark,
-                        priceVente = data.priceVente,
-                        priceAchat = data.priceAchat,
-                        stock = data.stock,
+                        priceVente = data.priceVente.toDouble(),
+                        priceAchat = data.priceAchat.toDouble(),
+                        stock = data.stock.toDouble(),
                         storeId = data.storeId,
                         store = data.store?.let { store ->
                             StoreInfo(
                                 id = store.id,
-                                name = store.name
+                                name = store.name,
+                                address = store.address,
+                                phone = store.phone
                             )
                         },
                         createdAt = data.createdAt,
@@ -186,11 +185,11 @@ class GraphQLProductDataSource @Inject constructor(
             emit(BaseResponse.Loading)
             try {
                 val input = com.avenir.rangoapp.graphql.type.UpdateProductInput(
-                    name = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.name),
-                    mark = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.mark),
-                    priceVente = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.priceVente.toDouble()),
-                    priceAchat = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.priceAchat.toDouble()),
-                    stock = com.apollographql.apollo3.api.Optional.presentIfNotNull(product.stock.toDouble())
+                    name = Optional.presentIfNotNull(product.name.takeIf { it.isNotBlank() }),
+                    mark = Optional.presentIfNotNull(product.mark.takeIf { it.isNotBlank() }),
+                    priceVente = Optional.presentIfNotNull(product.priceVente.toDouble()),
+                    priceAchat = Optional.presentIfNotNull(product.priceAchat.toDouble()),
+                    stock = Optional.presentIfNotNull(product.stock.toDouble())
                 )
 
                 val response = apolloClient.mutation(
@@ -209,11 +208,19 @@ class GraphQLProductDataSource @Inject constructor(
                         id = data.id,
                         name = data.name,
                         mark = data.mark,
-                        priceVente = data.priceVente,
-                        priceAchat = data.priceAchat,
-                        stock = data.stock,
+                        priceVente = data.priceVente.toDouble(),
+                        priceAchat = data.priceAchat.toDouble(),
+                        stock = data.stock.toDouble(),
                         storeId = data.storeId,
-                        createdAt = null,
+                        store = data.store?.let { store ->
+                            StoreInfo(
+                                id = store.id,
+                                name = store.name,
+                                address = store.address,
+                                phone = store.phone
+                            )
+                        },
+                        createdAt = data.createdAt,
                         updatedAt = data.updatedAt
                     )
                     emit(BaseResponse.Success(productModel))
@@ -254,4 +261,3 @@ class GraphQLProductDataSource @Inject constructor(
         }
     }
 }
-

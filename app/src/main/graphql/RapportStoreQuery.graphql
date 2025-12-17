@@ -7,7 +7,11 @@ query RapportStore($storeId: String) {
       name
       mark
       priceVente
+      priceAchat
       stock
+      storeId
+      createdAt
+      updatedAt
     }
     quantity
     date
@@ -16,15 +20,15 @@ query RapportStore($storeId: String) {
       id
       name
       address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

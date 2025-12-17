@@ -1,33 +1,14 @@
 package com.avenir.rangoapp.ui.screens.caisse
 
+import com.avenir.rangoapp.data.models.CaisseModel
 
-data class Trans(
-    val amount: Double,
-    val operation: String,
-    val libel: String,
-    val currency: String
+data class CaisseState(
+    val caisse: CaisseModel? = null,
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
 
-val listOfTrans = listOf(
-    Trans(
-        amount = 1200.0,
-        operation = "entre",
-        libel = "depot initial",
-        currency = "USD"
-    ), Trans(
-        amount = 200.0,
-        operation = "sortie",
-        libel = "Louage magasin",
-        currency = "USD"
-    ), Trans(
-        amount = 600.0,
-        operation = "sortie",
-        libel = "Achat fourniture",
-        currency = "USD"
-    ), Trans(
-        amount = 1000.0,
-        operation = "entre",
-        libel = "depot du capital actif",
-        currency = "USD"
-    )
-)
+sealed class CaisseEvent {
+    data object OnLoadCaisse : CaisseEvent()
+    data object OnRefreshCaisse : CaisseEvent()
+}

@@ -6,7 +6,12 @@ mutation CreateRapportStore($input: CreateRapportStoreInput!) {
       id
       name
       mark
+      priceVente
+      priceAchat
       stock
+      storeId
+      createdAt
+      updatedAt
     }
     quantity
     date
@@ -14,14 +19,16 @@ mutation CreateRapportStore($input: CreateRapportStoreInput!) {
     store {
       id
       name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
+    updatedAt
   }
 }
-
-
-
-
 
 
 

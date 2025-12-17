@@ -1,0 +1,25 @@
+query CaisseTransaction($id: ID!) {
+  caisseTransaction(id: $id) {
+    id
+    amount
+    operation
+    description
+    currency
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    date
+    createdAt
+    updatedAt
+  }
+}
+
+
+

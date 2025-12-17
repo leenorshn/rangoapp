@@ -67,61 +67,39 @@ fun SettingScreen(
             item {
                 LargeSpace()
                 LargeSpace()
-               Row (modifier = Modifier.fillMaxWidth(),
-                   horizontalArrangement = Arrangement.SpaceBetween){
-                   SettingMenuItem(
-                       modifier = Modifier.weight(1f),
-                       name = "Shop settings",
-                       icon = painterResource(id = R.drawable.des_d6_24),
-                       onMenuClicked = {
-                           onShopClicked()
-                       })
-                   Spacer(modifier = Modifier.width(10.dp))
-                   SettingMenuItem(
-                       modifier = Modifier.weight(1f),
-                       name = "Taux d'echange",
-                       icon = painterResource(id = R.drawable.fleches_repetition_24),
-                       onMenuClicked = {
-                           onCurrencyClicked()
-                       })
-
-               }
-                SmallSpace()
-               Row {
-                   SettingMenuItem(
-                       modifier = Modifier.weight(1f),
-                       name = "Utilisateurs",
-                       icon = painterResource(id = R.drawable.utilisateurs_24),
-                       onMenuClicked = {
-                           onUsersClicked()
-                       })
-                   Spacer(modifier = Modifier.width(10.dp))
-                   SettingMenuItem(
-                       modifier = Modifier.weight(1f),
-                       name = "Payment",
-                       icon = painterResource(id = R.drawable.usd_cercle_24),
-                       onMenuClicked = {
-                           onPaymentClicked()
-                       })
-               }
-                SmallSpace()
-                Row {
-                    SettingMenuItem(
-                        modifier = Modifier.weight(1f),
-                        name = "Stocage cloud",
-                        icon = painterResource(id = R.drawable.cloud),
-                        onMenuClicked = {
-                            onPaymentClicked()
-                        })
-                    Spacer(modifier = Modifier.width(10.dp))
-                    SettingMenuItem(
-                        modifier = Modifier.weight(1f),
-                        name = "Aide",
-                        icon = painterResource(id = R.drawable.aide),
-                        onMenuClicked = {
-                            onHelpClicked()
-                        })
-                }
+            }
+            
+            // Shop settings
+            item {
+                SettingMenuItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    name = "Shop settings",
+                    icon = painterResource(id = R.drawable.des_d6_24),
+                    onMenuClicked = {
+                        onShopClicked()
+                    })
+            }
+            
+            // Utilisateurs
+            item {
+                SettingMenuItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    name = "Utilisateurs",
+                    icon = painterResource(id = R.drawable.utilisateurs_24),
+                    onMenuClicked = {
+                        onUsersClicked()
+                    })
+            }
+            
+            // Aide
+            item {
+                SettingMenuItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    name = "Aide",
+                    icon = painterResource(id = R.drawable.aide),
+                    onMenuClicked = {
+                        onHelpClicked()
+                    })
             }
 
             item {

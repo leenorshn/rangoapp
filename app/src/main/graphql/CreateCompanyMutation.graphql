@@ -16,9 +16,14 @@ mutation CreateCompany($input: CreateCompanyInput!) {
       name
       address
       phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
+
+
 

@@ -1,0 +1,23 @@
+mutation UpdateProvider($id: ID!, $input: UpdateProviderInput!) {
+  updateProvider(id: $id, input: $input) {
+    id
+    name
+    phone
+    address
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

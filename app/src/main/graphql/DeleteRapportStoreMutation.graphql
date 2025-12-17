@@ -1,0 +1,6 @@
+mutation DeleteRapportStore($id: ID!) {
+  deleteRapportStore(id: $id)
+}
+
+
+

@@ -7,13 +7,19 @@ mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {
     priceAchat
     stock
     storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

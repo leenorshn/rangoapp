@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.SmallSpace
-import com.avenir.rangoapp.ui.components.FactureCardItem
+import com.avenir.rangoapp.ui.components.SaleCardItem
 
 
 @Composable
@@ -44,7 +44,7 @@ fun FacturationScreen(
                 onClick = { onNewFactureClicked() }) {
                 Icon(painter = painterResource(id = R.drawable.ic_plus), contentDescription = "")
                 Spacer(modifier = Modifier.width(12.dp))
-                Text(text = "Create Facture")
+                Text(text = "Nouvelle Vente")
             }
         }
     ) {
@@ -70,7 +70,7 @@ fun FacturationScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "Facturation",
+                        text = "Ventes",
                         fontSize = 24.sp,
                     )
                     ElevatedButton(
@@ -94,10 +94,10 @@ fun FacturationScreen(
             item {
                 SmallSpace()
             }
-            if (state.factures.isEmpty() && !state.isLoading && state.error == null) {
+            if (state.sales.isEmpty() && !state.isLoading && state.error == null) {
                 item {
                     Text(
-                        text = "Aucune facture trouvée",
+                        text = "Aucune vente trouvée",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
@@ -105,8 +105,8 @@ fun FacturationScreen(
                     )
                 }
             } else {
-                items(state.factures) { facture ->
-                    FactureCardItem(facture = facture)
+                items(state.sales) { sale ->
+                    SaleCardItem(sale = sale)
                 }
             }
         }

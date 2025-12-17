@@ -12,15 +12,14 @@ query Products($storeId: String) {
       name
       address
       phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

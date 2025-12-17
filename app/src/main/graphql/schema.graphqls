@@ -126,7 +126,7 @@ type CaisseTransaction {
   amount: Float!
   operation: String! # "Entree" or "Sortie"
   description: String!
-  currency: String! # "USD" or "CDF"
+  currency: String! # "USD", "EUR", "XAF", "XOF", "CDF"
   storeId: String!
   store: Store!
   date: String!
@@ -138,9 +138,32 @@ type Caisse {
   currentBalance: Float!
   in: Float!
   out: Float!
-  currency: String! # "USD" or "CDF"
+  currency: String! # "USD", "EUR", "XAF", "XOF", "CDF"
   storeId: String
   store: Store
+}
+
+type Sale {
+  id: ID!
+  basket: [SaleProduct!]!
+  priceToPay: Float!
+  pricePayed: Float!
+  change: Float! # Calculated: pricePayed - priceToPay
+  currency: String! # "USD", "EUR", "XAF", "XOF", "CDF"
+  client: Client!
+  operator: User! # User who made the sale
+  storeId: String!
+  store: Store!
+  date: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SaleProduct {
+  productId: String!
+  product: Product!
+  quantity: Float!
+  price: Float!
 }
 
 # ============ INPUTS ============
@@ -283,9 +306,25 @@ input CreateCaisseTransactionInput {
   amount: Float!
   operation: String! # "Entree" or "Sortie"
   description: String!
-  currency: String! # "USD" or "CDF"
+  currency: String! # "USD", "EUR", "XAF", "XOF", "CDF"
   storeId: String!
   date: String
+}
+
+input SaleProductInput {
+  productId: String!
+  quantity: Float!
+  price: Float!
+}
+
+input CreateSaleInput {
+  basket: [SaleProductInput!]!
+  priceToPay: Float!
+  pricePayed: Float!
+  clientId: String!
+  storeId: String!
+  currency: String! # "USD", "EUR", "XAF", "XOF", "CDF"
+  date: String # Optional, defaults to now
 }
 
 # ============ QUERIES ============
@@ -329,6 +368,10 @@ type Query {
   caisse(storeId: String, currency: String, period: String): Caisse! @auth # period: "jour", "semaine", "mois", "annee" ou null pour tout
   caisseTransactions(storeId: String, currency: String, period: String, limit: Int): [CaisseTransaction!]! @auth
   caisseTransaction(id: ID!): CaisseTransaction @auth
+
+  # Sales
+  sales(storeId: String): [Sale!]! @auth # Si storeId non fourni, retourne les ventes des stores accessibles
+  sale(id: ID!): Sale @auth
 }
 
 # ============ MUTATIONS ============
@@ -384,4 +427,9 @@ type Mutation {
   # Caisse
   createCaisseTransaction(input: CreateCaisseTransactionInput!): CaisseTransaction! @auth
   deleteCaisseTransaction(id: ID!): Boolean! @auth
+
+  # Sales
+  createSale(input: CreateSaleInput!): Sale! @auth
+  deleteSale(id: ID!): Boolean! @auth
+  createFactureFromSale(saleId: ID!): Facture! @auth # Generate a facture from a sale for printing
 }

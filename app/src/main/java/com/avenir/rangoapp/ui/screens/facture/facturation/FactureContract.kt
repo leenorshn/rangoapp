@@ -1,10 +1,10 @@
 package com.avenir.rangoapp.ui.screens.facture.facturation
 
-import com.avenir.rangoapp.data.models.FactureModel
+import com.avenir.rangoapp.data.models.SaleModel
 
 
 data class FactureState(
-    val factures:List<FactureModel> = listOf(),
+    val sales:List<SaleModel> = listOf(),
     val isLoading:Boolean=false,
     val error:String?=null
 )
@@ -12,13 +12,14 @@ data class FactureState(
 
 
 sealed class FactureEvent{
-    data object OnFactureLoaded:FactureEvent()
-    data class OnSaveFacture(
-        val products: List<Pair<String, Pair<Int, Double>>>, // List of (productId, (quantity, price))
+    data object OnSalesLoaded:FactureEvent()
+    data class OnCreateSale(
+        val basket: List<Triple<String, Double, Double>>, // List of (productId, quantity, price)
+        val priceToPay: Double,
+        val pricePayed: Double,
         val clientId: String,
-        val quantity: Int,
-        val price: Double,
-        val date: String,
-        val currency: String
+        val storeId: String? = null,
+        val currency: String,
+        val date: String? = null
     ):FactureEvent()
 }

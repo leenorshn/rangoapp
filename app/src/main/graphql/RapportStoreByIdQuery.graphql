@@ -1,0 +1,34 @@
+query RapportStoreById($id: ID!) {
+  rapportStoreById(id: $id) {
+    id
+    type
+    product {
+      id
+      name
+      mark
+      priceVente
+      priceAchat
+      stock
+      storeId
+      createdAt
+      updatedAt
+    }
+    quantity
+    date
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

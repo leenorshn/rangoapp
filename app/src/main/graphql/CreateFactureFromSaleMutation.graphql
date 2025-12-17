@@ -1,0 +1,32 @@
+mutation CreateFactureFromSale($saleId: ID!) {
+  createFactureFromSale(saleId: $saleId) {
+    id
+    factureNumber
+    date
+    price
+    currency
+    client {
+      id
+      name
+      phone
+    }
+    store {
+      id
+      name
+      address
+    }
+    products {
+      productId
+      quantity
+      price
+      product {
+        id
+        name
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+

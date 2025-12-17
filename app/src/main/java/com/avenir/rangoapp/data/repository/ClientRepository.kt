@@ -6,10 +6,20 @@ import kotlinx.coroutines.flow.Flow
 
 interface ClientRepository {
     suspend fun getClients(storeId: String? = null): Flow<BaseResponse<List<ClientModel>>>
+    
+    suspend fun getClient(id: String): Flow<BaseResponse<ClientModel>>
+    
     suspend fun createClient(
         name: String,
         phone: String,
         storeId: String? = null
     ): Flow<BaseResponse<ClientModel>>
+    
+    suspend fun updateClient(
+        id: String,
+        name: String? = null,
+        phone: String? = null
+    ): Flow<BaseResponse<ClientModel>>
+    
+    suspend fun deleteClient(id: String): Flow<BaseResponse<Boolean>>
 }
-

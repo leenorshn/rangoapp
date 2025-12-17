@@ -1,0 +1,29 @@
+mutation UpdateStore($id: ID!, $input: UpdateStoreInput!) {
+  updateStore(id: $id, input: $input) {
+    id
+    name
+    address
+    phone
+    companyId
+    company {
+      id
+      name
+      address
+      phone
+      email
+      description
+      type
+      logo
+      rccm
+      idNat
+      idCommerce
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

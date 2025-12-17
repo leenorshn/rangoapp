@@ -15,12 +15,35 @@ class ClientRepositoryImpl @Inject constructor(
         return dataSource.getClients(storeId)
     }
 
+    override suspend fun getClient(id: String): Flow<BaseResponse<ClientModel>> {
+        return dataSource.getClient(id)
+    }
+
     override suspend fun createClient(
         name: String,
         phone: String,
         storeId: String?
     ): Flow<BaseResponse<ClientModel>> {
-        return dataSource.createClient(name, phone, storeId)
+        return dataSource.createClient(
+            name = name,
+            phone = phone,
+            storeId = storeId
+        )
+    }
+
+    override suspend fun updateClient(
+        id: String,
+        name: String?,
+        phone: String?
+    ): Flow<BaseResponse<ClientModel>> {
+        return dataSource.updateClient(
+            id = id,
+            name = name,
+            phone = phone
+        )
+    }
+
+    override suspend fun deleteClient(id: String): Flow<BaseResponse<Boolean>> {
+        return dataSource.deleteClient(id)
     }
 }
-

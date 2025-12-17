@@ -16,7 +16,8 @@ fun NavGraphBuilder.userSettingNavigation(navController: NavController) {
             state = state,
             onNewUserClicked = {
                 navController.navigate(DestinationRoute.SETTING_USER_NEW_USER_ROUTE)
-            }
+            },
+            onEvent = viewModel::onTriggerEvent
         )
     }
 }

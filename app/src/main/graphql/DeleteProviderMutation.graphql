@@ -1,0 +1,6 @@
+mutation DeleteProvider($id: ID!) {
+  deleteProvider(id: $id)
+}
+
+
+

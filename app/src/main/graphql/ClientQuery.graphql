@@ -1,0 +1,22 @@
+query Client($id: ID!) {
+  client(id: $id) {
+    id
+    name
+    phone
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+
+

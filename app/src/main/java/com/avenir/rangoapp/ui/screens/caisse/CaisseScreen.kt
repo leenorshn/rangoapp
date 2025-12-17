@@ -33,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,12 +57,14 @@ import com.avenir.rangoapp.ui.theme.SuccessColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CaisseScreen(
+    viewModel: CaisseViewModel,
     onEnterClicked: () -> Unit,
     onSortieClicked: () -> Unit,
     onTransferClicked: () -> Unit,
     onAccountClicked:()->Unit,
     onSeeAllClicked:()->Unit,
 ) {
+    val state by viewModel.state.collectAsState()
     var currency by remember {
         mutableStateOf("USD")
     }
@@ -172,14 +175,23 @@ fun CaisseScreen(
                     ) {
                         Column {
                             Text(text = "Current balance", color = Color.Gray, fontSize = 13.sp)
-                            Text(text = "$ 1455.0", fontSize = 26.sp)
+                            Text(
+                                text = "${currency} ${state.caisse?.currentBalance ?: 0.0}",
+                                fontSize = 26.sp
+                            )
                         }
                         Column {
                             Text(text = "In", color = Color.Gray, fontSize = 13.sp)
-                            Text(text = " $ 1465.0", color = SuccessColor)
+                            Text(
+                                text = " ${currency} ${state.caisse?.inAmount ?: 0.0}",
+                                color = SuccessColor
+                            )
                             Spacer(modifier = Modifier.height(24.dp))
                             Text(text = "Out", color = Color.Gray, fontSize = 13.sp)
-                            Text(text = " $ 10", color = FailureColor)
+                            Text(
+                                text = " ${currency} ${state.caisse?.outAmount ?: 0.0}",
+                                color = FailureColor
+                            )
                         }
                     }
                 }
@@ -258,28 +270,8 @@ fun CaisseScreen(
                 }
             }
 
-            items(listOfTrans){ trans->
-                Card(onClick = { /*TODO*/ },
-                    colors = CardDefaults.cardColors(
-                        containerColor = CardColor,
-                    )) {
-                    ListItem(
-                        supportingContent = {
-                             Text(text = trans.operation)
-                        },
-                        headlineContent = {
-                                               Text(text = trans.libel)
-                    }, leadingContent = {
-                           Text(text = "$ ${trans.amount}")
-                    }, trailingContent = {
-                       val icon= if (trans.operation=="entre") painterResource(id = R.drawable.fleche_bas)
-                            else painterResource(id = R.drawable.fleche_haut)
-                        val tint=if (trans.operation=="entre") SuccessColor else FailureColor
-                        Icon(icon,"",tint=tint)
-                    })
-                    HorizontalDivider()
-                }
-            }
+            // Transactions are now loaded separately via TransactionScreen
+            // This section has been removed as CaisseModel no longer contains transactions
 
             item {
                 120.dp.Space()

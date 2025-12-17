@@ -46,7 +46,7 @@ fun ClientItem(
                 Text(client.name)
             },
             supportingContent = {
-                Text(text = client.phone)
+                Text(text = client.phone ?: "")
             },
             trailingContent = {
                 Icon(

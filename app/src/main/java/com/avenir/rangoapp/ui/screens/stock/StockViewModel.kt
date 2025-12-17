@@ -22,35 +22,48 @@ class StockViewModel @Inject constructor(
     override fun onTriggerEvent(event: StoreEvent) {
         when(event){
             StoreEvent.OnLoadProduct->{
-                viewModelScope.launch {
-                    repository.getAllProducts().collect{
-                        when(it){
-                            is BaseResponse.Error -> {
-                                state.value=state.value.copy(
-                                    error = it.error,
-                                    isLoading = false,
-                                    products = listOf()
-                                )
-                            }
-                            BaseResponse.Loading -> {
-                                state.value=state.value.copy(
-                                    error = null,
-                                    isLoading = true,
-                                    products = listOf()
-                                )
-                            }
-                            is BaseResponse.Success -> {
-                                state.value=state.value.copy(
-                                    error = null,
-                                    isLoading = false,
-                                    products = it.data
-                                )
-                            }
+                loadProducts()
+            }
+            StoreEvent.OnRefreshProducts -> {
+                loadProducts()
+            }
+        }
+    }
+    
+    private fun loadProducts() {
+        viewModelScope.launch {
+            repository.getAllProducts().collect{
+                when(it){
+                    is BaseResponse.Error -> {
+                        state.value=state.value.copy(
+                            error = it.error,
+                            isLoading = false,
+                            products = listOf()
+                        )
+                    }
+                    BaseResponse.Loading -> {
+                        state.value=state.value.copy(
+                            error = null,
+                            isLoading = true,
+                            products = listOf()
+                        )
+                    }
+                    is BaseResponse.Success -> {
+                        val shouldShowMessage = state.value.showSuccessMessage
+                        state.value=state.value.copy(
+                            error = null,
+                            isLoading = false,
+                            products = it.data,
+                            showSuccessMessage = shouldShowMessage
+                        )
+                        // Réinitialiser le message après un court délai
+                        if (shouldShowMessage) {
+                            kotlinx.coroutines.delay(100)
+                            state.value = state.value.copy(showSuccessMessage = false)
                         }
                     }
                 }
             }
-
         }
     }
 }

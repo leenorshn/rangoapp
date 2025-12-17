@@ -14,9 +14,9 @@ fun NavGraphBuilder.factureNavigation(navController: NavController){
         val viewModel: FactureViewModel = hiltViewModel()
         val state by viewModel.state.collectAsState()
         
-        // Load factures when screen is first displayed
+        // Load sales when screen is first displayed
         LaunchedEffect(Unit) {
-            viewModel.onTriggerEvent(FactureEvent.OnFactureLoaded)
+            viewModel.onTriggerEvent(FactureEvent.OnSalesLoaded)
         }
         
         FacturationScreen(

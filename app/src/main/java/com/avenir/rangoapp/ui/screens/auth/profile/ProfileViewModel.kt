@@ -47,7 +47,7 @@ class ProfileViewModel @Inject constructor(
                                 loggedState.value=loggedState.value.copy(
                                     error = null,
                                     isLoading = false,
-                                    isLogged = true
+                                    isLogged = false // Logout réussi = déconnecté
                                 )
                             }
                         }

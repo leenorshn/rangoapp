@@ -1,0 +1,38 @@
+query Sale($id: ID!) {
+  sale(id: $id) {
+    id
+    date
+    priceToPay
+    pricePayed
+    change
+    currency
+    client {
+      id
+      name
+      phone
+    }
+    operator {
+      id
+      name
+    }
+    store {
+      id
+      name
+    }
+    basket {
+      productId
+      quantity
+      price
+      product {
+        id
+        name
+        mark
+        priceVente
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+

@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,17 +46,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.Space
+import com.avenir.rangoapp.ui.screens.caisse.sortie.SortieCaisseViewModel
+import com.avenir.rangoapp.ui.screens.caisse.sortie.SortieCaisseEvent
 import com.avenir.rangoapp.ui.theme.GrayColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortieCaisseScreen(
+    viewModel: SortieCaisseViewModel,
     onSaveClicked: () -> Unit
 ) {
+    val state by viewModel.state.collectAsState()
     var currency by remember {
-        mutableStateOf("USD")
+        mutableStateOf(state.currency)
     }
-    var clientName = TextFieldValue(text = "")
+    var amountText by remember {
+        mutableStateOf(TextFieldValue(text = ""))
+    }
+    var descriptionText by remember {
+        mutableStateOf(TextFieldValue(text = state.description))
+    }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Sortie en caisse") })
@@ -89,6 +99,7 @@ fun SortieCaisseScreen(
                             )
                             .clickable {
                                 currency = "CDF"
+                                viewModel.onTriggerEvent(SortieCaisseEvent.OnCurrencyChanged("CDF"))
                             }, contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -112,6 +123,7 @@ fun SortieCaisseScreen(
                             )
                             .clickable {
                                 currency = "USD"
+                                viewModel.onTriggerEvent(SortieCaisseEvent.OnCurrencyChanged("USD"))
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -155,9 +167,11 @@ fun SortieCaisseScreen(
                     .clip(
                         RoundedCornerShape(16)
                     ),
-                value = clientName,
+                value = amountText,
                 onValueChange = { value ->
-                    clientName = value
+                    amountText = value
+                    val amount = value.text.toDoubleOrNull() ?: 0.0
+                    viewModel.onTriggerEvent(SortieCaisseEvent.OnAmountChanged(amount))
                 },
                 label = {
                     Text("Montant")
@@ -182,9 +196,10 @@ fun SortieCaisseScreen(
                     .clip(
                         RoundedCornerShape(16)
                     ),
-                value = clientName,
+                value = descriptionText,
                 onValueChange = { value ->
-                    clientName = value
+                    descriptionText = value
+                    viewModel.onTriggerEvent(SortieCaisseEvent.OnDescriptionChanged(value.text))
                 },
                 label = {
                     Text("Libele")
@@ -206,8 +221,13 @@ fun SortieCaisseScreen(
                     .fillMaxWidth()
                     .padding(vertical = 20.dp),
                 onClick = {
-                    onSaveClicked()
-                }) {
+                    viewModel.onTriggerEvent(SortieCaisseEvent.OnSubmit)
+                    if (state.success) {
+                        onSaveClicked()
+                    }
+                },
+                enabled = !state.isLoading && state.amount > 0
+            ) {
                 Text(
                     text = "Enregistrer",
                     fontSize = 18.sp,

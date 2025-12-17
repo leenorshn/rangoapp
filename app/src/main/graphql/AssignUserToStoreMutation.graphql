@@ -1,0 +1,18 @@
+mutation AssignUserToStore($userId: ID!, $storeId: ID!) {
+  assignUserToStore(userId: $userId, storeId: $storeId) {
+    id
+    uid
+    name
+    phone
+    role
+    isBlocked
+    companyId
+    storeIds
+    assignedStoreId
+    createdAt
+    updatedAt
+  }
+}
+
+
+

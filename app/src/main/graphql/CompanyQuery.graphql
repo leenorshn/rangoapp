@@ -4,6 +4,7 @@ query Company {
     name
     address
     phone
+    email
     description
     type
     logo
@@ -15,14 +16,14 @@ query Company {
       name
       address
       phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
 
 
 

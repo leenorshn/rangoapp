@@ -1,0 +1,6 @@
+mutation DeleteFacture($id: ID!) {
+  deleteFacture(id: $id)
+}
+
+
+

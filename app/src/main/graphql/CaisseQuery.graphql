@@ -1,0 +1,21 @@
+query Caisse($storeId: String, $currency: String, $period: String) {
+  caisse(storeId: $storeId, currency: $currency, period: $period) {
+    currentBalance
+    in
+    out
+    currency
+    storeId
+    store {
+      id
+      name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+
+

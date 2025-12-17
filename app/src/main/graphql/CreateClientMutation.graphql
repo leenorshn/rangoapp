@@ -7,15 +7,16 @@ mutation CreateClient($input: CreateClientInput!) {
     store {
       id
       name
+      address
+      phone
+      companyId
+      createdAt
+      updatedAt
     }
     createdAt
     updatedAt
   }
 }
-
-
-
-
 
 
 

@@ -19,25 +19,26 @@ class FactureViewModel @Inject constructor(
 
     override fun onTriggerEvent(event: FactureEvent) {
         when(event){
-            FactureEvent.OnFactureLoaded -> {
-                getFactures()
+            FactureEvent.OnSalesLoaded -> {
+                getSales()
             }
-            is FactureEvent.OnSaveFacture -> {
-                createFacture(event)
+            is FactureEvent.OnCreateSale -> {
+                createSale(event)
             }
         }
     }
 
     //private save
-    private fun createFacture(event: FactureEvent.OnSaveFacture){
+    private fun createSale(event: FactureEvent.OnCreateSale){
         viewModelScope.launch {
-            repository.createVente(
-                products = event.products,
+            repository.createSale(
+                basket = event.basket,
+                priceToPay = event.priceToPay,
+                pricePayed = event.pricePayed,
                 clientId = event.clientId,
-                quantity = event.quantity,
-                price = event.price,
-                date = event.date,
-                currency = event.currency
+                storeId = event.storeId,
+                currency = event.currency,
+                date = event.date
             ).collect{
                 when(it){
                     is BaseResponse.Error -> {
@@ -57,37 +58,37 @@ class FactureViewModel @Inject constructor(
                             isLoading = false,
                             error = null
                         )
-                        // Reload factures after successful creation
-                        getFactures()
+                        // Reload sales after successful creation
+                        getSales()
                     }
                 }
             }
         }
     }
     //private loadData
-    private fun getFactures(){
+    private fun getSales(){
         viewModelScope.launch {
-            repository.getFactures().collect{
+            repository.getSales().collect{
                 when(it){
                     is BaseResponse.Error -> {
                         state.value=state.value.copy(
                             error = it.error,
                             isLoading = false,
-                            factures = listOf()
+                            sales = listOf()
                         )
                     }
                     BaseResponse.Loading -> {
                         state.value=state.value.copy(
                             error = null,
                             isLoading = true,
-                            factures = listOf()
+                            sales = listOf()
                         )
                     }
                     is BaseResponse.Success -> {
                         state.value=state.value.copy(
                             error = null,
                             isLoading = false,
-                            factures = it.data
+                            sales = it.data
                         )
                     }
                 }

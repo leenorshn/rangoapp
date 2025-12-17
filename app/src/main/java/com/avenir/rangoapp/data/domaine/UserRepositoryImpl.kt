@@ -25,4 +25,26 @@ class UserRepositoryImpl @Inject constructor(
     ): Flow<BaseResponse<UserModel>> {
         return dataSource.createUser(name, phone, password, role, storeId)
     }
+
+    override suspend fun updateUser(
+        id: String,
+        name: String?,
+        phone: String?,
+        role: String?,
+        storeId: String?
+    ): Flow<BaseResponse<UserModel>> {
+        return dataSource.updateUser(id, name, phone, role, storeId)
+    }
+
+    override suspend fun deleteUser(id: String): Flow<BaseResponse<Boolean>> {
+        return dataSource.deleteUser(id)
+    }
+
+    override suspend fun blockUser(id: String): Flow<BaseResponse<UserModel>> {
+        return dataSource.blockUser(id)
+    }
+
+    override suspend fun unblockUser(id: String): Flow<BaseResponse<UserModel>> {
+        return dataSource.unblockUser(id)
+    }
 }

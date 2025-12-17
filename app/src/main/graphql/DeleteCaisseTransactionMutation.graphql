@@ -1,0 +1,6 @@
+mutation DeleteCaisseTransaction($id: ID!) {
+  deleteCaisseTransaction(id: $id)
+}
+
+
+

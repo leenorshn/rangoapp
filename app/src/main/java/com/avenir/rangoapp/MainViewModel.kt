@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
         checkUserState()
     }
 
-    private fun checkUserState() {
+    fun checkUserState() {
         viewModelScope.launch {
             authRepository.isUserLoggedIn()
                 .collect { it ->
@@ -44,11 +44,15 @@ class MainViewModel @Inject constructor(
                             _state.value=   _state.value.copy(isLoading = true, isLoggedIn = false, error = null)
                         }
                         is BaseResponse.Success -> {
-                            _state.value=  _state.value.copy(isLoggedIn = true, error = null, isLoading = false)
+                            _state.value=  _state.value.copy(isLoggedIn = it.data, error = null, isLoading = false)
                         }
                     }
                 }
         }
+    }
+    
+    fun refreshAuthState() {
+        checkUserState()
     }
 
 }

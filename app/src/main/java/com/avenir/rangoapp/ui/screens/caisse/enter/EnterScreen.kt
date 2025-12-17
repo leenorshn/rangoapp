@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,17 +47,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.avenir.rangoapp.R
 import com.avenir.rangoapp.core.Space
+import com.avenir.rangoapp.ui.screens.caisse.enter.EnterCaisseViewModel
+import com.avenir.rangoapp.ui.screens.caisse.enter.EnterCaisseEvent
 import com.avenir.rangoapp.ui.theme.GrayColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterScreen(
-    onSaveClicked:()->Unit
+    viewModel: EnterCaisseViewModel,
+    onSaveClicked: () -> Unit
 ) {
+    val state by viewModel.state.collectAsState()
     var currency by remember {
-        mutableStateOf("USD")
+        mutableStateOf(state.currency)
     }
-    var clientName= TextFieldValue(text = "")
+    var amountText by remember {
+        mutableStateOf(TextFieldValue(text = ""))
+    }
+    var descriptionText by remember {
+        mutableStateOf(TextFieldValue(text = state.description))
+    }
+    var referenceText by remember {
+        mutableStateOf(TextFieldValue(text = state.reference))
+    }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Entrée en caisse") })
@@ -88,6 +101,7 @@ fun EnterScreen(
                             )
                             .clickable {
                                 currency = "CDF"
+                                viewModel.onTriggerEvent(EnterCaisseEvent.OnCurrencyChanged("CDF"))
                             }, contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -111,6 +125,7 @@ fun EnterScreen(
                             )
                             .clickable {
                                 currency = "USD"
+                                viewModel.onTriggerEvent(EnterCaisseEvent.OnCurrencyChanged("USD"))
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -127,33 +142,17 @@ fun EnterScreen(
                 colors = TextFieldDefaults.colors(
                     focusedLabelColor = GrayColor,
                 ),
-                modifier = Modifier.fillMaxWidth().height(64.dp).clip(
-                    RoundedCornerShape(16)
-                ),
-                value = clientName, onValueChange = {value->
-                    clientName=value
-                },
-                label = {
-                    Text("Personne de reference")
-                },
-                leadingIcon = {
-                    Icon(imageVector = Icons.Outlined.Person, contentDescription = "")
-                },
-
-                )
-            20.dp.Space()
-            TextField(
-                colors = TextFieldDefaults.colors(
-                    focusedLabelColor = GrayColor,
-                ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                 ),
                 modifier = Modifier.fillMaxWidth().height(64.dp).clip(
                     RoundedCornerShape(16)
                 ),
-                value = clientName, onValueChange = {value->
-                    clientName=value
+                value = amountText,
+                onValueChange = { value ->
+                    amountText = value
+                    val amount = value.text.toDoubleOrNull() ?: 0.0
+                    viewModel.onTriggerEvent(EnterCaisseEvent.OnAmountChanged(amount))
                 },
                 label = {
                     Text("Montant")
@@ -162,8 +161,7 @@ fun EnterScreen(
                     Icon(painter = painterResource(id = R.drawable.dollar_24), contentDescription = "",
                         modifier = Modifier.size(16.dp))
                 },
-
-                )
+            )
             20.dp.Space()
             TextField(
                 colors = TextFieldDefaults.colors(
@@ -175,8 +173,10 @@ fun EnterScreen(
                     .clip(
                         RoundedCornerShape(16)
                     ),
-                value = clientName, onValueChange = {value->
-                    clientName= value
+                value = descriptionText,
+                onValueChange = { value ->
+                    descriptionText = value
+                    viewModel.onTriggerEvent(EnterCaisseEvent.OnDescriptionChanged(value.text))
                 },
                 label = {
                     Text("Libele")
@@ -184,8 +184,7 @@ fun EnterScreen(
                 leadingIcon = {
                     Icon(imageVector = Icons.Outlined.Create, contentDescription = "")
                 },
-
-                )
+            )
 
             Spacer(modifier = Modifier.weight(1f))
             ElevatedButton(
@@ -198,8 +197,13 @@ fun EnterScreen(
                     .fillMaxWidth()
                     .padding(vertical = 20.dp),
                 onClick = {
-                    onSaveClicked()
-                }) {
+                    viewModel.onTriggerEvent(EnterCaisseEvent.OnSubmit)
+                    if (state.success) {
+                        onSaveClicked()
+                    }
+                },
+                enabled = !state.isLoading && state.amount > 0
+            ) {
                 Text(text = "Enregistrer", fontSize=18.sp, modifier = Modifier.padding(vertical = 14.dp))
             }
             40.dp.Space()

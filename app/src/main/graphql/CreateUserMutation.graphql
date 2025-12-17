@@ -16,6 +16,3 @@ mutation CreateUser($input: CreateUserInput!) {
 
 
 
-
-
-
